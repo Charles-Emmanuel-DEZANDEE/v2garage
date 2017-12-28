@@ -53,4 +53,20 @@ class BrandController extends Controller
         // Si on n'est pas en POST, alors on affiche le formulaire
         return $this->render('admin/brand/addBrand.html.twig');
     }
+    /**
+     * @Route("/brand/{id}", name="app_admin_brand_view")
+     */
+    public function viewBrand(Request $request, $id)
+    {
+        $doctrine = $this->getDoctrine();
+        $rc = $doctrine->getRepository(Brand::class);
+        $result = $rc->find($id);
+
+        //dump($results); exit;
+
+        return $this->render('admin/brand/viewBrand.html.twig', [
+            'result' => $result
+        ]);
+    }
+
 }
