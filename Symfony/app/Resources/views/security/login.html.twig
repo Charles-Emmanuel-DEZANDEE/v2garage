@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>{{ 'headers.login' | trans | capitalize }}</h1>
+
+    {% include 'inc/flash.message.html.twig' %}
+
+    {% if error %}
+        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    <form action="{{ url('app.security.login') }}" method="post">
+        <p class="form-group">
+            <label for="username">{{ 'entity.user.username' | trans | capitalize ~ ' :' }}</label>
+            <input type="text" id="username" name="_username" value="{{ last_username }}" class="form-control" />
+        </p>
+
+        <p class="form-group">
+            <label for="password">{{ 'entity.user.password' | trans | capitalize ~ ' :' }}</label>
+            <input type="password" id="password" name="_password" class="form-control" />
+        </p>
+
+        <p class="form-group">
+            <input type="submit" name="submit" class="btn btn-primary" value="{{ 'button.submit' | trans | capitalize }}" />
+        </p>
+    </form>
+
+    <p><a href="{{ url('app.account.password.forgotten') }}">{{ 'headers.password_forgotten' | trans | capitalize }}</a></p>
+
+{% endblock %}

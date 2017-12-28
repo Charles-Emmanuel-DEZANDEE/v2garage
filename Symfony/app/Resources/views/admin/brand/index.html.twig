@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>liste de marques</h1>
+    <ul>
+        {% for result in results %}
+           <li>{{ result.name }}</li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
