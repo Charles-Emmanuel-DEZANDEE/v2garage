@@ -20,8 +20,9 @@
                 {% include 'include/nav.html.twig' %}
 
                 {% for notice in app.flashes('notice') %}
-                    <p class="alert">{{ notice | capitalize }}</p>
+                    <p class="alert alert-info">{{ notice | capitalize }}</p>
                 {% endfor %}
+
                 {% block body %}{% endblock %}
             </div>
         </div>
