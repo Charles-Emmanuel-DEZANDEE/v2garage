@@ -5,12 +5,12 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Model
+ * TaxRate
  *
- * @ORM\Table(name="model")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ModelRepository")
+ * @ORM\Table(name="tax_rate")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\TaxRateRepository")
  */
-class Model
+class TaxRate
 {
     /**
      * @var int
@@ -24,9 +24,16 @@ class Model
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, unique=true)
+     * @ORM\Column(name="name", type="string", length=50, unique=true)
      */
     private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="value", type="decimal", precision=10, scale=2)
+     */
+    private $value;
 
 
     /**
@@ -44,7 +51,7 @@ class Model
      *
      * @param string $name
      *
-     * @return Model
+     * @return TaxRate
      */
     public function setName($name)
     {
@@ -61,5 +68,29 @@ class Model
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set value.
+     *
+     * @param string $value
+     *
+     * @return TaxRate
+     */
+    public function setValue($value)
+    {
+        $this->value = $value;
+
+        return $this;
+    }
+
+    /**
+     * Get value.
+     *
+     * @return string
+     */
+    public function getValue()
+    {
+        return $this->value;
     }
 }
