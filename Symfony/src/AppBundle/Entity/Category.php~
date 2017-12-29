@@ -5,13 +5,20 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Model
+ * Category
  *
- * @ORM\Table(name="model")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ModelRepository")
+ * @ORM\Table(name="category")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\CategoryRepository")
  */
-class Model
+class Category
 {
+
+    /**
+     * One taxRate has Many services.
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Service", mappedBy="category", cascade={"persist"})
+     */
+    private $services;
+
     /**
      * @var int
      *
@@ -27,6 +34,11 @@ class Model
      * @ORM\Column(name="name", type="string", length=255, unique=true)
      */
     private $name;
+
+    public function __construct()
+    {
+        $this->services = new ArrayCollection();
+    }
 
 
     /**
@@ -44,7 +56,7 @@ class Model
      *
      * @param string $name
      *
-     * @return Model
+     * @return Category
      */
     public function setName($name)
     {
