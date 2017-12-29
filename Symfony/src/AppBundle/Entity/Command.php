@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Command
@@ -12,6 +13,15 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Command
 {
+
+
+    /**
+     * Many commands have One Customer.
+     * @ORM\ManyToOne(targetEntity="Customer", inversedBy="commands")
+     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
+     */
+    private $customer;
+
     /**
      * @var int
      *
@@ -83,6 +93,12 @@ class Command
      * @ORM\Column(name="date_bill", type="datetime", nullable=true)
      */
     private $dateBill;
+
+    /**
+     * one command have Many CommandsServices.
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\CommandsServices", mappedBy="command", cascade={"persist"})
+          */
+    private $commandsServices;
 
 
     /**
@@ -309,5 +325,74 @@ class Command
     public function getDateBill()
     {
         return $this->dateBill;
+    }
+
+    /**
+     * Set customer.
+     *
+     * @param \AppBundle\Entity\Customer|null $customer
+     *
+     * @return Command
+     */
+    public function setCustomer(\AppBundle\Entity\Customer $customer = null)
+    {
+        $this->customer = $customer;
+
+        return $this;
+    }
+
+    /**
+     * Get customer.
+     *
+     * @return \AppBundle\Entity\Customer|null
+     */
+    public function getCustomer()
+    {
+        return $this->customer;
+    }
+
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->commandsServices = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add commandsService.
+     *
+     * @param \AppBundle\Entity\CommandsServices $commandsService
+     *
+     * @return Command
+     */
+    public function addCommandsService(\AppBundle\Entity\CommandsServices $commandsService)
+    {
+        $this->commandsServices[] = $commandsService;
+
+        return $this;
+    }
+
+    /**
+     * Remove commandsService.
+     *
+     * @param \AppBundle\Entity\CommandsServices $commandsService
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeCommandsService(\AppBundle\Entity\CommandsServices $commandsService)
+    {
+        return $this->commandsServices->removeElement($commandsService);
+    }
+
+    /**
+     * Get commandsServices.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCommandsServices()
+    {
+        return $this->commandsServices;
     }
 }

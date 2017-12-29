@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Customer
@@ -12,13 +13,23 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Customer
 {
-    public function __construct()
-    {
-        // Par défaut, le client est actif
-        $this->isActive = true;
-        // Par défaut, la date de l'annonce est la date d'aujourd'hui
-        $this->createDate = new \Datetime();
-    }
+    /**
+     * One customer has Many Vehicules.
+     * @ORM\OneToMany(targetEntity="Vehicule", mappedBy="customer", cascade={"persist"})
+     */
+    private $vehicules;
+
+    /**
+     * One customer has Many addresses.
+     * @ORM\OneToMany(targetEntity="Address_intervention", mappedBy="customer", cascade={"persist"})
+     */
+    private $addresses;
+
+    /**
+     * One customer has Many commands.
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Command", mappedBy="customer", cascade={"persist"})
+     */
+    private $commands;
 
     /**
      * @var int
@@ -28,6 +39,7 @@ class Customer
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
 
     /**
      * @var string|null
@@ -134,7 +146,6 @@ class Customer
      */
     private $telephoneSecondary;
 
-
     /**
      * Get id.
      *
@@ -143,6 +154,18 @@ class Customer
     public function getId()
     {
         return $this->id;
+    }
+
+
+    public function __construct()
+    {
+        // Par défaut, le client est actif
+        $this->isActive = true;
+        // Par défaut, la date de l'annonce est la date d'aujourd'hui
+        $this->createDate = new \Datetime();
+        $this->vehicules = new ArrayCollection();
+        $this->addresses = new ArrayCollection();
+        $this->commands = new ArrayCollection();
     }
 
     /**
@@ -503,5 +526,113 @@ class Customer
     public function getLastActionDate()
     {
         return $this->lastActionDate;
+    }
+
+    /**
+     * Add vehicule.
+     *
+     * @param \AppBundle\Entity\Vehicule $vehicule
+     *
+     * @return Customer
+     */
+    public function addVehicule(\AppBundle\Entity\Vehicule $vehicule)
+    {
+        $this->vehicules[] = $vehicule;
+
+        return $this;
+    }
+
+    /**
+     * Remove vehicule.
+     *
+     * @param \AppBundle\Entity\Vehicule $vehicule
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeVehicule(\AppBundle\Entity\Vehicule $vehicule)
+    {
+        return $this->vehicules->removeElement($vehicule);
+    }
+
+    /**
+     * Get vehicules.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getVehicules()
+    {
+        return $this->vehicules;
+    }
+
+    /**
+     * Add address.
+     *
+     * @param \AppBundle\Entity\Address_intervention $address
+     *
+     * @return Customer
+     */
+    public function addAddress(\AppBundle\Entity\Address_intervention $address)
+    {
+        $this->addresses[] = $address;
+
+        return $this;
+    }
+
+    /**
+     * Remove address.
+     *
+     * @param \AppBundle\Entity\Address_intervention $address
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeAddress(\AppBundle\Entity\Address_intervention $address)
+    {
+        return $this->addresses->removeElement($address);
+    }
+
+    /**
+     * Get addresses.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAddresses()
+    {
+        return $this->addresses;
+    }
+
+    /**
+     * Add command.
+     *
+     * @param \AppBundle\Entity\Command $command
+     *
+     * @return Customer
+     */
+    public function addCommand(\AppBundle\Entity\Command $command)
+    {
+        $this->commands[] = $command;
+
+        return $this;
+    }
+
+    /**
+     * Remove command.
+     *
+     * @param \AppBundle\Entity\Command $command
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeCommand(\AppBundle\Entity\Command $command)
+    {
+        return $this->commands->removeElement($command);
+    }
+
+    /**
+     * Get commands.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCommands()
+    {
+        return $this->commands;
     }
 }

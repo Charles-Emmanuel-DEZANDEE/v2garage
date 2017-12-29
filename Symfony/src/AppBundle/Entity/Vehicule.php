@@ -13,13 +13,12 @@ use Doctrine\ORM\Mapping as ORM;
 class Vehicule
 {
 
-    public function __construct()
-    {
-        // Par défaut, le client est actif
-        $this->isActive = true;
-        // Par défaut, la date de l'annonce est la date d'aujourd'hui
-        $this->createDate = new \Datetime();
-    }
+    /**
+     * Many Vehicules have One Customer.
+     * @ORM\ManyToOne(targetEntity="Customer", inversedBy="vehicules")
+     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
+     */
+    private $customer;
     /**
      * @var int
      *
@@ -91,6 +90,14 @@ class Vehicule
      * @ORM\Column(name="is_active", type="boolean")
      */
     private $isActive;
+
+    public function __construct()
+    {
+        // Par défaut, le client est actif
+        $this->isActive = true;
+        // Par défaut, la date de l'annonce est la date d'aujourd'hui
+        $this->createDate = new \Datetime();
+    }
 
 
     /**
@@ -317,5 +324,29 @@ class Vehicule
     public function getIsActive()
     {
         return $this->isActive;
+    }
+
+    /**
+     * Set customer.
+     *
+     * @param \AppBundle\Entity\Customer|null $customer
+     *
+     * @return Vehicule
+     */
+    public function setCustomer(\AppBundle\Entity\Customer $customer = null)
+    {
+        $this->customer = $customer;
+
+        return $this;
+    }
+
+    /**
+     * Get customer.
+     *
+     * @return \AppBundle\Entity\Customer|null
+     */
+    public function getCustomer()
+    {
+        return $this->customer;
     }
 }

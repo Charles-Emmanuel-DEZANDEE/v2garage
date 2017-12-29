@@ -12,6 +12,14 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Address_intervention
 {
+
+    /**
+     * Many addresses have One Customer.
+     * @ORM\ManyToOne(targetEntity="Customer", inversedBy="addresses")
+     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
+     */
+    private $customer;
+
     /**
      * @var int
      *
@@ -309,5 +317,29 @@ class Address_intervention
     public function getCountry()
     {
         return $this->country;
+    }
+
+    /**
+     * Set customer.
+     *
+     * @param \AppBundle\Entity\Customer|null $customer
+     *
+     * @return Address_intervention
+     */
+    public function setCustomer(\AppBundle\Entity\Customer $customer = null)
+    {
+        $this->customer = $customer;
+
+        return $this;
+    }
+
+    /**
+     * Get customer.
+     *
+     * @return \AppBundle\Entity\Customer|null
+     */
+    public function getCustomer()
+    {
+        return $this->customer;
     }
 }

@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Service
@@ -12,6 +13,21 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Service
 {
+
+    /**
+     * Many services have One TaxRate.
+     * @ORM\ManyToOne(targetEntity="TaxRate", inversedBy="services")
+     * @ORM\JoinColumn(name="taxRate_id", referencedColumnName="id")
+     */
+    private $taxRate;
+
+    /**
+     * Many services have One category.
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category", inversedBy="services")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+     */
+    private $category;
+
     /**
      * @var int
      *
@@ -41,6 +57,14 @@ class Service
      * @ORM\Column(name="reference", type="string", length=255, nullable=true)
      */
     private $reference;
+
+
+
+    /**
+     * One services have Many CommandsServices.
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\CommandsServices", mappedBy="service", cascade={"persist"})
+     */
+    private $commandsServices;
 
 
     /**
@@ -123,5 +147,98 @@ class Service
     public function getReference()
     {
         return $this->reference;
+    }
+
+    /**
+     * Set taxRate.
+     *
+     * @param \AppBundle\Entity\TaxRate|null $taxRate
+     *
+     * @return Service
+     */
+    public function setTaxRate(\AppBundle\Entity\TaxRate $taxRate = null)
+    {
+        $this->taxRate = $taxRate;
+
+        return $this;
+    }
+
+    /**
+     * Get taxRate.
+     *
+     * @return \AppBundle\Entity\TaxRate|null
+     */
+    public function getTaxRate()
+    {
+        return $this->taxRate;
+    }
+
+    /**
+     * Set category.
+     *
+     * @param \AppBundle\Entity\Category|null $category
+     *
+     * @return Service
+     */
+    public function setCategory(\AppBundle\Entity\Category $category = null)
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * Get category.
+     *
+     * @return \AppBundle\Entity\Category|null
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->commandsServices = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add commandsService.
+     *
+     * @param \AppBundle\Entity\CommandsServices $commandsService
+     *
+     * @return Service
+     */
+    public function addCommandsService(\AppBundle\Entity\CommandsServices $commandsService)
+    {
+        $this->commandsServices[] = $commandsService;
+
+        return $this;
+    }
+
+    /**
+     * Remove commandsService.
+     *
+     * @param \AppBundle\Entity\CommandsServices $commandsService
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeCommandsService(\AppBundle\Entity\CommandsServices $commandsService)
+    {
+        return $this->commandsServices->removeElement($commandsService);
+    }
+
+    /**
+     * Get commandsServices.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCommandsServices()
+    {
+        return $this->commandsServices;
     }
 }

@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * TaxRate
@@ -12,6 +13,13 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class TaxRate
 {
+
+    /**
+     * One taxRate has Many services.
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Service", mappedBy="taxRate", cascade={"persist"})
+     */
+    private $services;
+
     /**
      * @var int
      *
@@ -34,6 +42,11 @@ class TaxRate
      * @ORM\Column(name="value", type="decimal", precision=10, scale=2)
      */
     private $value;
+
+    public function __construct()
+    {
+        $this->services = new ArrayCollection();
+    }
 
 
     /**
@@ -92,5 +105,41 @@ class TaxRate
     public function getValue()
     {
         return $this->value;
+    }
+
+    /**
+     * Add service.
+     *
+     * @param \AppBundle\Entity\Service $service
+     *
+     * @return TaxRate
+     */
+    public function addService(\AppBundle\Entity\Service $service)
+    {
+        $this->services[] = $service;
+
+        return $this;
+    }
+
+    /**
+     * Remove service.
+     *
+     * @param \AppBundle\Entity\Service $service
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeService(\AppBundle\Entity\Service $service)
+    {
+        return $this->services->removeElement($service);
+    }
+
+    /**
+     * Get services.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getServices()
+    {
+        return $this->services;
     }
 }
