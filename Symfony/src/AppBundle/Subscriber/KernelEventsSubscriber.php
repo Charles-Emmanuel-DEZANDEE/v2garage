@@ -28,9 +28,9 @@ class KernelEventsSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::REQUEST => 'maintenanceMode',
-            KernelEvents::RESPONSE => 'securityHeaders',
-            KernelEvents::RESPONSE => 'cookiesDisclaimer',
+//            KernelEvents::REQUEST => 'maintenanceMode',
+//            KernelEvents::RESPONSE => 'securityHeaders',
+//            KernelEvents::RESPONSE => 'cookiesDisclaimer',
         ];
     }
 
@@ -42,7 +42,7 @@ class KernelEventsSubscriber implements EventSubscriberInterface
             $content = $event->getResponse()->getContent();
 
             // message
-            $message = $this->translator->trans('headers.cookie_disclaimer');
+            $message = 'c\'est un cookie';
 
             // modification de la réponse
             $newContent = str_replace('<body>', '<body><div class="container"><div class="row"><div class="col-sm-12"><div class="alert alert-warning alert-dismissible" role="alert"><button type="button" class="close close-cookie-disclaimer" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>' . $message . ' </strong></div></div></div></div>', $content);

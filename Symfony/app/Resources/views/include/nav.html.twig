@@ -1,16 +1,29 @@
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="{{url('app_homepage_index')}}">GarageMike</a>
+            <a class="navbar-brand" href="{{url('app_homepage_index')}}"> GarageMike </a>
+            <a class=" navbar-text" href=""> Client en cours  <span class="badge"> 70€ </span></a>
+            {#<a class="btn-group-justified"> Client en cours  <span class="badge"> 90€ </span></a>#}
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
         </div>
-        <ul class="nav navbar-nav">
-            <li class="active"><a href="{{ url('app_admin_customer_list') }}">Liste clients</a></li>
-            <li><a href="#">Page 1</a></li>
-            <li><a href="#">Page 2</a></li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-            <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-        </ul>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="{{ url('app_admin_customer_list') }}">Liste clients</a></li>
+                <li><a href="#">Page 1</a></li>
+                <li><a href="#">Page 2</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {#<li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>#}
+                {% if is_granted('IS_AUTHENTICATED_FULLY') and is_granted('ROLE_ADMIN')%}
+                    <li><a href="{{ url('app_security_logout') }}"><span class="glyphicon glyphicon-log-out"></span> Déconnexion</a></li>
+                {% else %}
+                    <li><a href="{{ url('app_security_login') }}"><span class="glyphicon glyphicon-log-in"></span> Connexion</a></li>
+                {% endif %}
+            </ul>
+        </div>
     </div>
 </nav>

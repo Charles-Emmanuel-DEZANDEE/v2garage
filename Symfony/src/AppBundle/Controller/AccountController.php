@@ -162,7 +162,7 @@ class AccountController extends Controller
         $route = null;
 
         if(in_array('ROLE_ADMIN', $user->getRoles())){
-            $route = 'app_admin_homepage_index';
+            $route = 'app_admin_customer_list';
         } elseif(in_array('ROLE_USER', $user->getRoles())){
             $route = 'app_profile_homepage_index';
         }
