@@ -22,7 +22,7 @@ class CustomerController extends Controller
             ['id' => 1, 'name' => 'toto'],
             ['id' => 2, 'name' => 'titi']
         ];
-        return $this->render('admin/brand/index.html.twig', [
+        return $this->render('admin/customer/list.html.twig', [
             'results' => $results,
 
         ]);
@@ -52,7 +52,7 @@ class CustomerController extends Controller
 
 
         // Si on n'est pas en POST, alors on affiche le formulaire
-        return $this->render('admin/brand/addBrand.html.twig');
+        return $this->render('admin/customer/addCustomer.html.twig');
     }
     /**
      * @Route("/customer/{id}", name="app_admin_customer_view")
@@ -65,7 +65,7 @@ class CustomerController extends Controller
 
         //dump($results); exit;
 
-        return $this->render('admin/brand/viewBrand.html.twig', [
+        return $this->render('admin/customer/viewCustomer.html.twig', [
             'result' => $result
         ]);
     }

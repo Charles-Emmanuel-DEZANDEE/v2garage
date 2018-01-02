@@ -47,6 +47,17 @@ class CommandsServices
      */
     private $service;
 
+    /**
+     * CommandsServices constructor.
+     * @param int $qantity
+     * @param int $value
+     */
+    public function __construct()
+    {
+        $this->qantity = 1;
+
+    }
+
 
     /**
      * Get id.

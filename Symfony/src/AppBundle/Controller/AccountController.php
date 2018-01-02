@@ -17,7 +17,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class AccountController extends Controller
 {
     /**
-     * @Route("/signin", name="app.account.signin")
+     * @Route("/signin", name="app_account_signin")
      */
     public function signinAction(Request $request)
     {
@@ -42,7 +42,7 @@ class AccountController extends Controller
             $this->addFlash('notice', $message);
 
             // redirection
-            return $this->redirectToRoute('app.account.signin');
+            return $this->redirectToRoute('app_account_signin');
         }
 
         return $this->render('account/signin.html.twig', [
@@ -51,7 +51,7 @@ class AccountController extends Controller
     }
 
     /**
-     * @Route("/password/forgotten", name="app.account.password.forgotten")
+     * @Route("/password/forgotten", name="app_account_password_forgotten")
      */
     public function passwordForgottenAction(Request $request){
         $formType = PasswordForgottenType::class;
@@ -81,7 +81,7 @@ class AccountController extends Controller
             $this->addFlash('notice', $message);
 
             // redirection
-            return $this->redirectToRoute('app.security.login');
+            return $this->redirectToRoute('app_security_login');
         }
 
         return $this->render('account/passwordForgotten.html.twig', [
@@ -90,7 +90,7 @@ class AccountController extends Controller
     }
 
     /**
-     * @Route("/password/recovery/{email}/{token}", name="app.account.password.recovery")
+     * @Route("/password/recovery/{email}/{token}", name="app_account_password_recovery")
      */
     public function passwordRecoveryAction(Request $request, $email, $token){
 
@@ -112,7 +112,7 @@ class AccountController extends Controller
             $this->addFlash('notice', $message);
 
             // redirection
-            return $this->redirectToRoute('app.security.login');
+            return $this->redirectToRoute('app_security_login');
         }
 
         $formType = PasswordRecoveryType::class;
@@ -145,7 +145,7 @@ class AccountController extends Controller
             $this->addFlash('notice', $message);
 
             // redirection
-            return $this->redirectToRoute('app.security.login');
+            return $this->redirectToRoute('app_security_login');
         }
 
         return $this->render('account/passwordRecovery.html.twig', [
@@ -154,7 +154,7 @@ class AccountController extends Controller
     }
 
     /**
-     * @Route("/redirect-by-role", name="app.account.redirect.by.role")
+     * @Route("/redirect-by-role", name="app_account_redirect_by_role")
      */
     public function redirectByRoleAction()
     {
@@ -162,9 +162,9 @@ class AccountController extends Controller
         $route = null;
 
         if(in_array('ROLE_ADMIN', $user->getRoles())){
-            $route = 'app.admin.homepage.index';
+            $route = 'app_admin_homepage_index';
         } elseif(in_array('ROLE_USER', $user->getRoles())){
-            $route = 'app.profile.homepage.index';
+            $route = 'app_profile_homepage_index';
         }
 
         return $this->redirectToRoute($route);

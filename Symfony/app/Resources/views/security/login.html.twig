@@ -1,30 +1,29 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>{{ 'headers.login' | trans | capitalize }}</h1>
+    <h1>connexion</h1>
 
-    {% include 'inc/flash.message.html.twig' %}
 
     {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        <div class="alert alert-danger">erreur</div>
     {% endif %}
 
-    <form action="{{ url('app.security.login') }}" method="post">
+    <form action="{{ url('app_security_login') }}" method="post">
         <p class="form-group">
-            <label for="username">{{ 'entity.user.username' | trans | capitalize ~ ' :' }}</label>
-            <input type="text" id="username" name="_username" value="{{ last_username }}" class="form-control" />
+            <label for="username">email</label>
+            <input type="text" id="username" name="_username" value="" class="form-control" />
         </p>
 
         <p class="form-group">
-            <label for="password">{{ 'entity.user.password' | trans | capitalize ~ ' :' }}</label>
+            <label for="password">Mot de passe</label>
             <input type="password" id="password" name="_password" class="form-control" />
         </p>
 
         <p class="form-group">
-            <input type="submit" name="submit" class="btn btn-primary" value="{{ 'button.submit' | trans | capitalize }}" />
+            <input type="submit" name="submit" class="btn btn-primary" value="valider" />
         </p>
     </form>
 
-    <p><a href="{{ url('app.account.password.forgotten') }}">{{ 'headers.password_forgotten' | trans | capitalize }}</a></p>
+    <p><a href="{{ url('app_account_password_forgotten') }}">Mot de passe oublié</a></p>
 
 {% endblock %}

@@ -49,6 +49,13 @@ class Customer
     private $email;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(name="social_reason", type="string", length=255, nullable=true)
+     */
+    private $socialReason;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="firstname", type="string", length=45)
@@ -65,7 +72,7 @@ class Customer
     /**
      * @var date_immutable
      *
-     * @ORM\Column(name="createDate", type="date_immutable")
+     * @ORM\Column(name="createDate", type="datetime")
      */
     private $createDate;
 
@@ -142,9 +149,21 @@ class Customer
     /**
      * @var string
      *
-     * @ORM\Column(name="telephone_secondary", type="string", length=45)
+     * @ORM\Column(name="telephone_secondary", type="string", length=45, nullable=true)
      */
     private $telephoneSecondary;
+
+    public function __construct()
+    {
+        // Par défaut, le client est actif
+        $this->isActive = true;
+        // Par défaut, la date de l'annonce est la date d'aujourd'hui
+        $this->createDate = new \DateTime();
+        $this->vehicules = new ArrayCollection();
+        $this->addresses = new ArrayCollection();
+        $this->commands = new ArrayCollection();
+    }
+
 
     /**
      * Get id.
@@ -154,18 +173,6 @@ class Customer
     public function getId()
     {
         return $this->id;
-    }
-
-
-    public function __construct()
-    {
-        // Par défaut, le client est actif
-        $this->isActive = true;
-        // Par défaut, la date de l'annonce est la date d'aujourd'hui
-        $this->createDate = new \Datetime();
-        $this->vehicules = new ArrayCollection();
-        $this->addresses = new ArrayCollection();
-        $this->commands = new ArrayCollection();
     }
 
     /**
@@ -214,6 +221,30 @@ class Customer
     public function getFirstname()
     {
         return $this->firstname;
+    }
+
+    /**
+     * Set socialReason.
+     *
+     * @param string $socialReason
+     *
+     * @return Customer
+     */
+    public function setSocialReason($socialReason)
+    {
+        $this->socialReason = $socialReason;
+
+        return $this;
+    }
+
+    /**
+     * Get socialReason.
+     *
+     * @return string
+     */
+    public function getSocialReason()
+    {
+        return $this->socialReason;
     }
 
     /**

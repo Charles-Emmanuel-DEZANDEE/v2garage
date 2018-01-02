@@ -4,8 +4,19 @@ security:
 
     # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
-        in_memory:
-            memory: ~
+        our_db_provider:
+            entity:
+                class: AppBundle:User
+                property: email
+
+    access_control:
+        - { path: ^/admin, roles: ROLE_ADMIN }
+
+    encoders:
+#        Symfony\Component\Security\Core\User\User: plaintext
+        AppBundle\Entity\User:
+            algorithm: bcrypt
+            cost: 12
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -22,3 +33,14 @@ security:
 
             # https://symfony.com/doc/current/security/form_login_setup.html
             #form_login: ~
+            provider: our_db_provider
+
+            # https://symfony.com/doc/current/security/form_login_setup.html
+            form_login:
+                login_path: app_security_login
+                check_path: app_security_login
+                default_target_path: app_account_redirect_by_role # page d'atterrissage après connexion
+
+            logout:
+                path: app_security_logout
+                target: app_homepage_index # page d'atterrissage après déconnexion

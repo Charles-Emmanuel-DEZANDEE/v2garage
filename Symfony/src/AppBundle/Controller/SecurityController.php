@@ -14,28 +14,28 @@ class SecurityController extends Controller
      */
     public function loginAction(Request $request, AuthenticationUtils $authUtils)
     {
-        // test du nombre d'échec de connexion dans la session
-        if($request->getSession()->get('authentication_failure_count') >= $this->getParameter('authentication_failure_max')){
-            // suppression de la clé en session
-            $request->getSession()->remove('authentication_failure_count');
-
-            // message
-            $message = 'Vous semblez avoir oublié votre mot de passe';
-            $this->addFlash('notice', $message);
-
-            // redirection
-            return $this->redirectToRoute('app.account.password.forgotten');
-        }
-
-        // get the login error if there is one
+//        // test du nombre d'échec de connexion dans la session
+//        if($request->getSession()->get('authentication_failure_count') >= $this->getParameter('authentication_failure_max')){
+//            // suppression de la clé en session
+//            $request->getSession()->remove('authentication_failure_count');
+//
+//            // message
+//            $message = 'Vous semblez avoir oublié votre mot de passe';
+//            $this->addFlash('notice', $message);
+//
+//            // redirection
+//            return $this->redirectToRoute('app.account.password.forgotten');
+//        }
+//
+//        // get the login error if there is one
         $error = $authUtils->getLastAuthenticationError();
-
-        // last username entered by the user
-        $lastUsername = $authUtils->getLastUsername();
+//
+//        // last username entered by the user
+//        $lastUsername = $authUtils->getLastUsername();
 
         return $this->render('security/login.html.twig', [
-            'last_username' => $lastUsername,
-            'error'         => $error,
+//            'last_username' => $lastUsername,
+           'error'         => $error,
         ]);
     }
 

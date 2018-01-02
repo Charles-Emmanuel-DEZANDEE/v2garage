@@ -33,3 +33,16 @@ services:
     # AppBundle\Service\ExampleService:
     #     arguments:
     #         $someArgument: 'some_value'
+    AppBundle\Listener\UserListener:
+        arguments: [ '@security.password_encoder', '@doctrine' ]
+        tags:
+            - { name: doctrine.orm.entity_listener }
+
+    # twig extensions
+    Twig_Extensions_Extension_Intl:
+        class: Twig_Extensions_Extension_Intl
+
+
+    AppBundle\Subscriber\KernelEventsSubscriber:
+        arguments:
+            $maintenance: '%maintenance%'
