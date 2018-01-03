@@ -36,6 +36,7 @@ class CommandsServices
     private $value;
 
     /**
+     * valeur de la tva
      * @var decimal
      *
      * @ORM\Column(name="taxRate", type="decimal", precision=10, scale=2)
@@ -59,10 +60,13 @@ class CommandsServices
      * @param int $qantity
      * @param int $value
      */
-    public function __construct()
+    public function __construct(Service $service, Command $command)
     {
-        $this->qantity = 1;
-
+        $this->setQuantity(1);
+        $this->setService($service);
+        $this->setCommand($command);
+        $this->setTaxRate($service->getTaxRate()->getValue());
+        $this->setValue($service->getValue());
     }
 
 
@@ -85,7 +89,7 @@ class CommandsServices
      */
     public function setQuantity($quantity)
     {
-        $this->qantity = $quantity;
+        $this->quantity = $quantity;
 
         return $this;
     }

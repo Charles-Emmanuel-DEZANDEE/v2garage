@@ -45,7 +45,7 @@ class Service
     private $name;
 
     /**
-     * @var string|null
+     * @var decimal
      *
      * @ORM\Column(name="value", type="decimal", precision=10, scale=2, nullable=true)
      */
@@ -104,7 +104,7 @@ class Service
     /**
      * Set value.
      *
-     * @param string|null $value
+     * @param decimal|null $value
      *
      * @return Service
      */
@@ -118,7 +118,7 @@ class Service
     /**
      * Get value.
      *
-     * @return string|null
+     * @return decimal|null
      */
     public function getValue()
     {
@@ -147,6 +147,24 @@ class Service
     public function getReference()
     {
         return $this->reference;
+    }
+
+    /**
+     * retourne le calcul de la tva
+     * @return decimal
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     */
+    public function getTotalTva(){
+        return $this->getValue() * $this->getTaxRate()->getValue();
+    }
+
+    /**
+     * retourne le calcul du total ttc
+     * @return decimal
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     */
+    public function getTotalTtc(){
+        return $this->getValue() + $this->getTotalTva();
     }
 
     /**
@@ -196,6 +214,8 @@ class Service
     {
         return $this->category;
     }
+
+
 
 
     /**

@@ -37,7 +37,7 @@ class TaxRate
     private $name;
 
     /**
-     * @var string
+     * @var decimal
      *
      * @ORM\Column(name="value", type="decimal", precision=10, scale=2)
      */
@@ -86,7 +86,7 @@ class TaxRate
     /**
      * Set value.
      *
-     * @param string $value
+     * @param decimal $value
      *
      * @return TaxRate
      */
@@ -100,7 +100,7 @@ class TaxRate
     /**
      * Get value.
      *
-     * @return string
+     * @return decimal
      */
     public function getValue()
     {
