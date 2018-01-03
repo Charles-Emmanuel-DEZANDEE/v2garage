@@ -1,37 +1,77 @@
-/*@media (max-width: 480px) {*/
-    /*.navbar-header {*/
-        /*float: none;*/
-    /*}*/
-    /*.navbar-toggle {*/
-        /*display: block;*/
-    /*}*/
-    /*.navbar-collapse {*/
-        /*border-top: 1px solid transparent;*/
-        /*box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);*/
-    /*}*/
-    /*.navbar-collapse.collapse {*/
-        /*display: none!important;*/
-    /*}*/
-    /*.navbar-nav {*/
-        /*float: none!important;*/
-        /*margin: 7.5px -15px;*/
-    /*}*/
-    /*.navbar-nav>li {*/
-        /*float: none;*/
-    /*}*/
-    /*.navbar-nav>li>a {*/
-        /*padding-top: 10px;*/
-        /*padding-bottom: 10px;*/
-    /*}*/
-    /*.navbar-text {*/
-        /*float: none;*/
-        /*margin: 15px 0;*/
-    /*}*/
-    /*!* cette classe est à ajouter lorsque que vous utilisez une version de Bootstap supérieure ou égale à la 3.1.0 *!*/
-    /*.navbar-collapse.collapse.in {*/
-        /*display: block!important;*/
-    /*}*/
-    /*.collapsing {*/
-        /*overflow: hidden!important;*/
-    /*}*/
-/*}*/
+
+/*--------------------------------------------------*/
+/*************************      font                */
+/*--------------------------------------------------*/
+@font-face {
+    font-family: 'Open Sans';
+    src: url("../fonts/Open_Sans/OpenSans-Regular.ttf");
+    src: url("../fonts/Open_Sans/OpenSans-Bold.ttf");
+    src: url("../fonts/Open_Sans/OpenSans-Italic.ttf");
+}
+
+@font-face {
+    font-family: 'Fredericka the Great';
+    src: url("../fonts/Fredericka_the_Great/FrederickatheGreat-Regular.ttf");
+}
+
+/*--------------------------------------------------*/
+/*************************      colors              */
+/*--------------------------------------------------*/
+
+/*As Hex codes*/
+
+
+.color-primary-0 { color: #FDFDFD }	/* Main Primary color */
+.color-primary-1 { color: #B3B3B3 }
+.color-primary-2 { color: #747474 }
+.color-primary-3 { color: #4B4B4B }
+.color-primary-4 { color: #383838 }
+.color-primary-5 { color: #262626 }
+
+.color-complement-0 { color: #FFFFFF }  /* Main Complement color */
+.color-complement-1 { color: #FF6008 }
+.color-complement-2 { color: #E65000 }
+.color-complement-3 { color: #6C3C22 }
+
+
+/* As RGBa codes */
+
+.color-primary-0 { color: rgb(252, 252, 252) }	/* Main Primary color */
+.color-primary-1 { color: rgb(179, 179, 179) }
+.color-primary-2 { color: rgb(116, 116, 116) }
+.color-primary-3 { color: rgb(75, 75, 75) }
+.color-primary-4 { color: rgb(56, 56, 56) }
+.color-primary-5 { color: rgb(38, 38, 38) }
+
+.color-complement-0 { color: rgb(255, 255, 255) }  /* Main Complement color */
+.color-complement-1 { color: rgb(255, 96, 8) }
+.color-complement-2 { color: rgb(230, 80, 0) }
+.color-complement-3 { color: rgb(108, 60, 34) }
+
+/*--------------------------------------------------*/
+/*************************      general             */
+/*--------------------------------------------------*/
+
+* {
+    box-sizing: border-box;
+    /*outline: none;*/
+}
+
+html{
+    font-size: 62.5%;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    color: #FDFDFD;
+    font-size: 1.2rem;
+    background: url("../img/backgrounds/car-repair-362150_1920.jpg") no-repeat top center fixed;
+    background-size: cover;
+    background-color: #262626;
+
+}
+
+h1{
+    font-family: 'Fredericka the Great', cursive;
+    font-size: 4rem;
+}
