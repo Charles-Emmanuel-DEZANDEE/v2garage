@@ -24,66 +24,30 @@ class UserType extends AbstractType
             ->add('username', TextType::class, [
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'user.username.notblank'
+                        'message' => 'identifiant requis'
                     ])
                 ]
             ])
             ->add('password', PasswordType::class, [
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'user.password.notblank'
+                        'message' => 'mot de passe requis'
                     ])
                 ]
             ])
             ->add('email', EmailType::class, [
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'user.email.notblank'
+                        'message' => 'email requis'
                     ]),
                     new Email([
-                        'message' => 'user.email.message',
+                        'message' => 'L\'email est incorrect',
                         'checkHost' => true,
                         'checkMX' => true,
                     ])
                 ]
             ])
-            ->add('address', TextType::class, [
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'user.address.notblank'
-                    ])
-                ]
-            ])
-            ->add('phone', TextType::class, [
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'user.phone.notblank'
-                    ])
-                ]
-            ])
-            ->add('zipcode', TextType::class, [
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'user.zipcode.notblank'
-                    ])
-                ]
-            ])
-            ->add('city', TextType::class, [
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'user.city.notblank'
-                    ])
-                ]
-            ])
-            ->add('country', CountryType::class, [
-                'placeholder' => '',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'user.country.notblank'
-                    ])
-                ]
-            ])
-        ;
+                    ;
 
         // souscripteur
         $builder->addEventSubscriber(new UserFormSubscriber());

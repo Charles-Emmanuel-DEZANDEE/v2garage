@@ -22,7 +22,7 @@ class PasswordRecoveryType extends AbstractType
             ->add('password', PasswordType::class, [
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'user.password.notblank'
+                        'message' => 'mot de passe requis'
                     ])
                 ]
             ])

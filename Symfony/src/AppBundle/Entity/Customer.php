@@ -44,7 +44,7 @@ class Customer
     /**
      * @var string|null
      *
-     * @ORM\Column(name="email", type="string", length=255, nullable=true, unique=true)
+     * @ORM\Column(name="email", type="string", length=255, nullable=true)
      */
     private $email;
 
@@ -70,16 +70,16 @@ class Customer
     private $lastname;
 
     /**
-     * @var date_immutable
+     * @var datetime
      *
      * @ORM\Column(name="createDate", type="datetime")
      */
     private $createDate;
 
     /**
-     * @var date
+     * @var datetime
      *
-     * @ORM\Column(name="lastActionDate", type="date")
+     * @ORM\Column(name="lastActionDate", type="datetime")
      */
     private $lastActionDate;
 
@@ -274,7 +274,7 @@ class Customer
     /**
      * Set createDate.
      *
-     * @param date_immutable $createDate
+     * @param datetime $createDate
      *
      * @return Customer
      */
@@ -288,7 +288,7 @@ class Customer
     /**
      * Get createDate.
      *
-     * @return date_immutable
+     * @return datetime
      */
     public function getCreateDate()
     {

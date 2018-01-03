@@ -36,6 +36,24 @@ class LoadCustomer extends Fixture implements FixtureInterface
         // On la persiste
         $manager->persist($customer);
 
+        // On crée un client2
+        $customer2 = new Customer();
+        $customer2->setEmail('titi@google.fr');
+        $customer2->setFirstname('titi');
+        $customer2->setLastname('lolo');
+        $customer2->setAddressNumber('8');
+        $customer2->setAddressRoad1('rue de la vie');
+        $customer2->setAddressZipcode('34251');
+        $customer2->setAddressCity('lille');
+        $customer2->setAddressCountry('france');
+        $customer2->setTelephonePrimary('06656656565');
+        $customer2->setLastActionDate(new \DateTime());
+
+        $this->addReference('customer2', $customer2);
+
+        // On la persiste
+        $manager->persist($customer2);
+
 
         // On déclenche l'enregistrement
         $manager->flush();

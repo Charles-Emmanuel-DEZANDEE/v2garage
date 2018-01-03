@@ -19,6 +19,7 @@ class Vehicule
      * @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
      */
     private $customer;
+
     /**
      * @var int
      *
@@ -52,7 +53,7 @@ class Vehicule
     /**
      * @var string
      *
-     * @ORM\Column(name="registration", type="string", length=255)
+     * @ORM\Column(name="registration", type="string", length=255, unique=true)
      */
     private $registration;
 
@@ -64,9 +65,9 @@ class Vehicule
     private $mileage;
 
     /**
-     * @var date_immutable
+     * @var datetime
      *
-     * @ORM\Column(name="circulation_launch_date", type="date_immutable")
+     * @ORM\Column(name="circulation_launch_date", type="datetime")
      */
     private $circulationLaunchDate;
 
@@ -233,7 +234,7 @@ class Vehicule
     /**
      * Set circulationLaunchDate.
      *
-     * @param date_immutable $circulationLaunchDate
+     * @param datetime $circulationLaunchDate
      *
      * @return Vehicule
      */
@@ -247,7 +248,7 @@ class Vehicule
     /**
      * Get circulationLaunchDate.
      *
-     * @return date_immutable
+     * @return datetime
      */
     public function getCirculationLaunchDate()
     {

@@ -35,6 +35,13 @@ class Category
      */
     private $name;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="position", type="integer")
+     */
+    private $position;
+
     public function __construct()
     {
         $this->services = new ArrayCollection();
@@ -109,5 +116,29 @@ class Category
     public function getServices()
     {
         return $this->services;
+    }
+
+    /**
+     * Set position.
+     *
+     * @param int $position
+     *
+     * @return Category
+     */
+    public function setPosition($position)
+    {
+        $this->position = $position;
+
+        return $this;
+    }
+
+    /**
+     * Get position.
+     *
+     * @return int
+     */
+    public function getPosition()
+    {
+        return $this->position;
     }
 }

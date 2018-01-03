@@ -74,9 +74,9 @@ class Customer
     private $lastname;
 
     /**
-     * @var date_immutable
+     * @var datetime
      *
-     * @ORM\Column(name="createDate", type="date_immutable")
+     * @ORM\Column(name="createDate", type="datetime")
      */
     private $createDate;
 
@@ -243,7 +243,7 @@ class Customer
     /**
      * Set createDate.
      *
-     * @param date_immutable $createDate
+     * @param datetime $createDate
      *
      * @return Customer
      */
@@ -257,7 +257,7 @@ class Customer
     /**
      * Get createDate.
      *
-     * @return date_immutable
+     * @return datetime
      */
     public function getCreateDate()
     {
