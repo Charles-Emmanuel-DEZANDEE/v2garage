@@ -24,16 +24,23 @@ class CommandsServices
     /**
      * @var int
      *
-     * @ORM\Column(name="qantity", type="integer")
+     * @ORM\Column(name="quantity", type="integer")
      */
-    private $qantity;
+    private $quantity;
 
     /**
-     * @var int
+     * @var decimal
      *
-     * @ORM\Column(name="value", type="integer")
+     * @ORM\Column(name="value", type="decimal", precision=10, scale=2)
      */
     private $value;
+
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="taxRate", type="decimal", precision=10, scale=2)
+     */
+    private $taxRate;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Command", inversedBy="commandsServices")
@@ -70,33 +77,33 @@ class CommandsServices
     }
 
     /**
-     * Set qantity.
+     * Set quantity.
      *
-     * @param int $qantity
+     * @param int $quantity
      *
      * @return CommandsServices
      */
-    public function setQantity($qantity)
+    public function setQuantity($quantity)
     {
-        $this->qantity = $qantity;
+        $this->qantity = $quantity;
 
         return $this;
     }
 
     /**
-     * Get qantity.
+     * Get quantity.
      *
      * @return int
      */
-    public function getQantity()
+    public function getQuantity()
     {
-        return $this->qantity;
+        return $this->quantity;
     }
 
     /**
      * Set value.
      *
-     * @param int $value
+     * @param decimal $value
      *
      * @return CommandsServices
      */
@@ -110,7 +117,7 @@ class CommandsServices
     /**
      * Get value.
      *
-     * @return int
+     * @return decimal
      */
     public function getValue()
     {
@@ -163,5 +170,29 @@ class CommandsServices
     public function getService()
     {
         return $this->service;
+    }
+
+    /**
+     * Set taxRate.
+     *
+     * @param string $taxRate
+     *
+     * @return CommandsServices
+     */
+    public function setTaxRate($taxRate)
+    {
+        $this->taxRate = $taxRate;
+
+        return $this;
+    }
+
+    /**
+     * Get taxRate.
+     *
+     * @return string
+     */
+    public function getTaxRate()
+    {
+        return $this->taxRate;
     }
 }

@@ -33,6 +33,8 @@ class LoadCategory extends Fixture implements FixtureInterface
             $category->setName($cat['name']);
             $category->setPosition($cat['position']);
 
+            $this->addReference($cat['name'], $category);
+
             // On la persiste
             $manager->persist($category);
         }
