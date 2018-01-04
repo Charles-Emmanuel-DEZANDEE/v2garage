@@ -46,25 +46,32 @@ class Command
     private $billRef;
 
     /**
-     * @var string
+     * @var decimal
      *
      * @ORM\Column(name="total_ht", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $totalHt;
 
     /**
-     * @var string|null
+     * @var decimal|null
      *
      * @ORM\Column(name="total_tva", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $totalTva;
 
     /**
-     * @var string|null
+     * @var decimal|null
      *
      * @ORM\Column(name="total_ttc", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $totalTtc;
+
+    /**
+     * @var decimal|null
+     *
+     * @ORM\Column(name="total_discount", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $totalDiscount;
 
     /**
      * @var \DateTime
@@ -81,9 +88,9 @@ class Command
     private $commandeValidate;
 
     /**
-     * @var datetime_immutable|null
+     * @var datetime|null
      *
-     * @ORM\Column(name="date_last_update", type="datetime_immutable", nullable=true)
+     * @ORM\Column(name="date_last_update", type="datetime", nullable=true)
      */
     private $dateLastUpdate;
 
@@ -99,6 +106,37 @@ class Command
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\CommandsServices", mappedBy="command", cascade={"persist"})
           */
     private $commandsServices;
+
+
+    /**
+     * @param $value
+     * @return decimal
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     */
+    private function getround($value){
+        return round($value,2);
+    }
+
+    /**
+     * fait les totaux ht, ttc et remise
+     *
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     */
+    public function setTotalAll(){
+        $totalTtc =0;
+        $totalTva =0;
+        $totalDiscount =0;
+        $listlignes = $this->getCommandsServices();
+        foreach ($listlignes as $ligne){
+            $totalTva += $ligne->getTotalTva();
+            $totalTtc += $ligne->getTotalTtc();
+            $totalDiscount += $ligne->getTotalDiscount();
+        }
+        //on set les totaux
+        $this->setTotalTva($totalTva);
+        $this->setTotalTtc($totalTtc);
+        $this->setTotalDiscount($totalDiscount);
+    }
 
 
     /**
@@ -282,7 +320,7 @@ class Command
     /**
      * Set dateLastUpdate.
      *
-     * @param datetime_immutable|null $dateLastUpdate
+     * @param datetime|null $dateLastUpdate
      *
      * @return Command
      */
@@ -296,7 +334,7 @@ class Command
     /**
      * Get dateLastUpdate.
      *
-     * @return datetime_immutable|null
+     * @return datetime|null
      */
     public function getDateLastUpdate()
     {
@@ -394,5 +432,29 @@ class Command
     public function getCommandsServices()
     {
         return $this->commandsServices;
+    }
+
+    /**
+     * Set totalDiscount.
+     *
+     * @param string|null $totalDiscount
+     *
+     * @return Command
+     */
+    public function setTotalDiscount($totalDiscount = null)
+    {
+        $this->totalDiscount = $totalDiscount;
+
+        return $this;
+    }
+
+    /**
+     * Get totalDiscount.
+     *
+     * @return string|null
+     */
+    public function getTotalDiscount()
+    {
+        return $this->totalDiscount;
     }
 }

@@ -45,7 +45,7 @@ class Service
     private $name;
 
     /**
-     * @var string|null
+     * @var decimal
      *
      * @ORM\Column(name="value", type="decimal", precision=10, scale=2, nullable=true)
      */
@@ -104,7 +104,7 @@ class Service
     /**
      * Set value.
      *
-     * @param string|null $value
+     * @param decimal|null $value
      *
      * @return Service
      */
@@ -118,7 +118,7 @@ class Service
     /**
      * Get value.
      *
-     * @return string|null
+     * @return decimal|null
      */
     public function getValue()
     {
@@ -147,6 +147,33 @@ class Service
     public function getReference()
     {
         return $this->reference;
+    }
+
+    /**
+     * retourne le calcul de la tva
+     * @return decimal
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     */
+    public function getTotalTva(){
+        return $this->getround($this->getValue() * ($this->getTaxRate()->getValue()/100));
+    }
+
+    /**
+     * retourne le calcul du total ttc
+     * @return decimal
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     */
+    public function getTotalTtc(){
+                return $this->getround($this->getValue() + $this->getTotalTva());
+    }
+
+    /**
+     * @param $value
+     * @return decimal
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     */
+    private function getround($value){
+        return round($value,2);
     }
 
     /**
@@ -198,4 +225,49 @@ class Service
     }
 
 
+
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->commandsServices = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add commandsService.
+     *
+     * @param \AppBundle\Entity\CommandsServices $commandsService
+     *
+     * @return Service
+     */
+    public function addCommandsService(\AppBundle\Entity\CommandsServices $commandsService)
+    {
+        $this->commandsServices[] = $commandsService;
+
+        return $this;
+    }
+
+    /**
+     * Remove commandsService.
+     *
+     * @param \AppBundle\Entity\CommandsServices $commandsService
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeCommandsService(\AppBundle\Entity\CommandsServices $commandsService)
+    {
+        return $this->commandsServices->removeElement($commandsService);
+    }
+
+    /**
+     * Get commandsServices.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCommandsServices()
+    {
+        return $this->commandsServices;
+    }
 }

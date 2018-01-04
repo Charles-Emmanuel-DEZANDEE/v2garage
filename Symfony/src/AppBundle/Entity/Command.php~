@@ -46,25 +46,32 @@ class Command
     private $billRef;
 
     /**
-     * @var string
+     * @var decimal
      *
      * @ORM\Column(name="total_ht", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $totalHt;
 
     /**
-     * @var string|null
+     * @var decimal|null
      *
      * @ORM\Column(name="total_tva", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $totalTva;
 
     /**
-     * @var string|null
+     * @var decimal|null
      *
      * @ORM\Column(name="total_ttc", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $totalTtc;
+
+    /**
+     * @var decimal|null
+     *
+     * @ORM\Column(name="total_discount", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $totalDiscount;
 
     /**
      * @var \DateTime
@@ -81,9 +88,9 @@ class Command
     private $commandeValidate;
 
     /**
-     * @var datetime_immutable|null
+     * @var datetime|null
      *
-     * @ORM\Column(name="date_last_update", type="datetime_immutable", nullable=true)
+     * @ORM\Column(name="date_last_update", type="datetime", nullable=true)
      */
     private $dateLastUpdate;
 
@@ -282,7 +289,7 @@ class Command
     /**
      * Set dateLastUpdate.
      *
-     * @param datetime_immutable|null $dateLastUpdate
+     * @param datetime|null $dateLastUpdate
      *
      * @return Command
      */
@@ -296,7 +303,7 @@ class Command
     /**
      * Get dateLastUpdate.
      *
-     * @return datetime_immutable|null
+     * @return datetime|null
      */
     public function getDateLastUpdate()
     {
@@ -352,4 +359,47 @@ class Command
     }
 
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->commandsServices = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add commandsService.
+     *
+     * @param \AppBundle\Entity\CommandsServices $commandsService
+     *
+     * @return Command
+     */
+    public function addCommandsService(\AppBundle\Entity\CommandsServices $commandsService)
+    {
+        $this->commandsServices[] = $commandsService;
+
+        return $this;
+    }
+
+    /**
+     * Remove commandsService.
+     *
+     * @param \AppBundle\Entity\CommandsServices $commandsService
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeCommandsService(\AppBundle\Entity\CommandsServices $commandsService)
+    {
+        return $this->commandsServices->removeElement($commandsService);
+    }
+
+    /**
+     * Get commandsServices.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCommandsServices()
+    {
+        return $this->commandsServices;
+    }
 }

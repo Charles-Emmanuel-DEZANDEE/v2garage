@@ -44,6 +44,14 @@ class CommandsServices
     private $taxRate;
 
     /**
+     * valeur de la remise
+     * @var decimal
+     *
+     * @ORM\Column(name="discountRate", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $discountRate;
+
+    /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Command", inversedBy="commandsServices")
      * @ORM\JoinColumn(name="command_id", referencedColumnName="id")
      */
@@ -57,16 +65,53 @@ class CommandsServices
 
     /**
      * CommandsServices constructor.
-     * @param int $qantity
+     * @param int $quantity
      * @param int $value
      */
     public function __construct(Service $service, Command $command)
     {
         $this->setQuantity(1);
+        $this->setDiscountRate(0);
         $this->setService($service);
         $this->setCommand($command);
         $this->setTaxRate($service->getTaxRate()->getValue());
         $this->setValue($service->getValue());
+    }
+
+    /**
+     * retourne le calcul de la remise sur le prix ht
+     * @return decimal
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     */
+    public function getTotalDiscount(){
+        return $this->getround($this->getValue() * ($this->getDiscountRate()/100));
+    }
+
+    /**
+     * retourne le calcul de la tva
+     * @return decimal
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     */
+    public function getTotalTva(){
+        return $this->getround(($this->getValue() - $this->getTotalDiscount()) * ($this->getTaxRate()/100));
+    }
+
+    /**
+     * retourne le calcul du total ttc
+     * @return decimal
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     */
+    public function getTotalTtc(){
+        return $this->getround($this->getValue() + $this->getTotalTva());
+    }
+
+    /**
+     * @param $value
+     * @return decimal
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     */
+    private function getround($value){
+        return round($value,2);
     }
 
 
@@ -198,5 +243,29 @@ class CommandsServices
     public function getTaxRate()
     {
         return $this->taxRate;
+    }
+
+    /**
+     * Set discountRate.
+     *
+     * @param string $discountRate
+     *
+     * @return CommandsServices
+     */
+    public function setDiscountRate($discountRate)
+    {
+        $this->discountRate = $discountRate;
+
+        return $this;
+    }
+
+    /**
+     * Get discountRate.
+     *
+     * @return string
+     */
+    public function getDiscountRate()
+    {
+        return $this->discountRate;
     }
 }

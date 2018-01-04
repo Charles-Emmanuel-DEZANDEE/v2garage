@@ -155,7 +155,7 @@ class Service
      * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
      */
     public function getTotalTva(){
-        return $this->getValue() * $this->getTaxRate()->getValue();
+        return $this->getround($this->getValue() * ($this->getTaxRate()->getValue()/100));
     }
 
     /**
@@ -164,7 +164,16 @@ class Service
      * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
      */
     public function getTotalTtc(){
-        return $this->getValue() + $this->getTotalTva();
+                return $this->getround($this->getValue() + $this->getTotalTva());
+    }
+
+    /**
+     * @param $value
+     * @return decimal
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     */
+    private function getround($value){
+        return round($value,2);
     }
 
     /**

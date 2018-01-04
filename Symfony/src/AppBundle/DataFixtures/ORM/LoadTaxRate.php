@@ -20,8 +20,7 @@ class LoadTaxRate extends Fixture implements FixtureInterface
 
 
         $taxRate = new TaxRate();
-        $taxRate->setName('20%');
-        $taxRate->setValue(0.2);
+        $taxRate->setValue(20);
 
         $this->addReference('tva', $taxRate);
 

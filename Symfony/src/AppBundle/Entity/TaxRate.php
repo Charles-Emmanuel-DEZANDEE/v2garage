@@ -29,12 +29,6 @@ class TaxRate
      */
     private $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=50, unique=true)
-     */
-    private $name;
 
     /**
      * @var decimal

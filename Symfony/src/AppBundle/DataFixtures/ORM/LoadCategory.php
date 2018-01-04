@@ -24,7 +24,7 @@ class LoadCategory extends Fixture implements FixtureInterface
            ['name'=>'Forfait', 'position'=> 2],
            ['name'=>'Kit', 'position'=> 3],
            ['name'=>'Pièces', 'position'=> 4],
-           ['name'=>'Consomable', 'position'=> 5]
+           ['name'=>'Consommable', 'position'=> 5]
         );
 
         foreach ($list as $cat) {
