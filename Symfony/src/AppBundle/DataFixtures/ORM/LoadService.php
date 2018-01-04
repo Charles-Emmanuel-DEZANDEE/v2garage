@@ -18,7 +18,7 @@ class LoadService extends Fixture implements  FixtureInterface,DependentFixtureI
     // Dans l'argument de la méthode load, l'objet $manager est l'EntityManager
     public function load(ObjectManager $manager)
     {
-       $dateaujourdhui= new \DateTime();
+
         // on récupére les clients
 
         $category1 = $this->getReference('Main d\'oeuvre');
@@ -116,6 +116,16 @@ class LoadService extends Fixture implements  FixtureInterface,DependentFixtureI
         // On la persiste
         $manager->persist($service42);
 
+// On créé un service pour consommable
+        $service5 = new Service();
+        $service5->setName('huile');
+        $service5->setValue(7.30);
+        $service5->setUnite('l');
+        $service5->setTaxRate($taxRate);
+        $service5->setCategory($category5);
+
+        // On la persiste
+        $manager->persist($service5);
 
 
 
