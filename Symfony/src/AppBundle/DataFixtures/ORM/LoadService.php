@@ -58,7 +58,7 @@ class LoadService extends Fixture implements  FixtureInterface,DependentFixtureI
         $service13->setCategory($category1);
 
         // On la persiste
-        $manager->persist($service12);
+        $manager->persist($service13);
 
 // On créé un service forfait
         $service2 = new Service();
@@ -73,7 +73,7 @@ class LoadService extends Fixture implements  FixtureInterface,DependentFixtureI
 
 // On créé un service kit
         $service3 = new Service();
-        $service3->setName('phare');
+        $service3->setName('phare avant');
         $service3->setValue(15.60);
         $service3->setUnite('kit');
         $service3->setTaxRate($taxRate);
@@ -85,7 +85,7 @@ class LoadService extends Fixture implements  FixtureInterface,DependentFixtureI
 
 // On créé un service piece
         $service4 = new Service();
-        $service4->setName('phare');
+        $service4->setName('carrosserie');
         $service4->setValue(15.60);
         $service4->setUnite('p');
         $service4->setTaxRate($taxRate);

@@ -18,10 +18,11 @@ class CustomerController extends Controller
      */
     public function listAction(Request $request)
     {
-        $results = [
-            ['id' => 1, 'name' => 'toto'],
-            ['id' => 2, 'name' => 'titi']
-        ];
+
+        $doctrine = $this->getDoctrine();
+        $rc = $doctrine->getRepository(Customer::class);
+        $results = $rc->findAll();
+
         return $this->render('admin/customer/list.html.twig', [
             'results' => $results,
 
