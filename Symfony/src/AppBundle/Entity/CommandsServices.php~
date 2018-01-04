@@ -47,9 +47,16 @@ class CommandsServices
      * valeur de la remise
      * @var decimal
      *
-     * @ORM\Column(name="discountRate", type="decimal", precision=10, scale=2)
+     * @ORM\Column(name="discountRate", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $discountRate;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="reference", type="string", length=255, nullable=true)
+     */
+    private $reference;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Command", inversedBy="commandsServices")
@@ -71,6 +78,7 @@ class CommandsServices
     public function __construct(Service $service, Command $command)
     {
         $this->setQuantity(1);
+        $this->setDiscountRate(0);
         $this->setService($service);
         $this->setCommand($command);
         $this->setTaxRate($service->getTaxRate()->getValue());
@@ -78,12 +86,12 @@ class CommandsServices
     }
 
     /**
-     * retourne le calcul de la tva
+     * retourne le calcul de la remise sur le prix ht
      * @return decimal
      * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
      */
     public function getTotalDiscount(){
-        return $this->getround($this->getValue() * ($this->getTaxRate()->getValue()/100));
+        return $this->getround($this->getValue() * ($this->getDiscountRate()/100));
     }
 
     /**
@@ -92,7 +100,7 @@ class CommandsServices
      * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
      */
     public function getTotalTva(){
-        return $this->getround($this->getValue() * ($this->getTaxRate()->getValue()/100));
+        return $this->getround(($this->getValue() - $this->getTotalDiscount()) * ($this->getTaxRate()/100));
     }
 
     /**
@@ -242,5 +250,29 @@ class CommandsServices
     public function getTaxRate()
     {
         return $this->taxRate;
+    }
+
+    /**
+     * Set discountRate.
+     *
+     * @param string $discountRate
+     *
+     * @return CommandsServices
+     */
+    public function setDiscountRate($discountRate)
+    {
+        $this->discountRate = $discountRate;
+
+        return $this;
+    }
+
+    /**
+     * Get discountRate.
+     *
+     * @return string
+     */
+    public function getDiscountRate()
+    {
+        return $this->discountRate;
     }
 }

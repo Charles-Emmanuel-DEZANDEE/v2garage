@@ -51,12 +51,14 @@ class Service
      */
     private $value;
 
+
+
     /**
      * @var string|null
      *
-     * @ORM\Column(name="reference", type="string", length=255, nullable=true)
+     * @ORM\Column(name="unite", type="string", length=255, nullable=true)
      */
-    private $reference;
+    private $unite;
 
 
 
@@ -269,5 +271,29 @@ class Service
     public function getCommandsServices()
     {
         return $this->commandsServices;
+    }
+
+    /**
+     * Set unite.
+     *
+     * @param string|null $unite
+     *
+     * @return Service
+     */
+    public function setUnite($unite = null)
+    {
+        $this->unite = $unite;
+
+        return $this;
+    }
+
+    /**
+     * Get unite.
+     *
+     * @return string|null
+     */
+    public function getUnite()
+    {
+        return $this->unite;
     }
 }

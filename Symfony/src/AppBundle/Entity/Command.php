@@ -396,6 +396,7 @@ class Command
     public function __construct()
     {
         $this->commandsServices = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->dateCreate = new \DateTime();
     }
 
     /**

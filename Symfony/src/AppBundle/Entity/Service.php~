@@ -58,6 +58,13 @@ class Service
      */
     private $reference;
 
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="unite", type="string", length=255, nullable=true)
+     */
+    private $unite;
+
 
 
     /**

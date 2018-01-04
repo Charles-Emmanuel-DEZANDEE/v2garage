@@ -52,6 +52,13 @@ class CommandsServices
     private $discountRate;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(name="reference", type="string", length=255, nullable=true)
+     */
+    private $reference;
+
+    /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Command", inversedBy="commandsServices")
      * @ORM\JoinColumn(name="command_id", referencedColumnName="id")
      */
@@ -267,5 +274,29 @@ class CommandsServices
     public function getDiscountRate()
     {
         return $this->discountRate;
+    }
+
+    /**
+     * Set reference.
+     *
+     * @param string|null $reference
+     *
+     * @return CommandsServices
+     */
+    public function setReference($reference = null)
+    {
+        $this->reference = $reference;
+
+        return $this;
+    }
+
+    /**
+     * Get reference.
+     *
+     * @return string|null
+     */
+    public function getReference()
+    {
+        return $this->reference;
     }
 }

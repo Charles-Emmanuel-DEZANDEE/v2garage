@@ -29,30 +29,95 @@ class LoadService extends Fixture implements  FixtureInterface,DependentFixtureI
         $taxRate = $this->getReference('tva');
 
 // On créé des services pour main d'oeuvre
-        $adress1 = new Service();
-        $adress1->setName('Travail');
-        $adress1->setValue('2');
-        $adress1->setTaxRate($taxRate);
-        $adress1->setZipcode('41560');
-        $adress1->setCity('toronto');
-        $adress1->setCountry('canada');
-        $adress1->setCustomer($category1);
+        $service1 = new Service();
+        $service1->setName('1 heure');
+        $service1->setValue(50);
+        $service1->setUnite('h');
+        $service1->setTaxRate($taxRate);
+        $service1->setCategory($category1);
 
         // On la persiste
-        $manager->persist($adress1);
+        $manager->persist($service1);
 
-// On créé une adresse
-        $adress2 = new Address_intervention();
-        $adress2->setName('Travail');
-        $adress2->setNumber('4');
-        $adress2->setRoad1('boulevard trouvee');
-        $adress2->setZipcode('65987');
-        $adress2->setCity('vouille');
-        $adress2->setCountry('france');
-        $adress2->setCustomer($category2);
+        $service12 = new Service();
+        $service12->setName('1 demi journée');
+        $service12->setValue(180);
+        $service12->setUnite('d/j');
+        $service12->setTaxRate($taxRate);
+        $service12->setCategory($category1);
 
         // On la persiste
-        $manager->persist($adress2);
+        $manager->persist($service12);
+
+
+        $service13 = new Service();
+        $service13->setName('1 journée');
+        $service13->setValue(350);
+        $service13->setUnite('j');
+        $service13->setTaxRate($taxRate);
+        $service13->setCategory($category1);
+
+        // On la persiste
+        $manager->persist($service12);
+
+// On créé un service forfait
+        $service2 = new Service();
+        $service2->setName('révision');
+        $service2->setValue(90);
+        $service2->setUnite('forf');
+        $service2->setTaxRate($taxRate);
+        $service2->setCategory($category2);
+
+        // On la persiste
+        $manager->persist($service2);
+
+// On créé un service kit
+        $service3 = new Service();
+        $service3->setName('phare');
+        $service3->setValue(15.60);
+        $service3->setUnite('kit');
+        $service3->setTaxRate($taxRate);
+        $service3->setCategory($category3);
+
+        // On la persiste
+        $manager->persist($service3);
+
+
+// On créé un service piece
+        $service4 = new Service();
+        $service4->setName('phare');
+        $service4->setValue(15.60);
+        $service4->setUnite('p');
+        $service4->setTaxRate($taxRate);
+        $service4->setCategory($category4);
+
+        // On la persiste
+        $manager->persist($service4);
+
+
+        $service42 = new Service();
+        $service42->setName('courroie distribution');
+        $service42->setValue(26.54);
+        $service42->setUnite('p');
+        $service42->setTaxRate($taxRate);
+        $service42->setCategory($category4);
+
+        // On la persiste
+        $manager->persist($service42);
+
+
+        $service42 = new Service();
+        $service42->setName('bougie');
+        $service42->setValue(4.54);
+        $service42->setUnite('p');
+        $service42->setTaxRate($taxRate);
+        $service42->setCategory($category4);
+
+        // On la persiste
+        $manager->persist($service42);
+
+
+
 
 
 
