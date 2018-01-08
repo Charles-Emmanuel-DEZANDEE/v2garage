@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @ORM\Table(name="customer")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CustomerRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Customer
 {
@@ -159,9 +160,18 @@ class Customer
         $this->isActive = true;
         // Par défaut, la date de l'annonce est la date d'aujourd'hui
         $this->createDate = new \DateTime();
+        $this->lastActionDate = new \DateTime();
         $this->vehicules = new ArrayCollection();
         $this->addresses = new ArrayCollection();
         $this->commands = new ArrayCollection();
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function updateDate()
+    {
+        $this->setLastActionDate(new \Datetime());
     }
 
 

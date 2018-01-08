@@ -10,4 +10,13 @@ namespace AppBundle\Repository;
  */
 class CustomerRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findByLastUpdate(){
+        $results = $this->createQueryBuilder('customer')
+            ->orderBy('customer.lastActionDate')
+            ->getQuery()
+            ->getResult()
+        ;
+
+        return $results;
+    }
 }

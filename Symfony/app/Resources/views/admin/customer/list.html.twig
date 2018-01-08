@@ -1,18 +1,31 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<div class="container jumbotron ">
-    <h1>liste des clients</h1>
 
-    <div class="table-responsive table-bordered">
+    <div class="container jumbotron ">
+
+
+        <h1>liste des clients</h1>
+
+        <div class="row mr-md-3">
+            <div class="col-sm-3"> <a href="#" class="btn bg-secondary "> Nouveau client </a> </div>
+            <div class="col-sm-9">
+                <form action="post" class="form-inline">
+                    <label for="searchByNameInput">Recherche par nom</label>
+                    <input class="form-control" id="searchByNameInput" type="text">
+                    <input class="btn" type="submit" value="Valider">
+                </form>
+            </div>
+        </div>
+
+        <div class="table-responsive table-bordered">
         <table class="table ">
             <thead>
                 <tr>
                     <th>Nom</th>
                     <th>Action</th>
                     <th>Véhicule</th>
-                    <th>Devis</th>
-                    <th>Facture</th>
+
 
                 </tr>
             </thead>
@@ -20,17 +33,15 @@
             {% for result in results %}
                 <tr>
                     <td>{{ result.firstName }} {{ result.lastName }}</td>
-                    <td><a href="#" class="btn btn-primary"> Voir </a></td>
+                    <td><a href="#" class=""><i class="fa fa-eye fa-2x" aria-hidden="true"></i> </a></td>
                     <td>
                         <ul>
                             {% for vehicule in result.vehicules %}
-                            <li>{{vehicule.brand}} {{vehicule.model}}  <a href="#" class="btn bg-warning"> Faire devis </a></li>
+                            <li>{{vehicule.brand}} {{vehicule.model}} - {{vehicule.registration}}  <a href="#" class="btn bg-primary "> Faire devis </a></li>
 
                             {% endfor %}
                         </ul>
                     </td>
-                    <td>35</td>
-                    <td>New York</td>
 
                 </tr>
             {% endfor %}

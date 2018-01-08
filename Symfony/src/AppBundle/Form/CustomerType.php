@@ -4,7 +4,6 @@ namespace AppBundle\Form;
 
 use AppBundle\Subscriber\UserFormSubscriber;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -13,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class UserType extends AbstractType
+class CustomerType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -28,13 +27,7 @@ class UserType extends AbstractType
                     ])
                 ]
             ])
-            ->add('password', RepeatedType::class, [
-                'type' => PasswordType::class,
-                'invalid_message' => 'les mots de passe ne sont pas identiques.',
-                'options' => ['attr' => ['class' => 'password-field']],
-                'required' => true,
-                'first_options'  => ['label' => 'Mot de passe'],
-                'second_options' => ['label' => 'confirmer le mot de passe'],
+            ->add('password', PasswordType::class, [
                 'constraints' => [
                     new NotBlank([
                         'message' => 'mot de passe requis'
@@ -55,9 +48,6 @@ class UserType extends AbstractType
             ])
                     ;
 
-        // souscripteur
-        $builder->addEventSubscriber(new UserFormSubscriber());
-
     }
     
     /**
@@ -66,7 +56,7 @@ class UserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\User'
+            'data_class' => 'AppBundle\Entity\Customer'
         ));
     }
 
