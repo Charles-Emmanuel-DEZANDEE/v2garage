@@ -23,8 +23,15 @@ class CustomerController extends Controller
         $rc = $doctrine->getRepository(Customer::class);
         $results = $rc->findAll();
 
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $results,
+            $request->query->getInt('page', 1),
+            10
+        );
+
         return $this->render('admin/customer/list.html.twig', [
-            'results' => $results,
+            'results' => $pagination,
 
         ]);
     }
