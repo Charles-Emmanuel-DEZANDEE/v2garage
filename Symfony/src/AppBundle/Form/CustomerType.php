@@ -2,10 +2,10 @@
 
 namespace AppBundle\Form;
 
-use AppBundle\Subscriber\UserFormSubscriber;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -20,20 +20,16 @@ class CustomerType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('username', TextType::class, [
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'identifiant requis'
-                    ])
-                ]
-            ])
-            ->add('password', PasswordType::class, [
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'mot de passe requis'
-                    ])
-                ]
-            ])
+            ->add('civility', ChoiceType::class, array(
+                'choices' => array(
+                    'M' => 'M',
+                    'Mme' => 'Mme',
+                    'Mlle' => 'Mlle',
+                )
+            ))
+            ->add('firstname', TextType::class)
+            ->add('lastName', TextType::class)
+
             ->add('email', EmailType::class, [
                 'constraints' => [
                     new NotBlank([
@@ -46,6 +42,16 @@ class CustomerType extends AbstractType
                     ])
                 ]
             ])
+            ->add('socialReason', TextType::class)
+            ->add('addressNumber', TextType::class)
+            ->add('addressRoad1', TextType::class)
+            ->add('addressRoad2', TextType::class)
+            ->add('addressZipcode', IntegerType::class)
+            ->add('addressCity', TextType::class)
+            ->add('addressRegion', TextType::class)
+            ->add('addressCountry', TextType::class)
+            ->add('telephonePrimary', TextType::class)
+            ->add('telephoneSecondary', TextType::class)
                     ;
 
     }

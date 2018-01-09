@@ -15,24 +15,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 class Customer
 {
     /**
-     * One customer has Many Vehicules.
-     * @ORM\OneToMany(targetEntity="Vehicule", mappedBy="customer", cascade={"persist"})
-     */
-    private $vehicules;
-
-    /**
-     * One customer has Many addresses.
-     * @ORM\OneToMany(targetEntity="Address_intervention", mappedBy="customer", cascade={"persist"})
-     */
-    private $addresses;
-
-    /**
-     * One customer has Many commands.
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Command", mappedBy="customer", cascade={"persist"})
-     */
-    private $commands;
-
-    /**
      * @var int
      *
      * @ORM\Column(name="id", type="integer")
@@ -41,7 +23,6 @@ class Customer
      */
     private $id;
 
-
     /**
      * @var string|null
      *
@@ -49,12 +30,20 @@ class Customer
      */
     private $email;
 
+
     /**
      * @var string|null
      *
      * @ORM\Column(name="social_reason", type="string", length=255, nullable=true)
      */
     private $socialReason;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="civility", type="string", length=6)
+     */
+    private $civility;
 
     /**
      * @var string
@@ -153,6 +142,24 @@ class Customer
      * @ORM\Column(name="telephone_secondary", type="string", length=45, nullable=true)
      */
     private $telephoneSecondary;
+
+    /**
+     * One customer has Many Vehicules.
+     * @ORM\OneToMany(targetEntity="Vehicule", mappedBy="customer", cascade={"persist"})
+     */
+    private $vehicules;
+
+    /**
+     * One customer has Many addresses.
+     * @ORM\OneToMany(targetEntity="Address_intervention", mappedBy="customer", cascade={"persist"})
+     */
+    private $addresses;
+
+    /**
+     * One customer has Many commands.
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Command", mappedBy="customer", cascade={"persist"})
+     */
+    private $commands;
 
     public function __construct()
     {
@@ -675,5 +682,29 @@ class Customer
     public function getCommands()
     {
         return $this->commands;
+    }
+
+    /**
+     * Set civility.
+     *
+     * @param string $civility
+     *
+     * @return Customer
+     */
+    public function setCivility($civility)
+    {
+        $this->civility = $civility;
+
+        return $this;
+    }
+
+    /**
+     * Get civility.
+     *
+     * @return string
+     */
+    public function getCivility()
+    {
+        return $this->civility;
     }
 }

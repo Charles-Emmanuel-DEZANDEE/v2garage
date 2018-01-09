@@ -10,39 +10,10 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @ORM\Table(name="customer")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CustomerRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Customer
 {
-    public function __construct()
-    {
-        // Par défaut, le client est actif
-        $this->isActive = true;
-        // Par défaut, la date de l'annonce est la date d'aujourd'hui
-        $this->createDate = new \Datetime();
-        $this->vehicules = new ArrayCollection();
-        $this->addresses = new ArrayCollection();
-        $this->commands = new ArrayCollection();
-    }
-
-    /**
-     * One customer has Many Vehicules.
-     * @ORM\OneToMany(targetEntity="Vehicule", mappedBy="customer", cascade={"persist"})
-     */
-    private $vehicules;
-
-    /**
-     * One customer has Many addresses.
-     * @ORM\OneToMany(targetEntity="Address_intervention", mappedBy="customer", cascade={"persist"})
-     */
-    private $addresses;
-
-    /**
-     * One customer has Many commands.
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Command", mappedBy="customer", cascade={"persist"})
-     */
-    private $commands;
-
-
     /**
      * @var int
      *
@@ -55,23 +26,38 @@ class Customer
     /**
      * @var string|null
      *
-     * @ORM\Column(name="email", type="string", length=255, nullable=true, unique=true)
+     * @ORM\Column(name="email", type="string", length=255, nullable=true)
      */
     private $email;
+
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="social_reason", type="string", length=255, nullable=true)
+     */
+    private $socialReason;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="civility", type="string", length=6)
+     */
+    private $civility;
 
     /**
      * @var string
      *
      * @ORM\Column(name="firstname", type="string", length=45)
      */
-    private $firstname;
+    private $firstName;
 
     /**
      * @var string
      *
      * @ORM\Column(name="lastname", type="string", length=45)
      */
-    private $lastname;
+    private $lastName;
 
     /**
      * @var datetime
@@ -81,9 +67,9 @@ class Customer
     private $createDate;
 
     /**
-     * @var date
+     * @var datetime
      *
-     * @ORM\Column(name="lastActionDate", type="date")
+     * @ORM\Column(name="lastActionDate", type="datetime")
      */
     private $lastActionDate;
 
@@ -153,9 +139,47 @@ class Customer
     /**
      * @var string
      *
-     * @ORM\Column(name="telephone_secondary", type="string", length=45)
+     * @ORM\Column(name="telephone_secondary", type="string", length=45, nullable=true)
      */
     private $telephoneSecondary;
+
+    /**
+     * One customer has Many Vehicules.
+     * @ORM\OneToMany(targetEntity="Vehicule", mappedBy="customer", cascade={"persist"})
+     */
+    private $vehicules;
+
+    /**
+     * One customer has Many addresses.
+     * @ORM\OneToMany(targetEntity="Address_intervention", mappedBy="customer", cascade={"persist"})
+     */
+    private $addresses;
+
+    /**
+     * One customer has Many commands.
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Command", mappedBy="customer", cascade={"persist"})
+     */
+    private $commands;
+
+    public function __construct()
+    {
+        // Par défaut, le client est actif
+        $this->isActive = true;
+        // Par défaut, la date de l'annonce est la date d'aujourd'hui
+        $this->createDate = new \DateTime();
+        $this->lastActionDate = new \DateTime();
+        $this->vehicules = new ArrayCollection();
+        $this->addresses = new ArrayCollection();
+        $this->commands = new ArrayCollection();
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function updateDate()
+    {
+        $this->setLastActionDate(new \Datetime());
+    }
 
 
     /**
@@ -201,7 +225,7 @@ class Customer
      */
     public function setFirstname($firstname)
     {
-        $this->firstname = $firstname;
+        $this->firstName = $firstname;
 
         return $this;
     }
@@ -213,7 +237,31 @@ class Customer
      */
     public function getFirstname()
     {
-        return $this->firstname;
+        return $this->firstName;
+    }
+
+    /**
+     * Set socialReason.
+     *
+     * @param string $socialReason
+     *
+     * @return Customer
+     */
+    public function setSocialReason($socialReason)
+    {
+        $this->socialReason = $socialReason;
+
+        return $this;
+    }
+
+    /**
+     * Get socialReason.
+     *
+     * @return string
+     */
+    public function getSocialReason()
+    {
+        return $this->socialReason;
     }
 
     /**
@@ -223,9 +271,9 @@ class Customer
      *
      * @return Customer
      */
-    public function setLastname($lastname)
+    public function setLastName($lastname)
     {
-        $this->lastname = $lastname;
+        $this->lastName = $lastname;
 
         return $this;
     }
@@ -235,9 +283,9 @@ class Customer
      *
      * @return string
      */
-    public function getLastname()
+    public function getLastName()
     {
-        return $this->lastname;
+        return $this->lastName;
     }
 
     /**
@@ -598,5 +646,41 @@ class Customer
     public function getAddresses()
     {
         return $this->addresses;
+    }
+
+    /**
+     * Add command.
+     *
+     * @param \AppBundle\Entity\Command $command
+     *
+     * @return Customer
+     */
+    public function addCommand(\AppBundle\Entity\Command $command)
+    {
+        $this->commands[] = $command;
+
+        return $this;
+    }
+
+    /**
+     * Remove command.
+     *
+     * @param \AppBundle\Entity\Command $command
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeCommand(\AppBundle\Entity\Command $command)
+    {
+        return $this->commands->removeElement($command);
+    }
+
+    /**
+     * Get commands.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCommands()
+    {
+        return $this->commands;
     }
 }

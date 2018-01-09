@@ -43,7 +43,7 @@ class CustomerController extends Controller
     /**
      * @Route("/customer/add", name="app_admin_customer_add", defaults={"id" : null })
      * @Route("/customer/update/{id}", name="app_admin_customer_update")
-     * @Method({"GET", "POST"})
+     *
      */
     public function addCustomerAction(Request $request, $id)
     {
@@ -66,30 +66,7 @@ class CustomerController extends Controller
                 // handle
                 $saisie = $form->getData();
 
-                //address
-                //entity
-                $userAddress = new UserAdress();
-
-                //set entity
-
-                $userAddress->setCity($form->get('address')->getData()->getCity());
-
-
-                $customerEntity->addAddress($userAddress);
-
-                $em->persist($userAddress);
-                //car
-                $car = new Car();
-                $form->get('car')->getData()->getBrand()->getName();
-
-
-                $customerEntity->addCar($car);
-                $em->persist($car);
             }
-
-            $dateNow = new \Datetime();
-            // date  de création du client
-            $customerEntity->setDatetimeCreateAccount($dateNow);
 
 
             //insertion
