@@ -7,13 +7,13 @@
 
         <h1>liste des clients</h1>
 
-        <div class="row mr-md-3">
+        <div class="row entete">
             <div class="col-sm-3"> <a href="#" class="btn bg-secondary "> Nouveau client </a> </div>
             <div class="col-sm-9">
-                <form action="post" class="form-inline">
-                    <label for="searchByNameInput">Recherche par nom</label>
+                <form action="{{asset('app_admin_customer_list')}}" class="form-inline">
+                    <label for="searchByNameInput" placeholder="Recherche par nom"></label>
                     <input class="form-control" id="searchByNameInput" type="text">
-                    <input class="btn" type="submit" value="Valider">
+                    <input class="btn" type="submit" value="Rechercher">
                 </form>
             </div>
         </div>

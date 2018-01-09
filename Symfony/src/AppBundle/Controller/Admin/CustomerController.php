@@ -7,6 +7,7 @@ use AppBundle\Form\CustomerType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 /**
  * @Route("/admin")
@@ -15,6 +16,7 @@ class CustomerController extends Controller
 {
     /**
      * @Route("/customer", name="app_admin_customer_list")
+     * @Method({"GET", "POST"})
      */
     public function listAction(Request $request)
     {
@@ -22,6 +24,8 @@ class CustomerController extends Controller
         $doctrine = $this->getDoctrine();
         $rc = $doctrine->getRepository(Customer::class);
         $results = $rc->findByLastUpdate();
+
+        //$saisie = $request;
 
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
@@ -39,6 +43,7 @@ class CustomerController extends Controller
     /**
      * @Route("/customer/add", name="app_admin_customer_add", defaults={"id" : null })
      * @Route("/customer/update/{id}", name="app_admin_customer_update")
+     * @Method({"GET", "POST"})
      */
     public function addCustomerAction(Request $request, $id)
     {

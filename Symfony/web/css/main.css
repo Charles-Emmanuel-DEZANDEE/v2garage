@@ -90,3 +90,39 @@ li{
     justify-content: space-between;
     align-items: center;
 }
+
+.table li{
+    margin: 1rem auto;
+
+}
+#searchByNameInput{
+    width: 15rem;
+}
+
+.entete{
+    margin: 1rem auto;
+}
+
+/*placeholder*/
+
+.form-control::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #383838;
+}
+.form-control:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:    #383838;
+    opacity:  1;
+}
+.form-control::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:    #383838;
+    opacity:  1;
+}
+.form-control:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color:    #383838;
+}
+.form-control::-ms-input-placeholder { /* Microsoft Edge */
+    color:    #383838;
+}
+
+.form-control::placeholder { /* Most modern browsers support this now. */
+    color:    #383838;
+}
