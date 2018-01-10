@@ -79,7 +79,7 @@ class CustomerController extends Controller
             $this->addFlash('notice', $message);
 
             // redirection
-            $this->redirectToRoute('app_admin_customer_list');
+            $this->redirectToRoute('app_admin_customer_list', array('id' => $customerEntity->getId()));
 
         }
 

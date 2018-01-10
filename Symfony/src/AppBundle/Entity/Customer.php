@@ -48,14 +48,14 @@ class Customer
     /**
      * @var string
      *
-     * @ORM\Column(name="firstname", type="string", length=45)
+     * @ORM\Column(name="firstName", type="string", length=45)
      */
     private $firstName;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="lastname", type="string", length=45)
+     * @ORM\Column(name="lastName", type="string", length=45)
      */
     private $lastName;
 
@@ -217,25 +217,25 @@ class Customer
     }
 
     /**
-     * Set firstname.
+     * Set firstName.
      *
-     * @param string $firstname
+     * @param string $firstName
      *
      * @return Customer
      */
-    public function setFirstname($firstname)
+    public function setFirstName($firstName)
     {
-        $this->firstName = $firstname;
+        $this->firstName = $firstName;
 
         return $this;
     }
 
     /**
-     * Get firstname.
+     * Get firstName.
      *
      * @return string
      */
-    public function getFirstname()
+    public function getFirstName()
     {
         return $this->firstName;
     }
@@ -265,21 +265,21 @@ class Customer
     }
 
     /**
-     * Set lastname.
+     * Set lastName.
      *
-     * @param string $lastname
+     * @param string $lastName
      *
      * @return Customer
      */
-    public function setLastName($lastname)
+    public function setLastName($lastName)
     {
-        $this->lastName = $lastname;
+        $this->lastName = $lastName;
 
         return $this;
     }
 
     /**
-     * Get lastname.
+     * Get lastName.
      *
      * @return string
      */

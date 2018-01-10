@@ -73,7 +73,7 @@ body {
 
 h1{
     font-family: 'Fredericka the Great', cursive;
-    font-size: 4rem;
+    font-size: 3rem;
 }
 .container{
     background-color: rgba(38, 38, 38, 0.9);
@@ -119,10 +119,14 @@ li{
 .form-control:-ms-input-placeholder { /* Internet Explorer 10-11 */
     color:    #383838;
 }
-.form-control::-ms-input-placeholder { /* Microsoft Edge */
+.form-control:-ms-input-placeholder { /* Microsoft Edge */
     color:    #383838;
 }
 
 .form-control::placeholder { /* Most modern browsers support this now. */
     color:    #383838;
+}
+
+legend{
+    color: whitesmoke;
 }

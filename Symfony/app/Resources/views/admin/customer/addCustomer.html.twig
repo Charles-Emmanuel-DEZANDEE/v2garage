@@ -1,45 +1,151 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    {% include 'include/googleMpa.html.twig' %}
 <div class="container">
-    <h2>Ajouter un client</h2>
+    <h1>Ajouter un client</h1>
 
     {{ form_start(form, { 'attr' : { 'novalidate' : 'novalidate' , 'class': 'form-horizontal'} }) }}
 
     {# Les erreurs générales du formulaire. #}
     {{ form_errors(form) }}
 
-    {# Génération du label + error + widget pour un champ. #}
-    {{ form_row(form.date) }}
+    <legend>Identité</legend>
 
-    {# Génération manuelle et éclatée : #}
+    {# Génération du label + error + widget pour un champ. #}
     <div class="form-group">
         {# Génération du label. #}
-        {{ form_label(form.title, "Titre de l'annonce", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+        {{ form_label(form.email, "Email", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
 
         {# Affichage des erreurs pour ce champ précis. #}
-        {{ form_errors(form.title) }}
+        {{ form_errors(form.email) }}
 
         <div class="col-sm-10">
             {# Génération de l'input. #}
-            {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
+            {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
         </div>
     </div>
+    {#{{ form_row(form.civility) }}#}
 
-    {# Idem pour un autre champ. #}
     <div class="form-group">
-        {{ form_label(form.content, "Contenu de l'annonce", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-        {{ form_errors(form.content) }}
-        <div class="col-sm-10">
-            {{ form_widget(form.content, {'attr': {'class': 'form-control'}}) }}
+        <label class="col-md-2 col-xs-2 control-label" for="civility">Civilité</label>
+        <div class="col-md-4">
+            {{ form_widget(form.civility, {'attr': {'class': 'form-control'}}) }}
         </div>
     </div>
 
-    {{ form_row(form.author) }}
-    {{ form_row(form.published) }}
 
-    {# Pour le bouton, pas de label ni d'erreur, on affiche juste le widget #}
-    {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+    <div class="form-group">
+
+        {{ form_label(form.firstName, "Prénom", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+
+        {{ form_errors(form.firstName) }}
+
+        <div class="col-sm-10">
+            {{ form_widget(form.firstName, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.lastName, "Nom", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+        {{ form_errors(form.lastName) }}
+        <div class="col-sm-10">
+             {{ form_widget(form.lastName, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.socialReason, "Raison sociale", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+        {{ form_errors(form.socialReason) }}
+        <div class="col-sm-10">
+            {{ form_widget(form.socialReason, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.telephonePrimary, "Téléphone principal", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+        {{ form_errors(form.telephonePrimary) }}
+        <div class="col-sm-10">
+            {{ form_widget(form.telephonePrimary, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.telephoneSecondary, "Téléphone secondaire", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+        {{ form_errors(form.telephoneSecondary) }}
+        <div class="col-sm-10">
+            {{ form_widget(form.telephoneSecondary, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+
+    <legend>Adresse</legend>
+
+    <div id="locationField" class="form-group">
+        <label for="autocomplete">Recherche Rapide:</label>
+        <input id="autocomplete" placeholder="Taper l'adresse ici" class="form-control"
+               onFocus="geolocate()" type="text"></input>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.addressNumber, "Numero", {'label_attr': {'class': 'col-sm-2 control-label '}}) }}
+        {{ form_errors(form.addressNumber) }}
+        <div class="col-sm-10">
+            {{ form_widget(form.addressNumber, {'attr': {'class': 'form-control street_number'}}) }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.addressRoad1, "Adresse", {'label_attr': {'class': 'col-sm-2 control-label '}}) }}
+
+        <div class="col-sm-10">
+            {{ form_widget(form.addressRoad1, {'attr': {'class': 'form-control route'}}) }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.addressRoad2, "Complément d'adresse", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+        {{ form_errors(form.addressRoad2) }}
+        <div class="col-sm-10">
+            {{ form_widget(form.addressRoad2, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.addressZipcode, "Code postal", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+        {{ form_errors(form.addressZipcode) }}
+        <div class="col-sm-10">
+            {{ form_widget(form.addressZipcode, {'attr': {'class': 'form-control postal_code'}}) }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.addressCity, "Ville", {'label_attr': {'class': 'col-sm-2 control-label '}}) }}
+        {{ form_errors(form.addressCity) }}
+        <div class="col-sm-10">
+            {{ form_widget(form.addressCity, {'attr': {'class': 'form-control locality'}}) }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.addressRegion, "Région", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+        {{ form_errors(form.addressRegion) }}
+        <div class="col-sm-10">
+            {{ form_widget(form.addressRegion, {'attr': {'class': 'form-control administrative_area_level_1'}}) }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.addressCountry, "Pays", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+        {{ form_errors(form.addressCountry) }}
+        <div class="col-sm-10">
+            {{ form_widget(form.addressCountry, {'attr': {'class': 'form-control country'}}) }}
+        </div>
+    </div>
+
+
+    <p>
+        <input type="submit" class="btn btn-primary" name="submit" value="Valider">
+    </p>
 
     {# Génération automatique des champs pas encore écrits.
        Dans cet exemple, ce serait le champ CSRF (géré automatiquement par Symfony !)
@@ -52,6 +158,7 @@
 
 {% endblock %}
 
-{% block stylesheets %}
-
+{% block javascripts %}
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAaTebRSzl7xi-Ml4MHJIl7Z1h5k2A2Yv0&libraries=places&callback=initAutocomplete"
+            async defer></script>
 {% endblock %}

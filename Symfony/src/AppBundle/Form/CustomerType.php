@@ -27,7 +27,7 @@ class CustomerType extends AbstractType
                     'Mlle' => 'Mlle',
                 )
             ))
-            ->add('firstname', TextType::class)
+            ->add('firstName', TextType::class)
             ->add('lastName', TextType::class)
 
             ->add('email', EmailType::class, [
