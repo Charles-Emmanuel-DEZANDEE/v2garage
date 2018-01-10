@@ -21,6 +21,7 @@ class LoadCustomer extends Fixture implements FixtureInterface
         // On crée un client
         $customer = new Customer();
         $customer->setEmail('toto@google.fr');
+        $customer->setCivility('M');
         $customer->setFirstname('toto');
         $customer->setLastname('lulu');
         $customer->setAddressNumber('5');
@@ -39,6 +40,7 @@ class LoadCustomer extends Fixture implements FixtureInterface
         // On crée un client2
         $customer2 = new Customer();
         $customer2->setEmail('titi@google.fr');
+        $customer2->setCivility('M');
         $customer2->setFirstname('titi');
         $customer2->setLastname('lolo');
         $customer2->setAddressNumber('8');
