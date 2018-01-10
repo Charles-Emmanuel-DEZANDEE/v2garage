@@ -37,8 +37,8 @@ class CustomerType extends AbstractType
                     ]),
                     new Email([
                         'message' => 'L\'email est incorrect',
-                        'checkHost' => true,
-                        'checkMX' => true,
+                        'checkHost' => false,
+                        'checkMX' => false,
                     ])
                 ]
             ])
