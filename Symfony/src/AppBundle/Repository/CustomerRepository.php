@@ -10,7 +10,7 @@ namespace AppBundle\Repository;
  */
 class CustomerRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function findByLastUpdate(){
+    public function findAllOrderByLastUpdate(){
         $results = $this->createQueryBuilder('customer')
             ->orderBy('customer.lastActionDate')
             ->getQuery()
@@ -18,5 +18,25 @@ class CustomerRepository extends \Doctrine\ORM\EntityRepository
         ;
 
         return $results;
+    }
+
+    public function customerNotExist($email, $lastName, $zipcode){
+        $response = true;
+        $results = $this->createQueryBuilder('customer')
+            ->where('customer.email = :email')
+            ->setParameter('email' , $email)
+            ->andWhere('customer.lastName = :lastName')
+            ->setParameter('lastName' , $lastName)
+            ->andWhere('customer.addressZipcode = :zipcode')
+            ->setParameter('zipcode' , $zipcode)
+            ->getQuery()
+            ->getResult()
+        ;
+        $a= $results;
+        if (!empty($results)){
+            $response = false;
+        }
+
+        return $response;
     }
 }

@@ -23,7 +23,7 @@ class CustomerController extends Controller
 
         $doctrine = $this->getDoctrine();
         $rc = $doctrine->getRepository(Customer::class);
-        $results = $rc->findByLastUpdate();
+        $results = $rc->findAllOrderByLastUpdate();
 
         //$saisie = $request;
 
@@ -45,7 +45,7 @@ class CustomerController extends Controller
      * @Route("/customer/update/{id}", name="app_admin_customer_update")
      *
      */
-    public function addCustomerAction(Request $request, $id)
+    public function addCustomerAction(Request $request, $id = null)
     {
         $doctrine = $this->getDoctrine();
         $em = $doctrine->getManager();
@@ -53,33 +53,48 @@ class CustomerController extends Controller
 
 
         $customerEntity = $id ? $rcCustomer->find($id) : new Customer();
-        $customerEntityType = CustomerType::class;
 
-        /*                exit(dump($customerEntityType, $customerEntity));*/
-        $form = $this->createForm($customerEntityType, $customerEntity);
+        $form = $this->createForm(CustomerType::class, $customerEntity);
         $form->handleRequest($request);
 
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $saisie = $form->getData();
+            $mailSaisi = $saisie->getEmail();
+            $nomSaisi = $saisie->getLastName();
+            $pasDeDoublon = $rcCustomer->customerNotExist($saisie->getEmail(),$saisie->getLastName(),$saisie->getAddressZipcode());
+
+
             // en update
             if($id){
-                // handle
-                $saisie = $form->getData();
 
+                //pour permettre la mise à jour
+                $pasDeDoublon = true;
+            }
+            if ($pasDeDoublon){
+
+
+                //insertion
+                $em->persist($customerEntity);
+
+                $em->flush();
+
+                //message flash
+                $message = $id ? 'Le client a été mis à jour' : 'Le client a été inséré';
+                $this->addFlash('notice', $message);
+
+                // redirection vers la saisie du véhicule
+                $this->redirectToRoute('app_admin_customer_list', array('id' => $customerEntity->getId()));
+            }
+            else{
+                //message flash
+                $message = 'Le client existe déjà';
+                $this->addFlash('notice', $message);
+
+                // redirection vers le formulaire
+                $this->redirectToRoute('app_admin_customer_add');
             }
 
-
-            //insertion
-            $em->persist($customerEntity);
-
-            $em->flush();
-
-            //message flash
-            $message = $id ? 'Le client a été mis à jour' : 'Le client a été inséré';
-            $this->addFlash('notice', $message);
-
-            // redirection
-            $this->redirectToRoute('app_admin_customer_list', array('id' => $customerEntity->getId()));
 
         }
 
