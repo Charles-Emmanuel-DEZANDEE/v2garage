@@ -10,11 +10,34 @@
         <div class="row entete">
             <div class="col-sm-3"> <a href="{{ url('app_admin_customer_add') }}" class="btn bg-primary "> Nouveau client </a> </div>
             <div class="col-sm-9">
-                <form action="{{asset('app_admin_customer_list')}}" class="form-inline">
-                    <label for="searchByNameInput" ></label>
-                    <input class="form-control" id="searchByNameInput" type="text" placeholder="Recherche par nom">
-                    <input class="btn btn-primary" type="submit" value="Valider" >
-                </form>
+                {{ form_start(form, { 'attr' : { 'novalidate' : 'novalidate' , 'class': 'form-horizontal'} }) }}
+
+                <div class="form-group">
+                    {# Génération du label. #}
+                    {#{{ form_label(form.name, "Email", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}#}
+
+                    <div class="col-sm-8">
+                        {# Génération de l'input. #}
+                        {{ form_widget(form.name, {'attr': {'class': 'form-control', 'placeholder' : 'Recherche par nom'}}) }}
+                    </div>
+                    {# Affichage des erreurs pour ce champ précis. #}
+                    <div class="col-sm-2">{{ form_errors(form.name) }} </div>
+                    <div class="col-sm-2"><input type="submit" class="btn btn-primary" name="submit" value="Rechercher" ></div>
+                </div>
+
+
+
+                {# Génération automatique des champs pas encore écrits.
+                   Dans cet exemple, ce serait le champ CSRF (géré automatiquement par Symfony !)
+                   et tous les champs cachés (type « hidden »). #}
+                {{ form_rest(form) }}
+
+                {{ form_end(form) }}
+                {#<form action="{{asset('app_admin_customer_list')}}" class="form-inline">#}
+                    {#<label for="searchByNameInput" ></label>#}
+                    {#<input class="form-control" id="searchByNameInput" type="text" placeholder="Recherche par nom">#}
+                    {#<input class="btn btn-primary" type="submit" value="Valider" >#}
+                {#</form>#}
             </div>
         </div>
 

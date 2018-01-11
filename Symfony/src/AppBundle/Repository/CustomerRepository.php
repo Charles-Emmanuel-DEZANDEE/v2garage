@@ -12,6 +12,16 @@ class CustomerRepository extends \Doctrine\ORM\EntityRepository
 {
     public function findAllOrderByLastUpdate(){
         $results = $this->createQueryBuilder('customer')
+            ->getQuery()
+            ->getResult()
+        ;
+
+        return $results;
+    }
+    public function findByNameOrderByLastUpdate($lastName){
+        $results = $this->createQueryBuilder('customer')
+            ->where('customer.lastName = :name')
+            ->setParameter('name' , $lastName)
             ->orderBy('customer.lastActionDate')
             ->getQuery()
             ->getResult()

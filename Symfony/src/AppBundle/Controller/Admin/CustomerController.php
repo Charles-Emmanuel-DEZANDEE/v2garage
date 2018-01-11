@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\Admin;
 
 use AppBundle\Entity\Customer;
+use AppBundle\Form\CustomerSearchType;
 use AppBundle\Form\CustomerType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -25,7 +26,14 @@ class CustomerController extends Controller
         $rc = $doctrine->getRepository(Customer::class);
         $results = $rc->findAllOrderByLastUpdate();
 
-        //$saisie = $request;
+
+        $form = $this->createForm(CustomerSearchType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $saisie = $form->getData();
+            $results = $rc->findByNameOrderByLastUpdate($saisie);
+        }
 
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
@@ -36,6 +44,7 @@ class CustomerController extends Controller
 
         return $this->render('admin/customer/list.html.twig', [
             'results' => $pagination,
+            'form' => $form->createView(),
 
         ]);
     }
