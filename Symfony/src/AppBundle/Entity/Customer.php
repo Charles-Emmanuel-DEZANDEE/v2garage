@@ -225,7 +225,7 @@ class Customer
      */
     public function setFirstName($firstName)
     {
-        $this->firstName = $firstName;
+        $this->firstName = ucwords($firstName);
 
         return $this;
     }
@@ -273,7 +273,7 @@ class Customer
      */
     public function setLastName($lastName)
     {
-        $this->lastName = $lastName;
+        $this->lastName = strtoupper($lastName);
 
         return $this;
     }

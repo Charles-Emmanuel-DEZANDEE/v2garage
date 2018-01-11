@@ -8,7 +8,7 @@
     {{ form_start(form, { 'attr' : { 'novalidate' : 'novalidate' , 'class': 'form-horizontal'} }) }}
 
     {# Les erreurs générales du formulaire. #}
-    {{ form_errors(form) }}
+    <p class="alert">{{ form_errors(form) }} </p>
 
     <legend>Identitée</legend>
 
@@ -17,15 +17,13 @@
         {# Génération du label. #}
         {{ form_label(form.email, "Email", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
 
-        {# Affichage des erreurs pour ce champ précis. #}
-        {{ form_errors(form.email) }}
-
-        <div class="col-sm-10">
+        <div class="col-sm-8">
             {# Génération de l'input. #}
             {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
         </div>
+        {# Affichage des erreurs pour ce champ précis. #}
+        <div class="col-sm-2">{{ form_errors(form.email) }} </div>
     </div>
-    {#{{ form_row(form.civility) }}#}
 
     <div class="form-group">
         <label class="col-md-2 col-xs-2 control-label" for="civility">Civilité</label>
@@ -35,116 +33,131 @@
     </div>
 
 
-    <div class="form-group">
+    <div class="form-group required">
 
         {{ form_label(form.firstName, "Prénom", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
 
-        {{ form_errors(form.firstName) }}
 
-        <div class="col-sm-10">
+
+        <div class="col-sm-8">
             {{ form_widget(form.firstName, {'attr': {'class': 'form-control'}}) }}
         </div>
+        <div class="col-sm-2">{{ form_errors(form.firstName) }} </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group required">
         {{ form_label(form.lastName, "Nom", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-        {{ form_errors(form.lastName) }}
-        <div class="col-sm-10">
+
+        <div class="col-sm-8">
              {{ form_widget(form.lastName, {'attr': {'class': 'form-control'}}) }}
         </div>
+        <div class="col-sm-2">{{ form_errors(form.lastName) }} </div>
     </div>
 
     <div class="form-group">
         {{ form_label(form.socialReason, "Raison sociale", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-        {{ form_errors(form.socialReason) }}
-        <div class="col-sm-10">
+
+        <div class="col-sm-8">
             {{ form_widget(form.socialReason, {'attr': {'class': 'form-control'}}) }}
         </div>
+        <div class="col-sm-2">{{ form_errors(form.socialReason) }} </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group required">
         {{ form_label(form.telephonePrimary, "Téléphone principal", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-        {{ form_errors(form.telephonePrimary) }}
-        <div class="col-sm-10">
+
+        <div class="col-sm-8">
             {{ form_widget(form.telephonePrimary, {'attr': {'class': 'form-control'}}) }}
         </div>
+        <div class="col-sm-2">{{ form_errors(form.telephonePrimary) }} </div>
     </div>
 
     <div class="form-group">
         {{ form_label(form.telephoneSecondary, "Téléphone secondaire", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-        {{ form_errors(form.telephoneSecondary) }}
-        <div class="col-sm-10">
+
+        <div class="col-sm-8">
             {{ form_widget(form.telephoneSecondary, {'attr': {'class': 'form-control'}}) }}
         </div>
+        <div class="col-sm-2">{{ form_errors(form.telephoneSecondary) }} </div>
     </div>
 
     <legend>Adresse</legend>
 
     <div id="locationField" class="form-group">
-        <label for="autocomplete">Recherche Rapide:</label>
-        <input id="autocomplete" placeholder="Taper l'adresse ici" class="form-control"
-               onFocus="geolocate()" type="text"></input>
+        <label for="autocomplete" class="control-label col-sm-2">Recherche Rapide</label>
+        <div class="col-sm-8">
+
+            <input id="autocomplete" placeholder="Taper l'adresse ici" class="form-control" onFocus="geolocate()" type="text"></input>
+        </div>
+
     </div>
 
     <div class="form-group">
         {{ form_label(form.addressNumber, "Numero", {'label_attr': {'class': 'col-sm-2 control-label '}}) }}
-        {{ form_errors(form.addressNumber) }}
-        <div class="col-sm-10">
+
+        <div class="col-sm-8">
             {{ form_widget(form.addressNumber, {'attr': {'class': 'form-control street_number'}}) }}
         </div>
+        <div class="col-sm-2">{{ form_errors(form.addressNumber) }} </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group required">
         {{ form_label(form.addressRoad1, "Adresse", {'label_attr': {'class': 'col-sm-2 control-label '}}) }}
 
-        <div class="col-sm-10">
+        <div class="col-sm-8">
             {{ form_widget(form.addressRoad1, {'attr': {'class': 'form-control route'}}) }}
         </div>
+        <div class="col-sm-2">{{ form_errors(form.addressRoad1) }} </div>
     </div>
 
     <div class="form-group">
         {{ form_label(form.addressRoad2, "Complément d'adresse", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-        {{ form_errors(form.addressRoad2) }}
-        <div class="col-sm-10">
+
+        <div class="col-sm-8">
             {{ form_widget(form.addressRoad2, {'attr': {'class': 'form-control'}}) }}
         </div>
+        <div class="col-sm-2">{{ form_errors(form.addressRoad2) }} </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group required">
         {{ form_label(form.addressZipcode, "Code postal", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-        {{ form_errors(form.addressZipcode) }}
-        <div class="col-sm-10">
+
+        <div class="col-sm-8">
             {{ form_widget(form.addressZipcode, {'attr': {'class': 'form-control postal_code'}}) }}
         </div>
+        <div class="col-sm-2">{{ form_errors(form.addressZipcode) }} </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group required">
         {{ form_label(form.addressCity, "Ville", {'label_attr': {'class': 'col-sm-2 control-label '}}) }}
-        {{ form_errors(form.addressCity) }}
-        <div class="col-sm-10">
+
+        <div class="col-sm-8">
             {{ form_widget(form.addressCity, {'attr': {'class': 'form-control locality'}}) }}
         </div>
+        <div class="col-sm-2">{{ form_errors(form.addressCity) }} </div>
     </div>
 
     <div class="form-group">
         {{ form_label(form.addressRegion, "Région", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-        {{ form_errors(form.addressRegion) }}
-        <div class="col-sm-10">
+
+        <div class="col-sm-8">
             {{ form_widget(form.addressRegion, {'attr': {'class': 'form-control administrative_area_level_1'}}) }}
         </div>
+        <div class="col-sm-2">{{ form_errors(form.addressRegion) }} </div>
     </div>
 
     <div class="form-group">
         {{ form_label(form.addressCountry, "Pays", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-        {{ form_errors(form.addressCountry) }}
-        <div class="col-sm-10">
+
+        <div class="col-sm-8">
             {{ form_widget(form.addressCountry, {'attr': {'class': 'form-control country'}}) }}
         </div>
+        <div class="col-sm-2">{{ form_errors(form.addressCountry) }} </div>
     </div>
 
 
     <p>
-        <input type="submit" class="btn btn-primary" name="submit" value="Valider">
+        <input type="submit" class="btn btn-primary" name="submit" value="Valider" >
     </p>
 
     {# Génération automatique des champs pas encore écrits.

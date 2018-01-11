@@ -103,6 +103,9 @@ li{
     margin: 1rem auto;
 }
 
+/*--------------------------------------------------*/
+/*************************      form             */
+/*--------------------------------------------------*/
 /*placeholder*/
 
 .form-control::-webkit-input-placeholder { /* WebKit, Blink, Edge */
@@ -129,4 +132,9 @@ li{
 
 legend{
     color: whitesmoke;
+}
+
+.form-group.required .control-label:after {
+    content:" *";
+    color:red;
 }

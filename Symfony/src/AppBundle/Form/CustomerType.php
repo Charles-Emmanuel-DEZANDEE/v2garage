@@ -27,14 +27,23 @@ class CustomerType extends AbstractType
                     'Mlle' => 'Mlle',
                 )
             ))
-            ->add('firstName', TextType::class)
-            ->add('lastName', TextType::class)
+            ->add('firstName', TextType::class, [
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Prénom requis'
+                    ])
+                ]
+            ])
+            ->add('lastName', TextType::class, [
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Nom requis'
+                    ])
+                ]
+            ])
 
             ->add('email', EmailType::class, [
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'email requis'
-                    ]),
                     new Email([
                         'message' => 'L\'email est incorrect',
                         'checkHost' => false,
@@ -44,13 +53,37 @@ class CustomerType extends AbstractType
             ])
             ->add('socialReason', TextType::class)
             ->add('addressNumber', TextType::class)
-            ->add('addressRoad1', TextType::class)
+            ->add('addressRoad1', TextType::class, [
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Adresse requise'
+                    ])
+                ]
+            ])
             ->add('addressRoad2', TextType::class)
-            ->add('addressZipcode', IntegerType::class)
-            ->add('addressCity', TextType::class)
+            ->add('addressZipcode', IntegerType::class, [
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Code postal requis'
+                    ])
+                ]
+            ])
+            ->add('addressCity', TextType::class, [
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Ville requis'
+                    ])
+                ]
+            ])
             ->add('addressRegion', TextType::class)
             ->add('addressCountry', TextType::class)
-            ->add('telephonePrimary', TextType::class)
+            ->add('telephonePrimary', TextType::class, [
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Téléphone requis'
+                    ])
+                ]
+            ])
             ->add('telephoneSecondary', TextType::class)
                     ;
 
