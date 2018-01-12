@@ -109,7 +109,7 @@ class AccountController extends Controller
         if(!$userToken){
             // message flash
             $message = 'veuillez cliquer sur le lien envoyé par mail';
-            $this->addFlash('notice', $message);
+            $this->addFlash('info', $message);
 
             // redirection
             return $this->redirectToRoute('app_security_login');
@@ -142,7 +142,7 @@ class AccountController extends Controller
 
             // message flash
             $message = 'Mot de passe modifié';
-            $this->addFlash('notice', $message);
+            $this->addFlash('info', $message);
 
             // redirection
             return $this->redirectToRoute('app_security_login');

@@ -42,7 +42,6 @@ class CustomerRepository extends \Doctrine\ORM\EntityRepository
             ->getQuery()
             ->getResult()
         ;
-        $a= $results;
         if (!empty($results)){
             $response = false;
         }

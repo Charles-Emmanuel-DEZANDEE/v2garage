@@ -104,6 +104,24 @@ li{
 }
 
 /*--------------------------------------------------*/
+/*************************      button             */
+/*--------------------------------------------------*/
+
+/*.btn-primary,*/
+/*.btn-primary:hover,*/
+/*.btn-primary:active,*/
+/*.btn-primary:visited,*/
+/*.btn-primary:focus,*/
+/*a.btn-primary,*/
+/*a.btn-primary:hover,*/
+/*a.btn-primary:active,*/
+/*a.btn-primary:visited,*/
+/*a.btn-primary:focus {*/
+    /*background-color: rgb(255, 96, 8) !important;*/
+    /*border-color: rgb(255, 96, 8) !important;*/
+/*}*/
+
+/*--------------------------------------------------*/
 /*************************      form             */
 /*--------------------------------------------------*/
 /*placeholder*/

@@ -26,7 +26,7 @@ class CustomerController extends Controller
         $rc = $doctrine->getRepository(Customer::class);
         $results = $rc->findAllOrderByLastUpdate();
 
-
+        // formulaire de rechercher par nom
         $form = $this->createForm(CustomerSearchType::class);
         $form->handleRequest($request);
 
@@ -91,18 +91,18 @@ class CustomerController extends Controller
 
                 //message flash
                 $message = $id ? 'Le client a été mis à jour' : 'Le client a été inséré';
-                $this->addFlash('notice', $message);
+                $this->addFlash('info', $message);
 
                 // redirection vers la saisie du véhicule
-                $this->redirectToRoute('app_admin_customer_list', array('id' => $customerEntity->getId()));
+                return $this->redirectToRoute('app_admin_customer_list', array('id' => $customerEntity->getId()));
             }
             else{
                 //message flash
                 $message = 'Le client existe déjà';
-                $this->addFlash('notice', $message);
+                $this->addFlash('warning', $message);
 
                 // redirection vers le formulaire
-                $this->redirectToRoute('app_admin_customer_add');
+                return $this->redirectToRoute('app_admin_customer_add');
             }
 
 

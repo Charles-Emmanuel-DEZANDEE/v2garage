@@ -19,10 +19,11 @@
         <div class="row">
             <div class="col-sm-12">
                 {% include 'include/nav.html.twig' %}
+                {% include 'include/flashBag.html.twig' %}
 
-                {% for notice in app.flashes('notice') %}
-                    <p class="alert alert-info">{{ notice | capitalize }}</p>
-                {% endfor %}
+                {#{% for notice in app.flashes('notice') %}#}
+                    {#<p class="alert alert-info">{{ notice | capitalize }}</p>#}
+                {#{% endfor %}#}
 
             </div>
         </div>
