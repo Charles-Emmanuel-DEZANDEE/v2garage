@@ -28,7 +28,7 @@ class CustomerSearchType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Customer'
+//            'data_class' => 'AppBundle\Entity\Customer'
         ));
     }
 

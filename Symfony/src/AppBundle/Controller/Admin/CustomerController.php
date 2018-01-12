@@ -32,7 +32,8 @@ class CustomerController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $saisie = $form->getData();
-            $results = $rc->findByNameOrderByLastUpdate($saisie);
+            $recherche = $saisie['name'];
+            $results = $rc->findByNameOrderByLastUpdate($recherche);
         }
 
         $paginator = $this->get('knp_paginator');
