@@ -2,13 +2,42 @@
 
 {% block body %}
 
-    <h2>{{ result.name }}</h2>
+<div class="container">
+
+    <h1>{{ result.lastName }} {{ result.firstName }}</h1>
+
+    <section class="row">
+        <article class="col-sm-4 panel-default">
+            <div class="panel-heading"><h2>Coordonnées</h2></div>
+            <div class="panel-body">
+
+                    <p>tel 1: {{ result.telephonePrimary }}</p>
+                    <p>tel 2: {{ result.telephoneSecondary }}</p>
+                    <p>mail : {{ result.email }}</p>
+                    <p>adresse :</p>
+                    <p>{{ result.addressNumber }} {{ result.addressRoad1 }}</p>
+
+            </div>
+            <div class="panel-footer"><a href="{{ path('app_admin_customer_update', {'id' : result.id}) }}" class="btn btn-primary">Modifier</a></div>
+
+        </article>
+
+        <article class="col-sm-8 panel-default">
+            <div class="panel-primary">
+                <div class="panel-default"> test</div>
+            </div>
+            <div class="panel-primary">
+                <div class="panel-default"> test 2</div>
+            </div>
+
+        </article>
+    </section>
+
+
+</div>
 
 
 
-    <p>
-        liste des models
-    </p>
 
 {% endblock %}
 

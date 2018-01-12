@@ -115,13 +115,19 @@ class CustomerController extends Controller
     /**
      * @Route("/customer/{id}", name="app_admin_customer_view")
      */
-    public function viewCustomer(Request $request, $id)
+    public function viewCustomer(Request $request, $id = null)
     {
+        if ($id == null){
+            $message = 'Veuillez selectionner un client';
+            $this->addFlash('danger', $message);
+            return $this->redirectToRoute('app_admin_customer_list');
+        }
+
         $doctrine = $this->getDoctrine();
         $rc = $doctrine->getRepository(Customer::class);
         $result = $rc->find($id);
 
-        //dump($results); exit;
+        dump($result);
 
         return $this->render('admin/customer/viewCustomer.html.twig', [
             'result' => $result

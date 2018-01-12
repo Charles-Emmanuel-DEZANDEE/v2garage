@@ -75,6 +75,9 @@ h1{
     font-family: 'Fredericka the Great', cursive;
     font-size: 3rem;
 }
+h2{
+    font-size: 2rem;
+}
 .container{
     background-color: rgba(38, 38, 38, 0.9);
     }

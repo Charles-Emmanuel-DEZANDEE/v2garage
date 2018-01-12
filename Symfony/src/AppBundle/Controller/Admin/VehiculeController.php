@@ -106,6 +106,11 @@ class VehiculeController extends Controller
      */
     public function viewVehicule(Request $request, $id)
     {
+        if ($id == null){
+            $message = 'Veuillez selectionner un véhicule';
+            $this->addFlash('danger', $message);
+            return $this->redirectToRoute('app_admin_customer_list');
+        }
         $doctrine = $this->getDoctrine();
         $rc = $doctrine->getRepository(Vehicule::class);
         $result = $rc->find($id);
