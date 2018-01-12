@@ -5,12 +5,10 @@
     <div class="container jumbotron ">
 
 
-        <h1>liste des clients</h1>
+        <h1>liste des véhicules</h1>
 
         <div class="row entete">
-            <div class="col-sm-3"> <a href="{{ url('app_admin_customer_add') }}" class="btn bg-primary "> Nouveau client </a> </div>
-            <div class="col-sm-9">
-                <form action="{{asset('app_admin_customer_list')}}" class="form-inline">
+                <form action="{{asset('app_admin_vehicule_list')}}" class="form-inline">
                     <label for="searchByNameInput" ></label>
                     <input class="form-control" id="searchByNameInput" type="text" placeholder="Recherche par nom">
                     <input class="btn btn-primary" type="submit" value="Valider" >
@@ -32,7 +30,7 @@
             <tbody>
             {% for result in results %}
                 <tr>
-                    <td>{{ result.firstName }} {{ result.lastName }}</td>
+                    <td>{{ result. }} {{ result.lastName }}</td>
                     <td><a href="#" class=""><i class="fa fa-eye fa-2x" aria-hidden="true"></i> </a></td>
                     <td>
                         <ul>

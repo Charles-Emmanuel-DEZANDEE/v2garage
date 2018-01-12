@@ -23,9 +23,8 @@ class VehiculeController extends Controller
 
         $doctrine = $this->getDoctrine();
         $rc = $doctrine->getRepository(Vehicule::class);
-        $results = $rc->findAllOrderByLastUpdate();
+        $results = $rc->findAll();
 
-        //$saisie = $request;
 
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
@@ -80,19 +79,19 @@ class VehiculeController extends Controller
                 $em->flush();
 
                 //message flash
-                $message = $id ? 'Le client a été mis à jour' : 'Le client a été inséré';
-                $this->addFlash('notice', $message);
+                $message = $id ? 'Le véhicule a été mis à jour' : 'Le véhicule a été inséré';
+                $this->addFlash('info', $message);
 
                 // redirection vers la saisie du véhicule
-                $this->redirectToRoute('app_admin_vehicule_list', array('id' => $vehiculeEntity->getId()));
+                return $this->redirectToRoute('app_admin_vehicule_list', array('id' => $vehiculeEntity->getId()));
             }
             else{
                 //message flash
-                $message = 'Le client existe déjà';
-                $this->addFlash('notice', $message);
+                $message = 'Le véhicule existe déjà';
+                $this->addFlash('info', $message);
 
                 // redirection vers le formulaire
-                $this->redirectToRoute('app_admin_vehicule_add');
+                return $this->redirectToRoute('app_admin_vehicule_add');
             }
 
 

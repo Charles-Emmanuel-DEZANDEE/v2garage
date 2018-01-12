@@ -13,18 +13,15 @@
                 {{ form_start(form, { 'attr' : { 'novalidate' : 'novalidate' , 'class': 'form-horizontal'} }) }}
 
                 <div class="form-group">
-                    {# Génération du label. #}
-                    {#{{ form_label(form.name, "Email", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}#}
 
                     <div class="col-sm-5">
                         {# Génération de l'input. #}
                         {{ form_widget(form.name, {'attr': {'class': 'form-control', 'placeholder' : 'Recherche par nom'}}) }}
                     </div>
-                    {# Affichage des erreurs pour ce champ précis. #}
+
                     <div class="col-sm-5"><input type="submit" class="btn btn-primary" name="submit" value="Rechercher" ></div>
                     <div class="col-sm-2">{{ form_errors(form.name) }} </div>
                 </div>
-
 
 
                 {# Génération automatique des champs pas encore écrits.
@@ -33,11 +30,7 @@
                 {{ form_rest(form) }}
 
                 {{ form_end(form) }}
-                {#<form action="{{asset('app_admin_customer_list')}}" class="form-inline">#}
-                    {#<label for="searchByNameInput" ></label>#}
-                    {#<input class="form-control" id="searchByNameInput" type="text" placeholder="Recherche par nom">#}
-                    {#<input class="btn btn-primary" type="submit" value="Valider" >#}
-                {#</form>#}
+
             </div>
         </div>
 
