@@ -2,27 +2,42 @@
 
 {% block body %}
 
-<div class="container">
+<div class="container jumbotron">
 
     <h1>{{ result.lastName }} {{ result.firstName }}</h1>
+    {% if result.socialReason %}
 
     <section class="row">
         <article class="col-sm-4 panel-default">
             <div class="panel-heading"><h2>Coordonnées</h2></div>
             <div class="panel-body">
-
-                    <p>tel 1: {{ result.telephonePrimary }}</p>
-                    <p>tel 2: {{ result.telephoneSecondary }}</p>
-                    <p>mail : {{ result.email }}</p>
-                    <p>adresse :</p>
-                    <p>{{ result.addressNumber }} {{ result.addressRoad1 }}</p>
-
+                <ul>
+                    <li>Tel 1: <a href="tel:{{ result.telephonePrimary }}">{{ result.telephonePrimary }}</a></li>
+                    <li>Tel 2: <a href="tel:{{ result.telephoneSecondary }}">{{ result.telephoneSecondary }}</a></li>
+                    <li>Mail : <a href="mailto:{{ result.email }}">{{ result.email }}</a></li>
+                    <li>Adresse :</li>
+                    <li>{{ result.addressNumber }} {{ result.addressRoad1 }}</li>
+                    <li>{{ result.addressNumber }} {{ result.addressRoad1 }}</li>
+                </ul>
             </div>
             <div class="panel-footer"><a href="{{ path('app_admin_customer_update', {'id' : result.id}) }}" class="btn btn-primary">Modifier</a></div>
 
         </article>
 
         <article class="col-sm-8 panel-default">
+            <article class="panel-default">
+                <div class="panel-heading"><h2>Adresses d'intervention</h2></div>
+                <ul>
+                {% for address in result.addresses %}
+
+                    <li>Nom: {{ address.name }}</li>
+                {% endfor %}
+                </ul>
+                <div class="panel-body">
+                </div>
+                <div class="panel-footer"><a href="{{ path('app_admin_customer_update', {'id' : result.id}) }}" class="btn btn-primary">Modifier</a></div>
+
+            </article>
             <div class="panel-primary">
                 <div class="panel-default"> test</div>
             </div>
