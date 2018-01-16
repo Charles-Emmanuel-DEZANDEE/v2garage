@@ -92,12 +92,14 @@ class Vehicule
      */
     private $isActive;
 
-    public function __construct()
+    public function __construct(Customer $customer)
     {
         // Par défaut, le client est actif
         $this->isActive = true;
         // Par défaut, la date de l'annonce est la date d'aujourd'hui
         $this->createDate = new \Datetime();
+        // un véhicule est obligatoire rattaché à un client
+        $this->setCustomer($customer);
     }
 
 

@@ -67,8 +67,10 @@ class CustomerController extends Controller
 
         $form = $this->createForm(CustomerType::class, $customerEntity);
         $form->handleRequest($request);
-
-
+        if($id) {
+            //personnalisation du formulaire
+            $typePage = 'modif';
+        }
         if ($form->isSubmitted() && $form->isValid()) {
             $saisie = $form->getData();
             $pasDeDoublon = $rcCustomer->customerNotExist($saisie->getEmail(),$saisie->getLastName(),$saisie->getAddressZipcode());
@@ -79,8 +81,6 @@ class CustomerController extends Controller
 
                 //pour permettre la mise à jour
                 $pasDeDoublon = true;
-                //personnalisation du formulaire
-                $typePage = 'modif';
             }
             if ($pasDeDoublon){
 
@@ -105,7 +105,7 @@ class CustomerController extends Controller
 
                 // redirection vers la saisie du véhicule
                 //todo modif la route
-                return $this->redirectToRoute('app_admin_customer_list', array(
+                return $this->redirectToRoute('app_admin_vehicule_add', array(
                     'id' => $customerEntity->getId()
                     )
                 );

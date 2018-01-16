@@ -10,4 +10,18 @@ namespace AppBundle\Repository;
  */
 class VehiculeRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function vehiculeNotExist($registration){
+        $response = true;
+        $results = $this->createQueryBuilder('vehicule')
+            ->where('vehicule.registration = :regis')
+            ->setParameter('regis' , $registration)
+            ->getQuery()
+            ->getResult()
+        ;
+        if (!empty($results)){
+            $response = false;
+        }
+
+        return $response;
+    }
 }

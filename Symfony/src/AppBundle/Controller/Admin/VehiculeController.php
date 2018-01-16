@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Admin;
 
+use AppBundle\Entity\Customer;
 use AppBundle\Entity\Vehicule;
 use AppBundle\Form\VehiculeType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -40,46 +41,58 @@ class VehiculeController extends Controller
     }
 
     /**
-     * @Route("/vehicule/add", name="app_admin_vehicule_add", defaults={"id" : null })
-     * @Route("/vehicule/update/{id}", name="app_admin_vehicule_update")
+     * @Route("/vehicule/add/{idCustomer}", name="app_admin_vehicule_add")
+     * @Route("/vehicule/update/{idCustomer}/{idVehicule}", name="app_admin_vehicule_update")
      *
      */
-    public function addVehiculeAction(Request $request, $id = null)
+    public function addVehiculeAction(Request $request, $idCustomer, $idVehicule= null)
     {
         $doctrine = $this->getDoctrine();
         $em = $doctrine->getManager();
         $rcVehicule = $doctrine->getRepository(Vehicule::class);
+        $typePage = 'ajout';
 
 
-        $vehiculeEntity = $id ? $rcVehicule->find($id) : new Vehicule();
+            $CustomerEntity = $doctrine->getRepository(Customer::class)->find($idCustomer);
+
+
+            $vehiculeEntity = $idVehicule ? $rcVehicule->find($idVehicule) : new Vehicule($CustomerEntity);
+
 
         $form = $this->createForm(VehiculeType::class, $vehiculeEntity);
         $form->handleRequest($request);
 
+        if($idVehicule){
+            $typePage = 'modif';
+        }
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             $saisie = $form->getData();
-            $mailSaisi = $saisie->getEmail();
-            $nomSaisi = $saisie->getLastName();
-            $pasDeDoublon = $rcVehicule->vehiculeNotExist($saisie->getEmail(),$saisie->getLastName(),$saisie->getAddressZipcode());
+
+            // vérification qu'il n'y a pas de doublon
+            $pasDeDoublon = $rcVehicule->vehiculeNotExist($saisie->getRegistration());
 
 
             // en update
-            if($id){
+            if($idVehicule){
 
                 //pour permettre la mise à jour
                 $pasDeDoublon = true;
             }
             if ($pasDeDoublon){
 
+                //mise à jour de la date de derniére action du client
+                $CustomerEntity->setLastActionDate(new \DateTime());
+                $em->persist($CustomerEntity);
 
-                //insertion
+                //insertion du véhicule
                 $em->persist($vehiculeEntity);
 
                 $em->flush();
 
                 //message flash
-                $message = $id ? 'Le véhicule a été mis à jour' : 'Le véhicule a été inséré';
+                $message = $idVehicule ? 'Le véhicule a été mis à jour' : 'Le véhicule a été inséré';
                 $this->addFlash('info', $message);
 
                 // redirection vers la saisie du véhicule
@@ -88,7 +101,7 @@ class VehiculeController extends Controller
             else{
                 //message flash
                 $message = 'Le véhicule existe déjà';
-                $this->addFlash('info', $message);
+                $this->addFlash('warning', $message);
 
                 // redirection vers le formulaire
                 return $this->redirectToRoute('app_admin_vehicule_add');
@@ -98,7 +111,9 @@ class VehiculeController extends Controller
         }
 
         return $this->render('admin/vehicule/addVehicule.html.twig', [
-        'form' => $form->createView(),
+            'form' => $form->createView(),
+            'typePage' => $typePage,
+            'client' => $CustomerEntity,
         ]);
     }
     /**

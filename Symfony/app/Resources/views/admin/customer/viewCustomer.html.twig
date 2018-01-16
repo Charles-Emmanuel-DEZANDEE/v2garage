@@ -58,10 +58,10 @@
             <div class="panel-body">
                     {% for vehicule in result.vehicules %}
 
-                       <p> <span>{{ vehicule.brand }} - {{ vehicule.model }}</span> <span> {{ vehicule.registration }}</span> <span class="visible-sm-block"> {{ vehicule.mileage |number_format(0, '.', ' ')}} Km </span>  <a href="#" class="btn bg-primary "> Modifier </a></p>
+                       <p> <span>{{ vehicule.brand }} - {{ vehicule.model }}</span> <span> {{ vehicule.registration }}</span> <span class="visible-sm-block visible-md-block"> {{ vehicule.mileage |number_format(0, '.', ' ')}} Km </span>  <a href="{{ path('app_admin_vehicule_update', {'idCustomer' : result.id, 'idVehicule' : vehicule.id}) }}" class="btn bg-primary "> Modifier </a></p>
                     {% endfor %}
             </div>
-            <div class="panel-footer"><a href="#" class="btn btn-warning">Ajouter</a></div>
+            <div class="panel-footer"><a href="{{ path('app_admin_vehicule_add', {'idCustomer' : result.id}) }}" class="btn btn-warning">Ajouter</a></div>
 
         </article>
 
