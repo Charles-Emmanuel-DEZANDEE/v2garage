@@ -48,4 +48,5 @@ class CustomerRepository extends \Doctrine\ORM\EntityRepository
 
         return $response;
     }
+
 }

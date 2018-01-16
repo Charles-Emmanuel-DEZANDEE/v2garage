@@ -3,7 +3,11 @@
 {% block body %}
     {% include 'include/googleMpa.html.twig' %}
 <div class="container">
-    <h1>Ajouter un client</h1>
+    {% if typePage == 'ajout' %}
+        <h1>Ajouter un client</h1>
+    {% elseif typePage == 'modif' %}
+        <h1>Modifier un client</h1>
+    {% endif %}
 
     {{ form_start(form, { 'attr' : { 'novalidate' : 'novalidate' , 'class': 'form-horizontal'} }) }}
 
@@ -67,7 +71,7 @@
         {{ form_label(form.telephonePrimary, "Téléphone principal", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
 
         <div class="col-sm-8">
-            {{ form_widget(form.telephonePrimary, {'attr': {'class': 'form-control'}}) }}
+            {{ form_widget(form.telephonePrimary, {'attr': {'class': 'form-control phone'}}) }}
         </div>
         <div class="col-sm-2">{{ form_errors(form.telephonePrimary) }} </div>
     </div>
@@ -76,7 +80,7 @@
         {{ form_label(form.telephoneSecondary, "Téléphone secondaire", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
 
         <div class="col-sm-8">
-            {{ form_widget(form.telephoneSecondary, {'attr': {'class': 'form-control'}}) }}
+            {{ form_widget(form.telephoneSecondary, {'attr': {'class': 'form-control phone'}}) }}
         </div>
         <div class="col-sm-2">{{ form_errors(form.telephoneSecondary) }} </div>
     </div>
@@ -169,9 +173,34 @@
 
 </div>
 
+
+
 {% endblock %}
 
 {% block javascripts %}
+    <script>
+        {# formatage du téléphone#}
+
+        $(document).ready(function(){
+
+            $('.phone').keyup(function() {
+                console.log('test');
+                var val = this.value.replace(/\D/g, '');
+                var newVal = '';
+                while (val.length > 2) {
+                    newVal += val.substr(0, 2) + ' ';
+                    val = val.substr(2);
+                }
+                newVal += val;
+                this.value = newVal;
+
+            });
+        });
+    </script>
+
+
+    {#recherche google#}
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAaTebRSzl7xi-Ml4MHJIl7Z1h5k2A2Yv0&libraries=places&callback=initAutocomplete"
             async defer></script>
+
 {% endblock %}

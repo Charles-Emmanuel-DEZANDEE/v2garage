@@ -60,6 +60,7 @@ class CustomerController extends Controller
         $doctrine = $this->getDoctrine();
         $em = $doctrine->getManager();
         $rcCustomer = $doctrine->getRepository(Customer::class);
+        $typePage = 'ajout';
 
 
         $customerEntity = $id ? $rcCustomer->find($id) : new Customer();
@@ -70,8 +71,6 @@ class CustomerController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $saisie = $form->getData();
-            $mailSaisi = $saisie->getEmail();
-            $nomSaisi = $saisie->getLastName();
             $pasDeDoublon = $rcCustomer->customerNotExist($saisie->getEmail(),$saisie->getLastName(),$saisie->getAddressZipcode());
 
 
@@ -80,6 +79,8 @@ class CustomerController extends Controller
 
                 //pour permettre la mise à jour
                 $pasDeDoublon = true;
+                //personnalisation du formulaire
+                $typePage = 'modif';
             }
             if ($pasDeDoublon){
 
@@ -93,8 +94,21 @@ class CustomerController extends Controller
                 $message = $id ? 'Le client a été mis à jour' : 'Le client a été inséré';
                 $this->addFlash('info', $message);
 
+                if($id) {
+
+                    // redirection vers la page du client
+                    return $this->redirectToRoute('app_admin_customer_view', array(
+                            'id' => $customerEntity->getId()
+                        )
+                    );
+                }
+
                 // redirection vers la saisie du véhicule
-                return $this->redirectToRoute('app_admin_customer_list', array('id' => $customerEntity->getId()));
+                //todo modif la route
+                return $this->redirectToRoute('app_admin_customer_list', array(
+                    'id' => $customerEntity->getId()
+                    )
+                );
             }
             else{
                 //message flash
@@ -109,7 +123,8 @@ class CustomerController extends Controller
         }
 
         return $this->render('admin/customer/addCustomer.html.twig', [
-        'form' => $form->createView(),
+            'form' => $form->createView(),
+            'typePage' => $typePage
         ]);
     }
     /**

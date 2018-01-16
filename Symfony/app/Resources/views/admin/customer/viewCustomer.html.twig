@@ -5,19 +5,29 @@
 <div class="container jumbotron">
 
     <h1>{{ result.lastName }} {{ result.firstName }}</h1>
-    {% if result.socialReason %}
+    {% if result.socialReason is not empty%}
+        <h2>{{ result.socialReason }}</h2>
+    {% endif %}
 
     <section class="row">
         <article class="col-sm-4 panel-default">
             <div class="panel-heading"><h2>Coordonnées</h2></div>
             <div class="panel-body">
                 <ul>
-                    <li>Tel 1: <a href="tel:{{ result.telephonePrimary }}">{{ result.telephonePrimary }}</a></li>
+                    <li><strong>Tel 1:</strong> <a href="tel:{{ result.telephonePrimary }}">{{ result.telephonePrimary }}</a></li>
                     <li>Tel 2: <a href="tel:{{ result.telephoneSecondary }}">{{ result.telephoneSecondary }}</a></li>
                     <li>Mail : <a href="mailto:{{ result.email }}">{{ result.email }}</a></li>
                     <li>Adresse :</li>
                     <li>{{ result.addressNumber }} {{ result.addressRoad1 }}</li>
-                    <li>{{ result.addressNumber }} {{ result.addressRoad1 }}</li>
+                    {% if result.addressRoad2 is not empty%}
+                        <li>{{ result.addressRoad2 }}</li>
+                    {% endif %}
+
+                    <li>{{ result.addressZipcode }} {{ result.addressCity }}</li>
+                    {% if result.addressRegion is not empty %}
+                        <li>{{ result.addressRegion }}</li>
+                    {% endif %}
+                    <li>{{ result.addressZipcode }} {{ result.addressCity }}</li>
                 </ul>
             </div>
             <div class="panel-footer"><a href="{{ path('app_admin_customer_update', {'id' : result.id}) }}" class="btn btn-primary">Modifier</a></div>
