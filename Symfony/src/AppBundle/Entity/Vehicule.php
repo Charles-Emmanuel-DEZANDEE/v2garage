@@ -120,7 +120,7 @@ class Vehicule
      */
     public function setBrand($brand)
     {
-        $this->brand = $brand;
+        $this->brand = ucwords($brand);
 
         return $this;
     }

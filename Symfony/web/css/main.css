@@ -77,6 +77,8 @@ h1{
 }
 h2{
     font-size: 2rem;
+    margin: 0.5rem ;
+
 }
 .container{
     background-color: rgba(38, 38, 38, 0.9);
@@ -85,7 +87,17 @@ h2{
 a{
     text-decoration: none;
     /*color: rgb(252, 252, 252);*/
+}
 
+section{
+    margin-bottom: 2rem;
+}
+
+.jumbotron p{
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .table li{
