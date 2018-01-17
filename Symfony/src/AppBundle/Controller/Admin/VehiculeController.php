@@ -110,7 +110,7 @@ class VehiculeController extends Controller
 
         }
 
-        return $this->render('admin/vehicule/addVehicule.html.twig', [
+        return $this->render('admin/vehicule/addAddresses.html.twig', [
             'form' => $form->createView(),
             'typePage' => $typePage,
             'client' => $CustomerEntity,

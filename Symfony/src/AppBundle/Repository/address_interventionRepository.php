@@ -10,4 +10,18 @@ namespace AppBundle\Repository;
  */
 class address_interventionRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function addressesNotExist($name){
+        $response = true;
+        $results = $this->createQueryBuilder('a')
+            ->where('a.name = :nameAdr')
+            ->setParameter('nameAdr' , $name)
+            ->getQuery()
+            ->getResult()
+        ;
+        if (!empty($results)){
+            $response = false;
+        }
+
+        return $response;
+    }
 }
