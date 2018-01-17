@@ -49,7 +49,7 @@ class AddressesController extends Controller
             $saisie = $form->getData();
 
             // vérification qu'il n'y a pas de doublon
-            $pasDeDoublon = $rcAddresses->addressesNotExist($saisie->getRegistration());
+            $pasDeDoublon = $rcAddresses->addressesNotExist($saisie->getName(), $idCustomer);
 
 
             // en update
@@ -82,13 +82,13 @@ class AddressesController extends Controller
                 $this->addFlash('warning', $message);
 
                 // redirection vers le formulaire
-                return $this->redirectToRoute('app_admin_addresses_add');
+                return $this->redirectToRoute('app_admin_addresses_add', array('idCustomer' => $idCustomer));
             }
 
 
         }
 
-        return $this->render('admin/addresses/addAddresses.html.twig', [
+        return $this->render('admin/adresses/addAddresses.html.twig', [
             'form' => $form->createView(),
             'typePage' => $typePage,
             'client' => $customerEntity,

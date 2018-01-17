@@ -5,6 +5,7 @@ namespace AppBundle\Controller\Admin;
 use AppBundle\Entity\Customer;
 use AppBundle\Form\CustomerSearchType;
 use AppBundle\Form\CustomerType;
+use AppBundle\Service\DuplicateAddressesService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,6 +16,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
  */
 class CustomerController extends Controller
 {
+
+
     /**
      * @Route("/customer", name="app_admin_customer_list")
      * @Method({"GET", "POST"})
@@ -55,7 +58,7 @@ class CustomerController extends Controller
      * @Route("/customer/update/{id}", name="app_admin_customer_update")
      *
      */
-    public function addCustomerAction(Request $request, $id = null)
+    public function addCustomerAction(Request $request, $id = null, DuplicateAddressesService $service)
     {
         $doctrine = $this->getDoctrine();
         $em = $doctrine->getManager();
@@ -87,6 +90,8 @@ class CustomerController extends Controller
 
                 //insertion
                 $em->persist($customerEntity);
+                // création de l'adresse d'intervention par défaut
+                $service->duplicateMainAddresse($customerEntity);
 
                 $em->flush();
 
@@ -104,9 +109,8 @@ class CustomerController extends Controller
                 }
 
                 // redirection vers la saisie du véhicule
-                //todo modif la route
                 return $this->redirectToRoute('app_admin_vehicule_add', array(
-                    'id' => $customerEntity->getId()
+                    'idCustomer' => $customerEntity->getId()
                     )
                 );
             }

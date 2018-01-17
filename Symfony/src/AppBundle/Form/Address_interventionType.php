@@ -20,8 +20,8 @@ class Address_interventionType extends AbstractType
         $builder
             ->add('name', ChoiceType::class, array(
                 'choices' => [
-                    'Domicile' => 'Domicile',
                     'Travail' => 'Travail',
+                    'Domicile' => 'Domicile',
                     'Lieu de vacances' => 'Lieu de vacances',
                     'Autre' => 'Autre'
                 ])

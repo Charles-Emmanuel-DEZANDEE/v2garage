@@ -10,11 +10,14 @@ namespace AppBundle\Repository;
  */
 class address_interventionRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function addressesNotExist($name){
+    public function addressesNotExist($name, $idCustomer){
         $response = true;
         $results = $this->createQueryBuilder('a')
+            ->join('a.customer', 'c')
             ->where('a.name = :nameAdr')
             ->setParameter('nameAdr' , $name)
+            ->andWhere('c.id = :id')
+            ->setParameter('id' , $idCustomer)
             ->getQuery()
             ->getResult()
         ;

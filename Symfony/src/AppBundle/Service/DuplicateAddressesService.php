@@ -5,6 +5,7 @@ namespace AppBundle\Service;
 use AppBundle\Entity\Address_intervention;
 use AppBundle\Entity\Customer;
 use Doctrine\ORM\EntityManager;
+use  Doctrine\ORM\EntityManagerInterface;
 
 class DuplicateAddressesService
 {
@@ -18,7 +19,7 @@ class DuplicateAddressesService
      * CommandeService constructor.
      * @param EntityManager $em
      */
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
     }
@@ -44,7 +45,7 @@ class DuplicateAddressesService
 
             $this->em->persist($addressesEntity);
 
-            $this->em->flush();
+            //$this->em->flush();
         }
 
     }
