@@ -1,12 +1,13 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    {% include 'include/googleMpa.html.twig' %}
 
 <div class="container">
     {% if typePage == 'ajout' %}
-        <h1>Ajouter un Véhicule</h1>
+        <h1>Ajouter une Adresse</h1>
     {% elseif typePage == 'modif' %}
-        <h1>Modifier un Véhicule</h1>
+        <h1>Modifier une Adresse</h1>
     {% endif %}
 
     {{ form_start(form, { 'attr' : { 'novalidate' : 'novalidate' , 'class': 'form-horizontal'} }) }}
@@ -16,69 +17,87 @@
 
     <legend>{{client.lastName}} {{client.firstName}}</legend>
 
-    {# Génération du label + error + widget pour un champ. #}
-    <div class="form-group required">
-        {# Génération du label. #}
-        {{ form_label(form.brand, "Marque", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+    <div class="form-group">
+        {{ form_label(form.name, "Numero", {'label_attr': {'class': 'col-sm-2 control-label '}}) }}
+
         <div class="col-sm-8">
-            {# Génération de l'input. #}
-            {{ form_widget(form.brand, {'attr': {'class': 'form-control'}}) }}
+            {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
         </div>
-        {# Affichage des erreurs pour ce champ précis. #}
-        <div class="col-sm-2">{{ form_errors(form.brand) }} </div>
+        <div class="col-sm-2">{{ form_errors(form.name) }} </div>
     </div>
 
-    <div class="form-group required">
-        {{ form_label(form.model, "Modéle", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+    <div id="locationField" class="form-group">
+        <label for="autocomplete" class="control-label col-sm-2">Recherche Rapide</label>
         <div class="col-sm-8">
-            {{ form_widget(form.model, {'attr': {'class': 'form-control'}}) }}
+
+            <input id="autocomplete" placeholder="Taper l'adresse ici" class="form-control" onFocus="geolocate()" type="text"></input>
         </div>
-        <div class="col-sm-2">{{ form_errors(form.model) }} </div>
+
     </div>
 
     <div class="form-group">
-        {{ form_label(form.vin, "Numéro de série", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+        {{ form_label(form.number, "Numero", {'label_attr': {'class': 'col-sm-2 control-label '}}) }}
 
         <div class="col-sm-8">
-             {{ form_widget(form.vin, {'attr': {'class': 'form-control upper'}}) }}
+            {{ form_widget(form.number, {'attr': {'class': 'form-control street_number'}}) }}
         </div>
-        <div class="col-sm-2">{{ form_errors(form.vin) }} </div>
+        <div class="col-sm-2">{{ form_errors(form.number) }} </div>
+
     </div>
 
+
     <div class="form-group required">
-        {{ form_label(form.registration, "Numéro d'immatriculation", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+        {{ form_label(form.road1, "Adresse", {'label_attr': {'class': 'col-sm-2 control-label '}}) }}
 
         <div class="col-sm-8">
-            {{ form_widget(form.registration, {'attr': {'class': 'form-control upper'}}) }}
+            {{ form_widget(form.road1, {'attr': {'class': 'form-control route'}}) }}
         </div>
-        <div class="col-sm-2">{{ form_errors(form.registration) }} </div>
+        <div class="col-sm-2">{{ form_errors(form.road1) }} </div>
     </div>
 
     <div class="form-group">
-        {{ form_label(form.mileage, "Kilométrage", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+        {{ form_label(form.road2, "Complément d'adresse", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
 
         <div class="col-sm-8">
-            {{ form_widget(form.mileage, {'attr': {'class': 'form-control'}}) }}
+            {{ form_widget(form.road2, {'attr': {'class': 'form-control'}}) }}
         </div>
-        <div class="col-sm-2">{{ form_errors(form.mileage) }} </div>
+        <div class="col-sm-2">{{ form_errors(form.road2) }} </div>
     </div>
 
     <div class="form-group required">
-        {{ form_label(form.circulationLaunchDate, "Date de mise en circulation", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+        {{ form_label(form.zipcode, "Code postal", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
 
         <div class="col-sm-8">
-            {{ form_widget(form.circulationLaunchDate , {'attr': {'class': 'form-control js-datepicker'}}) }}
+            {{ form_widget(form.zipcode, {'attr': {'class': 'form-control postal_code'}}) }}
         </div>
-        <div class="col-sm-2">{{ form_errors(form.circulationLaunchDate ) }} </div>
+        <div class="col-sm-2">{{ form_errors(form.zipcode) }} </div>
+    </div>
+
+    <div class="form-group required">
+        {{ form_label(form.city, "Ville", {'label_attr': {'class': 'col-sm-2 control-label '}}) }}
+
+        <div class="col-sm-8">
+            {{ form_widget(form.city, {'attr': {'class': 'form-control locality'}}) }}
+        </div>
+        <div class="col-sm-2">{{ form_errors(form.city) }} </div>
     </div>
 
     <div class="form-group">
-        {{ form_label(form.lastControlDate, "Date du dernier contrôle technique", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+        {{ form_label(form.region, "Région", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
 
         <div class="col-sm-8">
-            {{ form_widget(form.lastControlDate , {'attr': {'class': 'form-control js-datepicker'}}) }}
+            {{ form_widget(form.region, {'attr': {'class': 'form-control administrative_area_level_1'}}) }}
         </div>
-        <div class="col-sm-2">{{ form_errors(form.lastControlDate) }} </div>
+        <div class="col-sm-2">{{ form_errors(form.region) }} </div>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.country, "Pays", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+
+        <div class="col-sm-8">
+            {{ form_widget(form.country, {'attr': {'class': 'form-control country'}}) }}
+        </div>
+        <div class="col-sm-2">{{ form_errors(form.country) }} </div>
     </div>
 
      <p>
@@ -97,29 +116,7 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script>
-        $(document).ready(function () {
-            $('.js-datepicker').datepicker({
-                format: "dd-mm-yyyy",
-                todayBtn: "linked",
-                clearBtn: true,
-                language: "fr",
-                todayHighlight: true,
-                autoclose: true
-            });
-//            formatage du numéro de série et immatriculation en majuscule
-            $('.upper').keyup(function() {
-                var val = this.value.replace(/\D/g, '');
-                var newVal = '';
-                while (val.length > 2) {
-                    newVal += val.substr(0, 2) + ' ';
-                    val = val.substr(2);
-                }
-                newVal += val;
-                this.value = newVal;
-
-            });
-        });
-    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAaTebRSzl7xi-Ml4MHJIl7Z1h5k2A2Yv0&libraries=places&callback=initAutocomplete"
+            async defer></script>
 
 {% endblock %}

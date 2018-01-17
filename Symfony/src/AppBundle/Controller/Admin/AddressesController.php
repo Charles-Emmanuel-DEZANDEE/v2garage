@@ -2,8 +2,10 @@
 
 namespace AppBundle\Controller\Admin;
 
+use AppBundle\Entity\Address_intervention;
 use AppBundle\Entity\Customer;
 use AppBundle\Entity\Vehicule;
+use AppBundle\Form\Address_interventionType;
 use AppBundle\Form\VehiculeType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -21,21 +23,21 @@ class AddressesController extends Controller
      * @Route("/addresses/update/{idCustomer}/{idVehicule}", name="app_admin_addresses_update")
      *
      */
-    public function addVehiculeAction(Request $request, $idCustomer, $idVehicule= null)
+    public function addVehiculeAction(Request $request, $idCustomer, $idAddresses= null)
     {
         $doctrine = $this->getDoctrine();
         $em = $doctrine->getManager();
-        $rcAddresses = $doctrine->getRepository(Addresses::class);
+        $rcAddresses = $doctrine->getRepository(Address_intervention::class);
         $typePage = 'ajout';
 
 
-            $CustomerEntity = $doctrine->getRepository(Customer::class)->find($idCustomer);
+            $customerEntity = $doctrine->getRepository(Customer::class)->find($idCustomer);
 
 
-            $addressesEntity = $idAddresses ? $rcAddresses->find($idAddresses) : new Addresses($CustomerEntity);
+            $addressesEntity = $idAddresses ? $rcAddresses->find($idAddresses) : new Address_intervention($customerEntity);
 
 
-        $form = $this->createForm(AddressesType::class, $addressesEntity);
+        $form = $this->createForm(Address_interventionType::class, $addressesEntity);
         $form->handleRequest($request);
 
         if($idAddresses){
@@ -59,16 +61,16 @@ class AddressesController extends Controller
             if ($pasDeDoublon){
 
                 //mise à jour de la date de derniére action du client
-                $CustomerEntity->setLastActionDate(new \DateTime());
-                $em->persist($CustomerEntity);
+                $customerEntity->setLastActionDate(new \DateTime());
+                $em->persist($customerEntity);
 
-                //insertion du véhicule
+                //insertion de l'adresse
                 $em->persist($addressesEntity);
 
                 $em->flush();
 
                 //message flash
-                $message = $idAddresses ? 'Le véhicule a été mis à jour' : 'Le véhicule a été inséré';
+                $message = $idAddresses ? 'L\'adresse a été mise à jour' : 'L\'adresse a été insérée';
                 $this->addFlash('info', $message);
 
                 // redirection vers la page du client
@@ -76,7 +78,7 @@ class AddressesController extends Controller
             }
             else{
                 //message flash
-                $message = 'Le véhicule existe déjà';
+                $message = 'L\'adresse existe déjà';
                 $this->addFlash('warning', $message);
 
                 // redirection vers le formulaire
@@ -89,7 +91,7 @@ class AddressesController extends Controller
         return $this->render('admin/addresses/addAddresses.html.twig', [
             'form' => $form->createView(),
             'typePage' => $typePage,
-            'client' => $CustomerEntity,
+            'client' => $customerEntity,
         ]);
     }
 

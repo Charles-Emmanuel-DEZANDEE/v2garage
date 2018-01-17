@@ -27,7 +27,6 @@ class Address_interventionType extends AbstractType
                 ])
             )
             ->add('number', TextType::class)
-            ->add('socialReason', TextType::class)
             ->add('road1', TextType::class, [
                 'constraints' => [
                     new NotBlank([

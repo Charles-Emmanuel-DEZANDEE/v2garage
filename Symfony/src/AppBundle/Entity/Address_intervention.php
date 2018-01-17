@@ -43,12 +43,6 @@ class Address_intervention
      */
     private $number;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="social_reason", type="string", length=255, nullable=true)
-     */
-    private $socialReason;
 
     /**
      * @var string
@@ -91,6 +85,16 @@ class Address_intervention
      * @ORM\Column(name="country", type="string", length=255, nullable=true)
      */
     private $country;
+
+    /**
+     * Address_intervention constructor.
+     * @param $customer
+     */
+    public function __construct(Customer $customer)
+    {
+        $this->setCustomer($customer);
+    }
+
 
 
     /**
