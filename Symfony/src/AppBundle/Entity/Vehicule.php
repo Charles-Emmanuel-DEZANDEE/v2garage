@@ -46,7 +46,7 @@ class Vehicule
     /**
      * @var string
      *
-     * @ORM\Column(name="vin", type="string", length=255)
+     * @ORM\Column(name="vin", type="string", length=255, nullable=true)
      */
     private $vin;
 
@@ -60,14 +60,14 @@ class Vehicule
     /**
      * @var int
      *
-     * @ORM\Column(name="mileage", type="integer")
+     * @ORM\Column(name="mileage", type="integer", nullable=true)
      */
     private $mileage;
 
     /**
      * @var datetime
      *
-     * @ORM\Column(name="circulation_launch_date", type="datetime")
+     * @ORM\Column(name="circulation_launch_date", type="datetime", nullable=true)
      */
     private $circulationLaunchDate;
 
@@ -170,7 +170,7 @@ class Vehicule
      */
     public function setVin($vin)
     {
-        $this->vin = $vin;
+        $this->vin = strtoupper($vin);
 
         return $this;
     }
@@ -194,7 +194,7 @@ class Vehicule
      */
     public function setRegistration($registration)
     {
-        $this->registration = $registration;
+        $this->registration = strtoupper($registration);
 
         return $this;
     }

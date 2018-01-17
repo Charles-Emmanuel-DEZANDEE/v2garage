@@ -67,16 +67,16 @@
         {{ form_label(form.circulationLaunchDate, "Date de mise en circulation", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
 
         <div class="col-sm-8">
-            {{ form_widget(form.circulationLaunchDate | localizeddate, {'attr': {'class': 'form-control'}}) }}
+            {{ form_widget(form.circulationLaunchDate , {'attr': {'class': 'form-control js-datepicker'}}) }}
         </div>
         <div class="col-sm-2">{{ form_errors(form.circulationLaunchDate ) }} </div>
     </div>
 
     <div class="form-group">
-        {{ form_label(form.lastControlDate, "date du dernier contrôle technique", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+        {{ form_label(form.lastControlDate, "Date du dernier contrôle technique", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
 
         <div class="col-sm-8">
-            {{ form_widget(form.lastControlDate  | localizeddate, {'attr': {'class': 'form-control'}}) }}
+            {{ form_widget(form.lastControlDate , {'attr': {'class': 'form-control js-datepicker'}}) }}
         </div>
         <div class="col-sm-2">{{ form_errors(form.lastControlDate) }} </div>
     </div>
@@ -99,7 +99,14 @@
 {% block javascripts %}
     <script>
         $(document).ready(function () {
-            $('.datepicker').datepicker();
+            $('.js-datepicker').datepicker({
+                format: "dd-mm-yyyy",
+                todayBtn: "linked",
+                clearBtn: true,
+                language: "fr",
+                todayHighlight: true,
+                autoclose: true
+            });
         });
     </script>
 

@@ -95,8 +95,8 @@ class VehiculeController extends Controller
                 $message = $idVehicule ? 'Le véhicule a été mis à jour' : 'Le véhicule a été inséré';
                 $this->addFlash('info', $message);
 
-                // redirection vers la saisie du véhicule
-                return $this->redirectToRoute('app_admin_vehicule_list', array('id' => $vehiculeEntity->getId()));
+                // redirection vers la page du client
+                return $this->redirectToRoute('app_admin_customer_view', array('id' => $idCustomer));
             }
             else{
                 //message flash

@@ -4,6 +4,7 @@ namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -41,28 +42,22 @@ class VehiculeType extends AbstractType
                 ]
             ])
             ->add('mileage', NumberType::class)
-            ->add('circulationLaunchDate', DateTimeType::class, [
+            ->add('circulationLaunchDate', DateType::class, [
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Date de mise en circulation requise'
                     ])
                 ],
                 'widget' => 'single_text',
-
-                // do not render as type="date", to avoid HTML5 date pickers
+                'format' => 'dd-MM-yyyy',
                 'html5' => false,
 
-                // add a class that can be selected in JavaScript
-                'attr' => ['class' => 'js-datepicker'],
             ])
-            ->add('lastControlDate',DateTimeType::class, [
+            ->add('lastControlDate',DateType::class, [
                 'widget' => 'single_text',
-
-                // do not render as type="date", to avoid HTML5 date pickers
+                'format' => 'dd-MM-yyyy',
                 'html5' => false,
 
-                // add a class that can be selected in JavaScript
-                'attr' => ['class' => 'js-datepicker'],
             ])
             ;
     }/**
