@@ -40,7 +40,7 @@
         {{ form_label(form.vin, "Numéro de série", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
 
         <div class="col-sm-8">
-             {{ form_widget(form.vin, {'attr': {'class': 'form-control'}}) }}
+             {{ form_widget(form.vin, {'attr': {'class': 'form-control upper'}}) }}
         </div>
         <div class="col-sm-2">{{ form_errors(form.vin) }} </div>
     </div>
@@ -49,7 +49,7 @@
         {{ form_label(form.registration, "Numéro d'immatriculation", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
 
         <div class="col-sm-8">
-            {{ form_widget(form.registration, {'attr': {'class': 'form-control'}}) }}
+            {{ form_widget(form.registration, {'attr': {'class': 'form-control upper'}}) }}
         </div>
         <div class="col-sm-2">{{ form_errors(form.registration) }} </div>
     </div>
@@ -106,6 +106,18 @@
                 language: "fr",
                 todayHighlight: true,
                 autoclose: true
+            });
+//            formatage du numéro de série et immatriculation en majuscule
+            $('.upper').keyup(function() {
+                var val = this.value.replace(/\D/g, '');
+                var newVal = '';
+                while (val.length > 2) {
+                    newVal += val.substr(0, 2) + ' ';
+                    val = val.substr(2);
+                }
+                newVal += val;
+                this.value = newVal;
+
             });
         });
     </script>

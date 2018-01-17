@@ -51,12 +51,14 @@ class VehiculeType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'dd-MM-yyyy',
                 'html5' => false,
+                'placeholder' => 'Indiquer une date',
 
             ])
             ->add('lastControlDate',DateType::class, [
                 'widget' => 'single_text',
                 'format' => 'dd-MM-yyyy',
                 'html5' => false,
+                'placeholder' => 'Indiquer une date',
 
             ])
             ;
