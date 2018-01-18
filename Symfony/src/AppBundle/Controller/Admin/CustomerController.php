@@ -43,7 +43,7 @@ class CustomerController extends Controller
         $pagination = $paginator->paginate(
             $results,
             $request->query->getInt('page', 1),
-            10
+            5
         );
 
         return $this->render('admin/customer/list.html.twig', [

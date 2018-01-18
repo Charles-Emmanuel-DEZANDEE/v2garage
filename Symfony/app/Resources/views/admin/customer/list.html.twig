@@ -49,11 +49,11 @@
             {% for result in results %}
                 <tr>
                     <td>{{ result.firstName }} {{ result.lastName }}</td>
-                    <td><a href="{{ path('app_admin_customer_view', {'id': result.id}) }}" class=""><i class="fa fa-eye fa-2x" aria-hidden="true"></i> </a></td>
+                    <td><a href="{{ path('app_admin_customer_view', {'id': result.id}) }}" class="btn btn-warning">Voir </a></td>
                     <td>
                         <ul>
                             {% for vehicule in result.vehicules %}
-                            <li>{{vehicule.brand}} {{vehicule.model}} - {{vehicule.registration}}  <a href="#" class="btn bg-primary "> Faire devis </a></li>
+                            <li>{{vehicule.brand}} {{vehicule.model}}     {{vehicule.registration}}  <a href="#" class="btn bg-primary "> Faire devis </a></li>
 
                             {% endfor %}
                         </ul>
