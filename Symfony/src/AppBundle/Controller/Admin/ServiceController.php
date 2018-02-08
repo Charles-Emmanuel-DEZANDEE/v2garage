@@ -24,7 +24,7 @@ class ServiceController extends Controller
     {
 
         $doctrine = $this->getDoctrine();
-        $rc = $doctrine->getRepository(Vehicule::class);
+        $rc = $doctrine->getRepository(Service::class);
         $results = $rc->findAll();
 
 
