@@ -189,3 +189,13 @@ legend{
     background-color: whitesmoke;
     color: #0a0a0a;
 }
+
+
+/*--------------------------------------------------*/
+/*************************      version mobile      */
+/*--------------------------------------------------*/
+@media screen and (max-width: 1024px) {
+.espaceBoutton{
+    margin-bottom: 1rem !important;
+}
+    }

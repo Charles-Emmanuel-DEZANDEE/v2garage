@@ -8,13 +8,13 @@
         <h1>liste des clients</h1>
 
         <div class="row entete">
-            <div class="col-sm-3"> <a href="{{ url('app_admin_customer_add') }}" class="btn bg-primary "> Nouveau client </a> </div>
+            <div class="col-sm-3 espaceBoutton"> <a href="{{ url('app_admin_customer_add') }}" class="btn bg-primary "> Nouveau client </a> </div>
             <div class="col-sm-9">
                 {{ form_start(form, { 'attr' : { 'novalidate' : 'novalidate' , 'class': 'form-horizontal'} }) }}
 
                 <div class="form-group">
 
-                    <div class="col-sm-5">
+                    <div class="col-sm-5 espaceBoutton">
                         {# Génération de l'input. #}
                         {{ form_widget(form.name, {'attr': {'class': 'form-control', 'placeholder' : 'Recherche par nom'}}) }}
                     </div>
