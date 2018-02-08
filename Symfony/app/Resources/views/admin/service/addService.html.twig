@@ -4,9 +4,9 @@
 
 <div class="container">
     {% if typePage == 'ajout' %}
-        <h1>Ajouter un Véhicule</h1>
+        <h1>Ajouter un Service</h1>
     {% elseif typePage == 'modif' %}
-        <h1>Modifier un Véhicule</h1>
+        <h1>Modifier un Service</h1>
     {% endif %}
 
     {{ form_start(form, { 'attr' : { 'novalidate' : 'novalidate' , 'class': 'form-horizontal'} }) }}
@@ -14,7 +14,7 @@
     {# Les erreurs générales du formulaire. #}
     <p class="alert">{{ form_errors(form) }} </p>
 
-    <legend>{{client.lastName}} {{client.firstName}}</legend>
+    {#<legend>{{client.lastName}} {{client.firstName}}</legend>#}
 
     {# Génération du label + error + widget pour un champ. #}
     <div class="form-group required">
