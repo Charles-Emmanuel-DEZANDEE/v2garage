@@ -13,7 +13,13 @@ class ServiceType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name')->add('value')->add('unite')->add('taxRate')->add('category');
+        $builder
+            ->add('name')
+            ->add('value')
+            ->add('unite')
+            ->add('taxRate')
+            ->add('category')
+        ;
     }/**
      * {@inheritdoc}
      */
