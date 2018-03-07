@@ -13,10 +13,7 @@ class CategoryType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('name')
-            ->add('position')
-        ;
+        $builder->add('name')->add('position');
     }/**
      * {@inheritdoc}
      */

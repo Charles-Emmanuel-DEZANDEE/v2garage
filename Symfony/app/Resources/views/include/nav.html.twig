@@ -1,69 +1,33 @@
-{#<nav class="navbar navbar-inverse">#}
-    {#<div class="container-fluid">#}
-        {#<div class="navbar-header">#}
-            {#<a class="navbar-brand" href="{{url('app_homepage_index')}}"> GarageMike </a>#}
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="{{url('app_homepage_index')}}"> GarageMike </a>
             {#{% if is_granted('IS_AUTHENTICATED_FULLY') and is_granted('ROLE_ADMIN')%}#}
             {#<button class="btn btn-primary navbar-btn">Client en cours <span class="badge"> 70€ </span></button>#}
             {#{% endif %}#}
 
-            {#<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">#}
-                {#<span class="icon-bar"></span>#}
-                {#<span class="icon-bar"></span>#}
-                {#<span class="icon-bar"></span>#}
-            {#</button>#}
-        {#</div>#}
-        {#<div class="collapse navbar-collapse" id="myNavbar">#}
-            {#{% if is_granted('IS_AUTHENTICATED_FULLY') and is_granted('ROLE_ADMIN')%}#}
-            {#<ul class="nav navbar-nav">#}
-                {#<li class="active"><a href="{{ url('app_admin_customer_add') }}">Ajouter un client</a></li>#}
-                {#<li ><a href="{{ url('app_admin_customer_list') }}">Liste clients</a></li>#}
-                {#<li><a href="{{ url('app_admin_category_list') }}">Prestations</a></li>#}
-            {#</ul>#}
-            {#{% endif %}#}
-            {#<ul class="nav navbar-nav navbar-right">#}
-                {#<li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>#}
-                {#{% if is_granted('IS_AUTHENTICATED_FULLY') and is_granted('ROLE_ADMIN')%}#}
-                    {#<li>#}
-                        {#<a href="{{ url('app_security_logout') }}"><span class="glyphicon glyphicon-log-out"></span> Déconnexion</a>#}
-                    {#</li>#}
-                {#{% else %}#}
-                    {#<li><a href="{{ url('app_security_login') }}"><span class="glyphicon glyphicon-log-in"></span> Connexion</a></li>#}
-                {#{% endif %}#}
-            {#</ul>#}
-        {#</div>#}
-    {#</div>#}
-{#</nav>#}
-
-<nav class="navbar navbar-toggleable-md navbar-inverse">
-    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <a class="navbar-brand" href="{{url('app_homepage_index')}}"> GarageMike </a>
-
-    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-        <ul class="navbar-nav mr-auto mt-2 mt-md-0">
-            <li class="nav-item active">
-                <a class="nav-link" href="{{ url('app_admin_customer_add') }}">Ajouter un client <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ url('app_admin_customer_list') }}">Liste clients</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ url('app_admin_category_list') }}">Prestations</a>
-            </li>
-        </ul>
-
-        <ul class="nav navbar-nav navbar-right">
-            {#<li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>#}
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
             {% if is_granted('IS_AUTHENTICATED_FULLY') and is_granted('ROLE_ADMIN')%}
-                <li><a href="{{ url('app_security_logout') }}"><span class="glyphicon glyphicon-log-out"></span> Déconnexion</a></li>
-            {% else %}
-                <li><a href="{{ url('app_security_login') }}"><span class="glyphicon glyphicon-log-in"></span> Connexion</a></li>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="{{ url('app_admin_customer_add') }}">Ajouter un client</a></li>
+                <li ><a href="{{ url('app_admin_customer_list') }}">Liste clients</a></li>
+                <li><a href="#">Prestations</a></li>
+            </ul>
             {% endif %}
-        </ul>
-        {#<form class="form-inline my-2 my-lg-0">#}
-            {#<input class="form-control mr-sm-2" type="text" placeholder="Search">#}
-            {#<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>#}
-        {#</form>#}
+            <ul class="nav navbar-nav navbar-right">
+                {#<li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>#}
+                {% if is_granted('IS_AUTHENTICATED_FULLY') and is_granted('ROLE_ADMIN')%}
+                    <li><a href="{{ url('app_security_logout') }}"><span class="glyphicon glyphicon-log-out"></span> Déconnexion</a></li>
+                {% else %}
+                    <li><a href="{{ url('app_security_login') }}"><span class="glyphicon glyphicon-log-in"></span> Connexion</a></li>
+                {% endif %}
+            </ul>
+        </div>
     </div>
 </nav>
