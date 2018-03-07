@@ -2,10 +2,9 @@
 
 namespace AppBundle\Controller\Admin;
 
-use AppBundle\Entity\Customer;
-use AppBundle\Entity\Vehicule;
+use AppBundle\Entity\Category;
 use AppBundle\Entity\Service;
-use AppBundle\Form\VehiculeType;
+use AppBundle\Form\ServiceType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,28 +41,28 @@ class ServiceController extends Controller
     }
 
     /**
-     * @Route("/service/add/{idCustomer}", name="app_admin_service_add")
-     * @Route("/service/update/{idCustomer}/{idVehicule}", name="app_admin_service_update")
+     * @Route("/service/add/{idCategory}", name="app_admin_service_add")
+     * @Route("/service/update/{idCategory}/{idService}", name="app_admin_service_update")
      *
      */
-    public function addVehiculeAction(Request $request, $idCustomer, $idVehicule= null)
+    public function addServiceAction(Request $request, $idCategory, $idService= null)
     {
         $doctrine = $this->getDoctrine();
         $em = $doctrine->getManager();
-        $rcVehicule = $doctrine->getRepository(Vehicule::class);
+        $rcService = $doctrine->getRepository(Service::class);
         $typePage = 'ajout';
 
 
-            $CustomerEntity = $doctrine->getRepository(Customer::class)->find($idCustomer);
+            $CategoryEntity = $doctrine->getRepository(Category::class)->find($idCategory);
 
 
-            $serviceEntity = $idVehicule ? $rcVehicule->find($idVehicule) : new Vehicule($CustomerEntity);
+            $serviceEntity = $idService ? $rcService->find($idService) : new Service();
 
 
-        $form = $this->createForm(VehiculeType::class, $serviceEntity);
+        $form = $this->createForm(ServiceType::class, $serviceEntity);
         $form->handleRequest($request);
 
-        if($idVehicule){
+        if($idService){
             $typePage = 'modif';
         }
 
@@ -72,36 +71,33 @@ class ServiceController extends Controller
             $saisie = $form->getData();
 
             // vérification qu'il n'y a pas de doublon
-            $pasDeDoublon = $rcVehicule->serviceNotExist($saisie->getRegistration());
+            $pasDeDoublon = $rcService->serviceNotExist($saisie->getName());
 
 
             // en update
-            if($idVehicule){
+            if($idService){
 
                 //pour permettre la mise à jour
                 $pasDeDoublon = true;
             }
             if ($pasDeDoublon){
 
-                //mise à jour de la date de derniére action du client
-                $CustomerEntity->setLastActionDate(new \DateTime());
-                $em->persist($CustomerEntity);
 
-                //insertion du véhicule
+                //insertion du service
                 $em->persist($serviceEntity);
 
                 $em->flush();
 
                 //message flash
-                $message = $idVehicule ? 'Le véhicule a été mis à jour' : 'Le véhicule a été inséré';
+                $message = $idService ? 'Le service a été mis à jour' : 'Le service a été inséré';
                 $this->addFlash('info', $message);
 
-                // redirection vers la page du client
-                return $this->redirectToRoute('app_admin_customer_view', array('id' => $idCustomer));
+                // redirection vers la page de la catégory
+                return $this->redirectToRoute('app_admin_service_list', array('id' => $idCategory));
             }
             else{
                 //message flash
-                $message = 'Le véhicule existe déjà';
+                $message = 'Le service existe déjà';
                 $this->addFlash('warning', $message);
 
                 // redirection vers le formulaire
@@ -111,30 +107,10 @@ class ServiceController extends Controller
 
         }
 
-        return $this->render('admin/service/addVehicule.html.twig', [
+        return $this->render('admin/service/addService.html.twig', [
             'form' => $form->createView(),
             'typePage' => $typePage,
-            'client' => $CustomerEntity,
-        ]);
-    }
-    /**
-     * @Route("/service/{id}", name="app_admin_service_view")
-     */
-    public function viewVehicule(Request $request, $id)
-    {
-        if ($id == null){
-            $message = 'Veuillez selectionner un véhicule';
-            $this->addFlash('danger', $message);
-            return $this->redirectToRoute('app_admin_customer_list');
-        }
-        $doctrine = $this->getDoctrine();
-        $rc = $doctrine->getRepository(Vehicule::class);
-        $result = $rc->find($id);
-
-        //dump($results); exit;
-
-        return $this->render('admin/service/viewVehicule.html.twig', [
-            'result' => $result
+            'category' => $CategoryEntity,
         ]);
     }
 

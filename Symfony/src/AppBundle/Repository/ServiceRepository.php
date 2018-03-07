@@ -10,4 +10,19 @@ namespace AppBundle\Repository;
  */
 class ServiceRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function serviceNotExist($name){
+        $response = true;
+        $results = $this->createQueryBuilder('service')
+            ->where('service.name = :vname')
+            ->setParameter('vname' , $name)
+            ->getQuery()
+            ->getResult()
+        ;
+        if (!empty($results)){
+            $response = false;
+        }
+
+        return $response;
+    }
+
 }
