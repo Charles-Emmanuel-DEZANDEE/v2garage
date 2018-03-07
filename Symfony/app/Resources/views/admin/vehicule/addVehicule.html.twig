@@ -109,13 +109,8 @@
             });
 //            formatage du numéro de série et immatriculation en majuscule
             $('.upper').keyup(function() {
-                var val = this.value.replace(/\D/g, '');
-                var newVal = '';
-                while (val.length > 2) {
-                    newVal += val.substr(0, 2) + ' ';
-                    val = val.substr(2);
-                }
-                newVal += val;
+                var val = this.value;
+                var newVal = val.toUpperCase();
                 this.value = newVal;
 
             });
