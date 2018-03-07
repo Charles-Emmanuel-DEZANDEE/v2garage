@@ -232,9 +232,10 @@ class Service
     /**
      * Constructor
      */
-    public function __construct()
+    public function __construct( Category $category)
     {
         $this->commandsServices = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->category = $category;
     }
 
     /**

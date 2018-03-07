@@ -56,7 +56,7 @@ class ServiceController extends Controller
             $CategoryEntity = $doctrine->getRepository(Category::class)->find($idCategory);
 
 
-            $serviceEntity = $idService ? $rcService->find($idService) : new Service();
+            $serviceEntity = $idService ? $rcService->find($idService) : new Service($CategoryEntity);
 
 
         $form = $this->createForm(ServiceType::class, $serviceEntity);
