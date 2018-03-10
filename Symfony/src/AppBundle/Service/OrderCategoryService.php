@@ -24,23 +24,24 @@ class OrderCategoryService
     }
 
 
-    public function upCategory(Category $category){
+    public function upCategory(Category $category)
+    {
         $positionInitiale = $category->getPosition();
         $positionCible = $positionInitiale - 1;
 
         //on récupère la categorie supérieure
         $rc = $this->em->getRepository(Category::class);
-        $rcCategorySuperieur = $rc->findOneBy(['position'=> $positionCible]);
+        $rcCategorySuperieur = $rc->findOneBy(['position' => $positionCible]);
 
         // on set les nouvelles position
         $category->setPosition($positionCible);
         $rcCategorySuperieur->setPosition($positionInitiale);
 
 
-            $this->em->persist($category);
-            $this->em->persist($rcCategorySuperieur);
+        $this->em->persist($category);
+        $this->em->persist($rcCategorySuperieur);
 
-            $this->em->flush();
+        $this->em->flush();
 
     }
 

@@ -44,21 +44,21 @@ class CategoryController extends Controller
      * @Route("/category/update/{idCategory}", name="app_admin_category_update")
      *
      */
-    public function addCategoryAction(Request $request, $idCategory= null)
+    public function addCategoryAction(Request $request, $idCategory = null)
     {
         $doctrine = $this->getDoctrine();
         $em = $doctrine->getManager();
         $rcCategory = $doctrine->getRepository(Category::class);
         $typePage = 'ajout';
-        
 
-            $categoryEntity = $idCategory ? $rcCategory->find($idCategory) : new Category();
+
+        $categoryEntity = $idCategory ? $rcCategory->find($idCategory) : new Category();
 
 
         $form = $this->createForm(CategoryType::class, $categoryEntity);
         $form->handleRequest($request);
 
-        if($idCategory){
+        if ($idCategory) {
             $typePage = 'modif';
         }
 
@@ -67,23 +67,21 @@ class CategoryController extends Controller
             $saisie = $form->getData();
 
 
-
             // vérification qu'il n'y a pas de doublon
             $pasDeDoublon = $rcCategory->categoryNotExist($saisie->getName());
 
 
             // en update
-            if($idCategory){
+            if ($idCategory) {
 
                 //pour permettre la mise à jour
                 $pasDeDoublon = true;
-            }
-            else{
+            } else {
                 //on set la position en création
                 $categoryEntity->setPosition($rcCategory->nextPositionAvailable());
 
             }
-            if ($pasDeDoublon){
+            if ($pasDeDoublon) {
 
 
                 //insertion de la categorie
@@ -97,8 +95,7 @@ class CategoryController extends Controller
 
                 // redirection vers la page de la catégorie
                 return $this->redirectToRoute('app_admin_service_list', array('id' => $idCategory));
-            }
-            else{
+            } else {
                 //message flash
                 $message = 'La categorie existe déjà';
                 $this->addFlash('warning', $message);

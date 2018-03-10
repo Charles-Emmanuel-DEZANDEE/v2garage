@@ -10,15 +10,15 @@ namespace AppBundle\Repository;
  */
 class CategoryRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function categoryNotExist($name){
+    public function categoryNotExist($name)
+    {
         $response = true;
         $results = $this->createQueryBuilder('category')
             ->where('category.name = :vname')
-            ->setParameter('vname' , $name)
+            ->setParameter('vname', $name)
             ->getQuery()
-            ->getResult()
-        ;
-        if (!empty($results)){
+            ->getResult();
+        if (!empty($results)) {
             $response = false;
         }
 
@@ -30,8 +30,9 @@ class CategoryRepository extends \Doctrine\ORM\EntityRepository
         $result = $this->createQueryBuilder('category')
             ->select('category, MAX(category.position) as last_position')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
+        // cas ou il n'existe aucune categorie
+        if ($result == null || empty($result)) $result = 0;
         //on incremente de 1 pour avoir la position suivante
         return $result + 1;
     }
