@@ -6,7 +6,11 @@
 
 
         <h1>liste des categories de services</h1>
+        <div class="row entete">
 
+            <div class="col-sm-3 espaceBoutton"><a href="{{ url('app_admin_category_add') }}" class="btn bg-primary ">
+                    Nouvelle categorie </a></div>
+        </div>
 
         <div class="table-responsive table-bordered">
             <table class="table ">
@@ -22,15 +26,15 @@
                 <tbody>
                 {% for result in results %}
                     <tr>
-                        <td >{{ result.position }}   </td>
-                        <td><a href="#" class="glyphicon glyphicon-upload "> </a></td>
-                        <td><a href="#" class="glyphicon glyphicon-download"></a></td>
+                        <td>{{ result.position }}   </td>
+                        <td><a href="{{ path('app_admin_category_up', {'idCategory': result.id}) }}" class="glyphicon glyphicon-upload "> </a></td>
+                        <td><a href="{{ path('app_admin_category_down', {'idCategory': result.id}) }}" class="glyphicon glyphicon-download"></a></td>
 
                         <td>{{ result.name }} </td>
-                        <td> <a href="#" class="btn bg-primary"> Voir les services </a> </td>
+                        <td><a href="#" class="btn bg-warning"> Voir les services </a></td>
 
-                        <td> <a href="#" class="btn bg-primary "> Modifier </a> </td>
-                        <td> <a href="#" class="glyphicon glyphicon-remove-sign "> Supprimer </a> </td>
+                        <td><a href="#" class="btn bg-primary "> Modifier </a></td>
+                        <td><a href="#" class="glyphicon glyphicon-remove-sign "> Supprimer </a></td>
 
                     </tr>
                 {% endfor %}
@@ -38,11 +42,11 @@
             </table>
         </div>
 
-    <div class="navigation">
-        {{ knp_pagination_render(results) }}
-    </div>
+        <div class="navigation">
+            {{ knp_pagination_render(results) }}
+        </div>
 
-</div>
+    </div>
 
 {% endblock %}
 

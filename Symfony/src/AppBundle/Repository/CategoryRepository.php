@@ -37,4 +37,15 @@ class CategoryRepository extends \Doctrine\ORM\EntityRepository
         return $result + 1;
     }
 
+    public function findAllOrderByPosition(){
+        $results = $this->createQueryBuilder('category')
+            ->orderBy('category.position')
+            ->getQuery()
+            ->getResult()
+        ;
+
+        return $results;
+    }
+
+
 }

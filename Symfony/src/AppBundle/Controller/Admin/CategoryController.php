@@ -4,6 +4,7 @@ namespace AppBundle\Controller\Admin;
 
 use AppBundle\Entity\Category;
 use AppBundle\Form\CategoryType;
+use AppBundle\Service\OrderCategoryService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +24,7 @@ class CategoryController extends Controller
 
         $doctrine = $this->getDoctrine();
         $rc = $doctrine->getRepository(Category::class);
-        $results = $rc->findAll();
+        $results = $rc->findAllOrderByPosition();
 
 
         $paginator = $this->get('knp_paginator');
@@ -38,6 +39,71 @@ class CategoryController extends Controller
 
         ]);
     }
+
+    /**
+     * @Route("/category/up/{idCategory}", name="app_admin_category_up")
+     * @Method({"GET", "POST"})
+     */
+    public function upAction(Request $request, $idCategory, OrderCategoryService $orderCategoryService)
+    {
+
+
+        $doctrine = $this->getDoctrine();
+        $rc = $doctrine->getRepository(Category::class);
+        $categoryEntity = $rc->find($idCategory);
+
+        // on monte d'un cran
+        $orderCategoryService->upCategory($categoryEntity);
+
+        // on affiche
+        $results = $rc->findAllOrderByPosition();
+
+
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $results,
+            $request->query->getInt('page', 1),
+            10
+        );
+
+        return $this->render('admin/category/list.html.twig', [
+            'results' => $pagination,
+
+        ]);
+    }
+
+    /**
+     * @Route("/category/down/{idCategory}", name="app_admin_category_down")
+     * @Method({"GET", "POST"})
+     */
+    public function downAction(Request $request, $idCategory, OrderCategoryService $orderCategoryService)
+    {
+
+
+        $doctrine = $this->getDoctrine();
+        $rc = $doctrine->getRepository(Category::class);
+        $categoryEntity = $rc->find($idCategory);
+
+        // on monte d'un cran
+        $orderCategoryService->downCategory($categoryEntity);
+
+        // on affiche
+        $results = $rc->findAllOrderByPosition();
+
+
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $results,
+            $request->query->getInt('page', 1),
+            10
+        );
+
+        return $this->render('admin/category/list.html.twig', [
+            'results' => $pagination,
+
+        ]);
+    }
+
 
     /**
      * @Route("/category/add", name="app_admin_category_add")
