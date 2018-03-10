@@ -66,6 +66,8 @@ class CategoryController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $saisie = $form->getData();
 
+
+
             // vérification qu'il n'y a pas de doublon
             $pasDeDoublon = $rcCategory->categoryNotExist($saisie->getName());
 
@@ -76,24 +78,29 @@ class CategoryController extends Controller
                 //pour permettre la mise à jour
                 $pasDeDoublon = true;
             }
+            else{
+                //on set la position en création
+                $categoryEntity->setPosition($rcCategory->nextPositionAvailable());
+
+            }
             if ($pasDeDoublon){
 
 
-                //insertion du Category
+                //insertion de la categorie
                 $em->persist($categoryEntity);
 
                 $em->flush();
 
                 //message flash
-                $message = $idCategory ? 'Le category a été mis à jour' : 'Le category a été inséré';
+                $message = $idCategory ? 'La categorie a été mis à jour' : 'La categorie a été insérée';
                 $this->addFlash('info', $message);
 
-                // redirection vers la page de la catégory
-                return $this->redirectToRoute('app_admin_category_list', array('id' => $idCategory));
+                // redirection vers la page de la catégorie
+                return $this->redirectToRoute('app_admin_service_list', array('id' => $idCategory));
             }
             else{
                 //message flash
-                $message = 'Le category existe déjà';
+                $message = 'La categorie existe déjà';
                 $this->addFlash('warning', $message);
 
                 // redirection vers le formulaire
