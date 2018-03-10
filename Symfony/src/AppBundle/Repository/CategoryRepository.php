@@ -10,4 +10,30 @@ namespace AppBundle\Repository;
  */
 class CategoryRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function categoryNotExist($name){
+        $response = true;
+        $results = $this->createQueryBuilder('category')
+            ->where('category.name = :vname')
+            ->setParameter('vname' , $name)
+            ->getQuery()
+            ->getResult()
+        ;
+        if (!empty($results)){
+            $response = false;
+        }
+
+        return $response;
+    }
+
+    public function nextPositionAvailable()
+    {
+        $result = $this->createQueryBuilder('category')
+            ->select('category, MAX(category.position) as last_position')
+            ->getQuery()
+            ->getResult()
+        ;
+        //on incremente de 1 pour avoir la position suivante
+        return $result + 1;
+    }
+
 }
