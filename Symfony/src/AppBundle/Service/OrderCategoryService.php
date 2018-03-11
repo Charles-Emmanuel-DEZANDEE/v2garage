@@ -29,19 +29,22 @@ class OrderCategoryService
         $positionInitiale = $category->getPosition();
         $positionCible = $positionInitiale - 1;
 
-        //on récupère la categorie supérieure
-        $rc = $this->em->getRepository(Category::class);
-        $rcCategorySuperieur = $rc->findOneBy(['position' => $positionCible]);
+        if ($positionCible > 0) {
 
-        // on set les nouvelles position
-        $category->setPosition($positionCible);
-        $rcCategorySuperieur->setPosition($positionInitiale);
+            //on récupère la categorie supérieure
+            $rc = $this->em->getRepository(Category::class);
+            $rcCategorySuperieur = $rc->findOneBy(['position' => $positionCible]);
+
+            // on set les nouvelles position
+            $category->setPosition($positionCible);
+            $rcCategorySuperieur->setPosition($positionInitiale);
 
 
-        $this->em->persist($category);
-        $this->em->persist($rcCategorySuperieur);
+            $this->em->persist($category);
+            $this->em->persist($rcCategorySuperieur);
 
-        $this->em->flush();
+            $this->em->flush();
+        }
 
     }
 
@@ -50,19 +53,21 @@ class OrderCategoryService
         $positionInitiale = $category->getPosition();
         $positionCible = $positionInitiale + 1;
 
-        //on récupère la categorie supérieure
-        $rc = $this->em->getRepository(Category::class);
-        $rcCategorySuperieur = $rc->findOneBy(['position' => $positionCible]);
+        if ($positionCible < $this->em->getRepository(Category::class)->nextPositionAvailable()) {
+            //on récupère la categorie supérieure
+            $rc = $this->em->getRepository(Category::class);
+            $rcCategorySuperieur = $rc->findOneBy(['position' => $positionCible]);
 
-        // on set les nouvelles position
-        $category->setPosition($positionCible);
-        $rcCategorySuperieur->setPosition($positionInitiale);
+            // on set les nouvelles position
+            $category->setPosition($positionCible);
+            $rcCategorySuperieur->setPosition($positionInitiale);
 
 
-        $this->em->persist($category);
-        $this->em->persist($rcCategorySuperieur);
+            $this->em->persist($category);
+            $this->em->persist($rcCategorySuperieur);
 
-        $this->em->flush();
+            $this->em->flush();
+        }
 
     }
 

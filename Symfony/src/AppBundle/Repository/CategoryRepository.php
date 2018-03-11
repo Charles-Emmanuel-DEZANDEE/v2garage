@@ -27,22 +27,26 @@ class CategoryRepository extends \Doctrine\ORM\EntityRepository
 
     public function nextPositionAvailable()
     {
-        $result = $this->createQueryBuilder('category')
+        $query = $this->createQueryBuilder('category')
             ->select('category, MAX(category.position) as last_position')
             ->getQuery()
-            ->getResult();
+            ->getScalarResult();
+        $result = $query[0]['last_position'];
+
         // cas ou il n'existe aucune categorie
-        if ($result == null || empty($result)) $result = 0;
+        if ($result == null || empty($result)) {
+            $result = 0;
+        }
         //on incremente de 1 pour avoir la position suivante
         return $result + 1;
     }
 
-    public function findAllOrderByPosition(){
+    public function findAllOrderByPosition()
+    {
         $results = $this->createQueryBuilder('category')
             ->orderBy('category.position')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
 
         return $results;
     }
