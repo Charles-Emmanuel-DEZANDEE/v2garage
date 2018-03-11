@@ -16,15 +16,15 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 class ServiceController extends Controller
 {
     /**
-     * @Route("/service", name="app_admin_service_list")
+     * @Route("/service/{idCategory}", name="app_admin_service_list")
      * @Method({"GET", "POST"})
      */
-    public function listAction(Request $request)
+    public function listAction(Request $request, $idCategory)
     {
 
         $doctrine = $this->getDoctrine();
         $rc = $doctrine->getRepository(Service::class);
-        $results = $rc->findAll();
+        $results = $rc->findBy(['category' => $idCategory]);
 
 
         $paginator = $this->get('knp_paginator');

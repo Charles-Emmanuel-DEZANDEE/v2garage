@@ -160,7 +160,8 @@ class CategoryController extends Controller
                 $this->addFlash('info', $message);
 
                 // redirection vers la page de la catégorie
-                return $this->redirectToRoute('app_admin_service_list', array('id' => $idCategory));
+                return $this->redirectToRoute('app_admin_category_list');
+/*                return $this->redirectToRoute('app_admin_service_list', array('idCategory' => $idCategory));*/
             } else {
                 //message flash
                 $message = 'La categorie existe déjà';
@@ -179,5 +180,27 @@ class CategoryController extends Controller
             'category' => $categoryEntity,
         ]);
     }
+
+    /**
+     * @Route("/category/delete/{idCategory}", name="app_admin_category_delete")
+     */
+    public function deleteAction(Request $request, $idCategory)
+    {
+        // sélection de l'entité à supprimer
+        $result = $this->getDoctrine()->getRepository(Category::class)->find($idCategory);
+
+        // suppression
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($result);
+        $em->flush();
+
+        //message flash
+        $message = 'La categorie a été supprimée';
+        $this->addFlash('warning', $message);
+
+        // redirection
+        return $this->redirectToRoute('app_admin_category_list');
+    }
+
 
 }
