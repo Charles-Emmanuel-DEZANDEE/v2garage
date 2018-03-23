@@ -16,11 +16,11 @@ class Command
 
 
     /**
-     * Many commands have One Customer.
-     * @ORM\ManyToOne(targetEntity="Customer", inversedBy="commands")
-     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
+     * Many commands have One Vehicule.
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Vehicule", inversedBy="commands")
+     * @ORM\JoinColumn(name="vehicule_id", referencedColumnName="id")
      */
-    private $customer;
+    private $vehicule;
 
     /**
      * @var int
@@ -366,27 +366,27 @@ class Command
     }
 
     /**
-     * Set customer.
+     * Set vehicule.
      *
-     * @param \AppBundle\Entity\Customer|null $customer
+     * @param \AppBundle\Entity\Vehicule|null $vehicule
      *
      * @return Command
      */
-    public function setCustomer(\AppBundle\Entity\Customer $customer = null)
+    public function setVehicule(\AppBundle\Entity\Vehicule $vehicule = null)
     {
-        $this->customer = $customer;
+        $this->vehicule = $vehicule;
 
         return $this;
     }
 
     /**
-     * Get customer.
+     * Get vehicule.
      *
-     * @return \AppBundle\Entity\Customer|null
+     * @return \AppBundle\Entity\Vehicule|null
      */
-    public function getCustomer()
+    public function getVehicule()
     {
-        return $this->customer;
+        return $this->vehicule;
     }
 
 

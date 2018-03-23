@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -92,6 +93,12 @@ class Vehicule
      */
     private $isActive;
 
+    /**
+     * One vehicule has Many commands.
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Command", mappedBy="customer", cascade={"persist"})
+     */
+    private $commands;
+
     public function __construct(Customer $customer)
     {
         // Par défaut, le client est actif
@@ -100,6 +107,42 @@ class Vehicule
         $this->createDate = new \Datetime();
         // un véhicule est obligatoire rattaché à un client
         $this->setCustomer($customer);
+        $this->commands = new ArrayCollection();
+    }
+    /**
+     * Add command.
+     *
+     * @param \AppBundle\Entity\Command $command
+     *
+     * @return Vehicule
+     */
+    public function addCommand(\AppBundle\Entity\Command $command)
+    {
+        $this->commands[] = $command;
+
+        return $this;
+    }
+
+    /**
+     * Remove command.
+     *
+     * @param \AppBundle\Entity\Command $command
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeCommand(\AppBundle\Entity\Command $command)
+    {
+        return $this->commands->removeElement($command);
+    }
+
+    /**
+     * Get commands.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCommands()
+    {
+        return $this->commands;
     }
 
 

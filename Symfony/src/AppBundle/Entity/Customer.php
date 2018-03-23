@@ -156,11 +156,7 @@ class Customer
      */
     private $addresses;
 
-    /**
-     * One customer has Many commands.
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Command", mappedBy="customer", cascade={"persist"})
-     */
-    private $commands;
+
 
     public function __construct()
     {
@@ -171,7 +167,7 @@ class Customer
         $this->lastActionDate = new \DateTime();
         $this->vehicules = new ArrayCollection();
         $this->addresses = new ArrayCollection();
-        $this->commands = new ArrayCollection();
+
     }
 
     /**
@@ -649,41 +645,6 @@ class Customer
         return $this->addresses;
     }
 
-    /**
-     * Add command.
-     *
-     * @param \AppBundle\Entity\Command $command
-     *
-     * @return Customer
-     */
-    public function addCommand(\AppBundle\Entity\Command $command)
-    {
-        $this->commands[] = $command;
-
-        return $this;
-    }
-
-    /**
-     * Remove command.
-     *
-     * @param \AppBundle\Entity\Command $command
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removeCommand(\AppBundle\Entity\Command $command)
-    {
-        return $this->commands->removeElement($command);
-    }
-
-    /**
-     * Get commands.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getCommands()
-    {
-        return $this->commands;
-    }
 
     /**
      * Set civility.
