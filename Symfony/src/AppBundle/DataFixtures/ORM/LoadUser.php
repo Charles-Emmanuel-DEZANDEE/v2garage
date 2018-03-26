@@ -39,6 +39,15 @@ class LoadUser extends Fixture implements  FixtureInterface
             // On la persiste
             $manager->persist($user);
 
+        // On crée un user
+        $user2 = new User();
+        $user2->setEmail('cdezandee@gmail.com');
+        $user2->setUsername('admin');
+        $user2->setPassword('P@$$w0rd');
+
+            // On la persiste
+            $manager->persist($user2);
+
         // On déclenche l'enregistrement
         $manager->flush();
     }

@@ -37,6 +37,11 @@ class TaxRate
      */
     private $value;
 
+    public function __toString() : string
+    {
+        return $this->getValue();
+    }
+
     public function __construct()
     {
         $this->services = new ArrayCollection();
@@ -53,29 +58,6 @@ class TaxRate
         return $this->id;
     }
 
-    /**
-     * Set name.
-     *
-     * @param string $name
-     *
-     * @return TaxRate
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
 
     /**
      * Set value.

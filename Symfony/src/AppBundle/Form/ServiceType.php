@@ -2,9 +2,15 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Entity\TaxRate;
+use AppBundle\Entity\Unite;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ServiceType extends AbstractType
 {
@@ -14,11 +20,32 @@ class ServiceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('value')
-            ->add('unite')
-            ->add('taxRate')
-            ->add('category');
+            ->add('name', TextType::class, [
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'nom requis'
+                    ])
+                ]
+            ])
+            ->add('value', NumberType::class)
+            ->add('unite', EntityType::class, [
+                'class' => Unite::class,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'tva requise'
+                    ])
+                ]
+            ])
+            ->add('taxRate', EntityType::class, [
+                'class' => TaxRate::class,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'tva requise'
+                    ])
+                ]
+            ])
+//            ->add('category')
+        ;
     }/**
      * {@inheritdoc}
      */

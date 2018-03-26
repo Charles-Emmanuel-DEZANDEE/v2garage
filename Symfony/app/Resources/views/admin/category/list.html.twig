@@ -34,7 +34,7 @@
                         <td><a href="{{ path('app_admin_service_list', {'idCategory': result.id}) }}" class="btn bg-warning"> Voir les services </a></td>
 
                         <td><a href="{{ path('app_admin_category_update', {'idCategory': result.id}) }}" class="btn bg-primary "> Modifier </a></td>
-                        <td><a href="{{ path('app_admin_category_delete', {'idCategory': result.id}) }}" class="glyphicon glyphicon-remove-sign"> Supprimer </a></td>
+                        {#<td><a href="{{ path('app_admin_category_delete', {'idCategory': result.id}) }}" class="glyphicon glyphicon-remove-sign"> Supprimer </a></td>#}
 
                     </tr>
                 {% endfor %}

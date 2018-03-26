@@ -54,9 +54,9 @@ class Service
 
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="unite", type="string", length=255, nullable=true)
+     * Many services have One unite.
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Unite", inversedBy="services")
+     * @ORM\JoinColumn(name="unite_id", referencedColumnName="id")
      */
     private $unite;
 
@@ -277,11 +277,11 @@ class Service
     /**
      * Set unite.
      *
-     * @param string|null $unite
+     * @param \AppBundle\Entity\Unite|null $unite
      *
      * @return Service
      */
-    public function setUnite($unite = null)
+    public function setUnite(\AppBundle\Entity\Unite $unite = null)
     {
         $this->unite = $unite;
 
@@ -291,7 +291,7 @@ class Service
     /**
      * Get unite.
      *
-     * @return string|null
+     * @return \AppBundle\Entity\Unite|null
      */
     public function getUnite()
     {

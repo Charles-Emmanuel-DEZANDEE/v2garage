@@ -26,6 +26,9 @@ class ServiceController extends Controller
         $rc = $doctrine->getRepository(Service::class);
         $results = $rc->findBy(['category' => $idCategory]);
 
+        $rcCategory = $doctrine->getRepository(Category::class);
+        $category = $rcCategory->find($idCategory);
+
 
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
@@ -36,6 +39,7 @@ class ServiceController extends Controller
 
         return $this->render('admin/service/list.html.twig', [
             'results' => $pagination,
+            'category' => $category,
 
         ]);
     }
@@ -53,10 +57,10 @@ class ServiceController extends Controller
         $typePage = 'ajout';
 
 
-            $CategoryEntity = $doctrine->getRepository(Category::class)->find($idCategory);
+            $categoryEntity = $doctrine->getRepository(Category::class)->find($idCategory);
 
 
-            $serviceEntity = $idService ? $rcService->find($idService) : new Service($CategoryEntity);
+            $serviceEntity = $idService ? $rcService->find($idService) : new Service($categoryEntity);
 
 
         $form = $this->createForm(ServiceType::class, $serviceEntity);
@@ -93,7 +97,7 @@ class ServiceController extends Controller
                 $this->addFlash('info', $message);
 
                 // redirection vers la page de la catégory
-                return $this->redirectToRoute('app_admin_service_list', array('id' => $idCategory));
+                return $this->redirectToRoute('app_admin_service_list', array('idCategory' => $idCategory));
             }
             else{
                 //message flash
@@ -101,7 +105,7 @@ class ServiceController extends Controller
                 $this->addFlash('warning', $message);
 
                 // redirection vers le formulaire
-                return $this->redirectToRoute('app_admin_service_add');
+                return $this->redirectToRoute('app_admin_service_add', array('idCategory' => $idCategory));
             }
 
 
@@ -110,8 +114,10 @@ class ServiceController extends Controller
         return $this->render('admin/service/addService.html.twig', [
             'form' => $form->createView(),
             'typePage' => $typePage,
-            'category' => $CategoryEntity,
+            'category' => $categoryEntity,
         ]);
     }
+
+
 
 }

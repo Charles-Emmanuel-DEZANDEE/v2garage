@@ -5,16 +5,27 @@
     <div class="container jumbotron ">
 
 
-        <h1>liste des services</h1>
+        <h1>liste des services - {{ category.name }}</h1>
+
+        <div class="row entete">
 
 
-        <div class="table-responsive table-bordered">
+        <div class="btn bg-primary espaceBoutton"><a href="{{ url('app_admin_service_add', {'idCategory': category.id}) }}" class="btn bg-primary ">
+                Nouveau service </a></div>
+
+        </div>
+
+
+    <div class="table-responsive table-bordered">
         <table class="table ">
             <thead>
                 <tr>
                     <th>Nom</th>
+                    <th>Prix</th>
+                    <th>Unité</th>
+                    <th>TVA</th>
+                    <th>TTC</th>
                     <th>Action</th>
-                    <th>Véhicule</th>
 
 
                 </tr>
@@ -22,17 +33,12 @@
             <tbody>
             {% for result in results %}
                 <tr>
-                    <td>{{ result.firstName }} {{ result.lastName }}</td>
-                    <td><a href="#" class=""><i class="fa fa-eye fa-2x" aria-hidden="true"></i> </a></td>
-                    <td>
-                        <ul>
-                            {% for vehicule in result.vehicules %}
-                            <li>{{vehicule.brand}} {{vehicule.model}} - {{vehicule.registration}}  <a href="#" class="btn bg-primary "> Faire devis </a></li>
-
-                            {% endfor %}
-                        </ul>
-                    </td>
-
+                    <td>{{ result.name }}</td>
+                    <td>{{ result.value }} €</td>
+                    <td>{{ result.unite }}</td>
+                    <td>{{ result.taxRate.value }} %</td>
+                    <td>{{ (result.taxRate.value * result.value /100) + result.value}} €</td>
+                    <td><a href="{{ path('app_admin_service_update', {'idCategory': category.id , 'idService' : result.id}) }}" class="btn bg-primary "> Modifier </a></td>
                 </tr>
             {% endfor %}
             </tbody>
