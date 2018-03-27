@@ -95,7 +95,7 @@ class Vehicule
 
     /**
      * One vehicule has Many commands.
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Command", mappedBy="customer", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Command", mappedBy="vehicule", cascade={"persist"})
      */
     private $commands;
 

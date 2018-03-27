@@ -58,7 +58,7 @@
             <div class="panel-body">
                     {% for vehicule in result.vehicules %}
 
-                       <p> <span>{{ vehicule.brand }} - {{ vehicule.model }}</span> <span> {{ vehicule.registration }}</span> <span class="visible-sm-block visible-md-block"> {{ vehicule.mileage |number_format(0, '.', ' ')}} Km </span>  <a href="{{ path('app_admin_vehicule_update', {'idCustomer' : result.id, 'idVehicule' : vehicule.id}) }}" class="btn bg-primary "> Modifier </a> <a href="#" class="btn btn-warning">Nouveau devis</a></p>
+                       <p> <span>{{ vehicule.brand }} - {{ vehicule.model }}</span> <span> {{ vehicule.registration }}</span> <span class="visible-sm-block visible-md-block"> {{ vehicule.mileage |number_format(0, '.', ' ')}} Km </span>  <a href="{{ path('app_admin_vehicule_update', {'idCustomer' : result.id, 'idVehicule' : vehicule.id}) }}" class="btn bg-primary "> Modifier </a> <a href="{{ path('app_admin_command_list', {'id' : vehicule.id}) }} " class="btn btn-warning">Nouveau devis</a></p>
                     {% endfor %}
             </div>
             <div class="panel-footer"><a href="{{ path('app_admin_vehicule_add', {'idCustomer' : result.id}) }}" class="btn btn-warning">Ajouter</a></div>
@@ -71,13 +71,17 @@
         <article class="col-sm-12 panel-primary">
             <div class="panel-heading"><h2>Devis</h2></div>
             <div class="panel-body">
-                    {% for command in result.commands %}
+                {% for vehicule in result.vehicules %}
+
+                {% for command in vehicule.commands %}
                         {% if command.dateBill is empty %}
 
                             <p> <span>{{ command.ref }} </span> <span> montant </span>  <a href="#" class="btn bg-primary "> Modifier </a> </p>
 
                         {% endif %}
                     {% endfor %}
+                {% endfor %}
+
             </div>
 
 
@@ -89,12 +93,15 @@
         <article class="col-sm-12 panel-primary">
             <div class="panel-heading"><h2>factures</h2></div>
             <div class="panel-body">
-                    {% for command in result.commands %}
+                {% for vehicule in result.vehicules %}
+
+                {% for command in vehicule.commands %}
                         {% if command.dateBill is not empty %}
 
                             <p> <span>{{ command.ref }} </span> <span> montant </span>  <span><a href="#" class="btn bg-info "> Envoyer </a><a href="#" class="btn bg-primary "> Imprimer </a></span></p>
 
                         {% endif %}
+                    {% endfor %}
                     {% endfor %}
             </div>
         </article>

@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="container jumbotron ">
+
+
+        <h1>Devis</h1>
+
+        <div class="row entete">
+            <div class="col-sm-3 espaceBoutton"><a href="{{ url('app_admin_customer_list') }}" class="btn bg-primary ">
+                    Retour </a></div>
+            <div class="col-sm-6"><h2>{{ vehicule.brand }} {{ vehicule.model }} {{ vehicule.registration }}</h2></div>
+        </div>
+
+        <div class="row">
+            <div id="panier" class="col-sm-4 entete">
+                <div class="panel-success">
+                    <div class="panel-heading">Panier</div>
+                    <div class="panel-body">
+                        <p>test</p>
+                        <p>test</p>
+                        <p>test</p>
+
+                    </div>
+                    <div class="panel-footer">
+                        <div class="row">
+
+                            <div class="col-sm-4 "><a href="#" class="btn btn-warning">Valider</a></div>
+                            <div class="col-sm-4"><a href="#" class="btn btn-danger">Vider</a></div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div id="produits" class="col-sm-8">
+                {% for categorie in results %}
+                    <article class="panel-info entete">
+                        <div class="panel-heading">{{ categorie.name }} </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class=" col-sm-3">
+                                    <select class="selectservice">
+                                        {% for service in categorie.services %}
+                                            <option value="{{ service.id }}">{{ service.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <label> valeur <input type="text" value=""></label>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                            <div class="ajouterservice"><a href="#" class="btn btn-warning">Ajouter</a></div>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
+
+ {% block javascripts %}
+
+ {% endblock %}
