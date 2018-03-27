@@ -10,4 +10,19 @@ namespace AppBundle\Repository;
  */
 class TaxRateRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function tvaNotExist($value)
+    {
+        $response = true;
+        $results = $this->createQueryBuilder('tva')
+            ->where('tva.value = :vname')
+            ->setParameter('vname', $value)
+            ->getQuery()
+            ->getResult();
+        if (!empty($results)) {
+            $response = false;
+        }
+
+        return $response;
+    }
+
 }

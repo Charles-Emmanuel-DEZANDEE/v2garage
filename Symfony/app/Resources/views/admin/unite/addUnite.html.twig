@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row entete">
+
+
+        <div class="btn bg-primary espaceBoutton"><a href="{{ url('app_admin_unite_list') }}" class="btn bg-primary ">
+                retour </a></div>
+
+    </div>
+
+
+
+    {% if typePage == 'ajout' %}
+        <h1>Ajouter une Unité</h1>
+    {% elseif typePage == 'modif' %}
+        <h1>Modifier une Unité</h1>
+    {% endif %}
+
+    {{ form_start(form, { 'attr' : { 'novalidate' : 'novalidate' , 'class': 'form-horizontal'} }) }}
+
+    {# Les erreurs générales du formulaire. #}
+    <p class="alert">{{ form_errors(form) }} </p>
+
+    {#<legend>{{client.lastName}} {{client.firstName}}</legend>#}
+
+    {# Génération du label + error + widget pour un champ. #}
+    <div class="form-group required">
+        {# Génération du label. #}
+        {{ form_label(form.code, "Code", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+        <div class="col-sm-8">
+            {# Génération de l'input. #}
+            {{ form_widget(form.code, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        {# Affichage des erreurs pour ce champ précis. #}
+        <div class="col-sm-2">{{ form_errors(form.code) }} </div>
+    </div>
+
+    <div class="form-group required">
+        {# Génération du label. #}
+        {{ form_label(form.libelle, "Libellé", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+        <div class="col-sm-8">
+            {# Génération de l'input. #}
+            {{ form_widget(form.libelle, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        {# Affichage des erreurs pour ce champ précis. #}
+        <div class="col-sm-2">{{ form_errors(form.libelle) }} </div>
+    </div>
+
+
+     <p>
+        <input type="submit" class="btn btn-primary" name="submit" value="Valider" >
+    </p>
+
+    {# Génération automatique des champs pas encore écrits.
+       Dans cet exemple, ce serait le champ CSRF (géré automatiquement par Symfony !)
+       et tous les champs cachés (type « hidden »). #}
+    {{ form_rest(form) }}
+
+    {{ form_end(form) }}
+
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            $('.js-datepicker').datepicker({
+                format: "dd-mm-yyyy",
+                todayBtn: "linked",
+                clearBtn: true,
+                language: "fr",
+                todayHighlight: true,
+                autoclose: true
+            });
+
+        });
+    </script>
+
+{% endblock %}

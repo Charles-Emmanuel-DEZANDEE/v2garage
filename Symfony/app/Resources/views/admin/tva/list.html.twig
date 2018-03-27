@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="container jumbotron ">
+
+
+        <h1>liste tva</h1>
+        <div class="row entete">
+
+            <div class="col-sm-3 espaceBoutton"><a href="{{ url('app_admin_tva_add') }}" class="btn bg-primary "> Nouvelle tva </a></div>
+
+
+            <div class=" col-sm-3 espaceBoutton"><a href="{{ url('app_admin_category_list') }}" class="btn bg-warning "> retour </a></div>
+
+            </div>
+
+        <div class="table-responsive table-bordered">
+            <table class="table ">
+                <thead>
+                <tr>
+                    <th>Valeur</th>
+                    <th>Action</th>
+
+
+                </tr>
+                </thead>
+                <tbody>
+                {% for result in results %}
+                    <tr>
+
+                        <td>{{ result.value }}   </td>
+
+                        <td><a href="{{ path('app_admin_tva_update', {'idTva': result.id}) }}" class="btn bg-primary "> Modifier </a></td>
+
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="navigation">
+            {{ knp_pagination_render(results) }}
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
