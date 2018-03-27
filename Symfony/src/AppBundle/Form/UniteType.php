@@ -3,8 +3,10 @@
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class UniteType extends AbstractType
 {
@@ -13,7 +15,22 @@ class UniteType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('code')->add('libelle');
+        $builder
+            ->add('code', TextType::class, [
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'code requis'
+                    ])
+                ]
+            ])
+            ->add('libelle', TextType::class, [
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'libellé requis'
+                    ])
+                ]
+            ])
+        ;
     }/**
      * {@inheritdoc}
      */
