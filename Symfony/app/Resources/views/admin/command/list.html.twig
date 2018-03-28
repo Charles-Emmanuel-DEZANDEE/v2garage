@@ -26,7 +26,7 @@
                     <div class="panel-footer">
                         <div class="row">
 
-                            <div class="col-sm-4 "><a href="#" class="btn btn-warning">Valider</a></div>
+                            <div class="col-sm-4 "><a href="#" class="btn btn-success">Valider</a></div>
                             <div class="col-sm-4"><a href="#" class="btn btn-danger">Vider</a></div>
                         </div>
 
@@ -39,23 +39,74 @@
                     <article class="panel-info entete">
                         <div class="panel-heading">{{ categorie.name }} </div>
                         <div class="panel-body">
-                            <div class="row">
-                                <div class=" col-sm-3">
-                                    <select class="selectservice">
-                                        {% for service in categorie.services %}
-                                            <option value="{{ service.id }}">{{ service.name }}</option>
-                                        {% endfor %}
-                                    </select>
+                            <div class="form-inline">
+                                <div class="form-group well-sm">
+                                    <label class="form-group">Service</label>
+                                    <div class="form-group">
+                                        <select class="selectservice form-control">
+                                            {% for service in categorie.services %}
+                                                <option value="{{ service.id }}">{{ service.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="col-sm-3">
-                                    <label> valeur <input type="text" value=""></label>
+                                <div class="form-group well-sm">
+                                    <label class="control-label"> Valeur HT</label>
+                                    <input class="form-control valeurserviceHT" type="text" value="">
+                                    <label class="form-group">€</label>
+                                </div>
+                                <div class="form-group well-sm">
+                                    <div class="form-inline">
+                                        <label class="form-group">TVA</label>
+                                        <div class="form-group  valeurtva">20</div>
+                                        <label class="form-group">%</label>
+
+                                    </div>
+                                </div>
+                                <div class="form-group well-sm">
+                                    <div class="form-inline">
+                                        <label class="form-group">Quantité</label>
+                                        <div class="form-group form-control input-sm center merge-bottom-input">1
+                                        </div>
+
+                                        <div class="form-group btn-group btn-block" role="group"
+                                             aria-label="plus-minus">
+                                            <button type="button"
+                                                    class="btn btn-sm btn-default minus-button merge-top-left-button">
+                                                <span class="glyphicon glyphicon-minus"></span></button>
+                                            <button type="button"
+                                                    class="btn btn-sm btn-success plus-button merge-top-right-button">
+                                                <span class="glyphicon glyphicon-plus"></span></button>
+                                        </div><!-- end button group -->
+                                    </div>
                                 </div>
 
+                                <div class="form-group well-sm">
+                                    <label class="control-label"> Référence </label>
+                                    <input class="form-control referenceservice" type="text" value="">
+                                </div>
+
+                                <div class="form-group well-sm">
+                                    <label class="form-group">Remise</label>
+
+                                    <select class="selectremise form-control">
+                                        {% for i in range(0,100,5) %}
+                                            <option value="{{ i }}">{{ i }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <label class="form-group">%</label>
+
+                                </div>
+
+                                <div class="form-group well-sm ttc">
+                                    <label class="control-label"> Valeur TTC : </label>
+                                    <label class="form-group valeurserviceTTC"> 36 </label>
+                                    <label class="form-group">€</label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="panel-footer">
-                            <div class="ajouterservice"><a href="#" class="btn btn-warning">Ajouter</a></div>
-                        </div>
+                            <div class="panel-footer">
+                                <div class="ajouterservice btn btn-warning">Ajouter</div>
+                            </div>
                     </article>
                 {% endfor %}
             </div>
@@ -70,5 +121,44 @@
 {% endblock %}
 
  {% block javascripts %}
+     <script>
+         $(document).ready(function () {
+             $('.minus-button').click(function (e) {
+                 e.preventDefault();
+                 const currentInput = $(e.currentTarget).parent().prev()[0];
+
+                 let minusInputValue = $(currentInput).html();
+                 if (minusInputValue > 1) {
+                     minusInputValue--;
+                 }
+
+                 $(currentInput).html(minusInputValue);
+             });
+
+             $('.plus-button').click(function (e) {
+                 e.preventDefault();
+                 const currentInput = $(e.currentTarget).parent().prev()[0];
+
+                 let plusInputValue = $(currentInput).html();
+
+                 plusInputValue++;
+                 $(currentInput).html(plusInputValue);
+             });
+
+             $('.valeurserviceHT').keyup(function (e) {
+                 var val = parseInt($(e.currentTarget).val());
+                 console.log(val);
+                 var divtva = $(e.currentTarget).parent().next();
+                 var tva = parseInt($(divtva).find('.valeurtva').text());
+                 console.log(tva);
+                 var ttc = Math.round(val * (1 + (tva / 100)) * 100) / 100;
+                 console.log(ttc);
+                 var divttc = $(e.currentTarget).parent().next().next().next().next().next();
+                 console.log(divttc);
+
+                 $(divttc).find('.valeurserviceTTC').text(ttc);
+             })
+         });
+     </script>
 
  {% endblock %}
