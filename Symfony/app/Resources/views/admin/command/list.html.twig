@@ -50,15 +50,15 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group well-sm">
+                                <div class="form-group well-sm ht">
                                     <label class="control-label"> Valeur HT</label>
                                     <input class="form-control valeurserviceHT" type="text" value="">
                                     <label class="form-group">€</label>
                                 </div>
-                                <div class="form-group well-sm">
+                                <div class="form-group well-sm tva">
                                     <div class="form-inline">
                                         <label class="form-group">TVA</label>
-                                        <div class="form-group  valeurtva">20</div>
+                                        <div class="form-group  valeurtva"></div>
                                         <label class="form-group">%</label>
 
                                     </div>
@@ -100,7 +100,7 @@
 
                                 <div class="form-group well-sm ttc">
                                     <label class="control-label"> Valeur TTC : </label>
-                                    <label class="form-group valeurserviceTTC"> 36 </label>
+                                    <label class="form-group valeurserviceTTC"></label>
                                     <label class="form-group">€</label>
                                 </div>
                             </div>
@@ -144,8 +144,12 @@
                  plusInputValue++;
                  $(currentInput).html(plusInputValue);
              });
+             //ecouteur sur le montant HT
+             $('.valeurserviceHT').on('change', function (e) {
+                 majTTC(e);
+             });
 
-             $('.valeurserviceHT').keyup(function (e) {
+             function majTTC(e) {
                  var val = parseInt($(e.currentTarget).val());
                  console.log(val);
                  var divtva = $(e.currentTarget).parent().next();
@@ -157,7 +161,44 @@
                  console.log(divttc);
 
                  $(divttc).find('.valeurserviceTTC').text(ttc);
-             })
+
+             }
+
+             $('.selectservice option:selected').each(function () {
+              var select = $(this);
+                 $.ajax({
+                     type: 'POST',
+                     dataType: 'json',
+                     data: {'id' : $(this).val()},
+                     async: true,
+                     url: '{{ path('app_admin_service_ajax') }}',
+                     success: function (response) {
+//                         console.log(response);
+                         majHTetTVA(select,response);
+
+                     },
+                     error: function() {
+                         // J'affiche un message d'erreur
+                         console.log('erreur');
+                     }
+                 });
+
+             });
+
+             function majHTetTVA(div,values) {
+                 var divselect = $(div).parent().parent().parent();
+                 console.log(divselect.attr('class'));
+                 console.log(values);
+                 console.log($(divselect).next());
+                 console.log($(divselect).next().next());
+                 var divht = $(divselect).next();
+                 var divtva = $(divselect).next();
+//                 on affecte la valeur
+                 $(divht).children('input').val(values['valeur']);
+                 //on affect la tva
+                 $(divtva).children('div').find('.valeurtva').text(values['tva'])
+             }
+
          });
      </script>
 

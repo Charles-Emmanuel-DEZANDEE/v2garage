@@ -7,6 +7,7 @@ use AppBundle\Entity\Service;
 use AppBundle\Form\ServiceType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
@@ -43,7 +44,6 @@ class ServiceController extends Controller
 
         ]);
     }
-
     /**
      * @Route("/service/add/{idCategory}", name="app_admin_service_add")
      * @Route("/service/update/{idCategory}/{idService}", name="app_admin_service_update")
@@ -116,6 +116,26 @@ class ServiceController extends Controller
             'typePage' => $typePage,
             'category' => $categoryEntity,
         ]);
+    }
+
+    /**
+     * @Route("/serviceajax}", name="app_admin_service_ajax")
+     * @Method({"POST"})
+     * @return JsonResponse
+     * @param Request $request
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     */
+    public function remplissageAjaxAction(Request $request)
+    {
+        if ($request->isXMLHttpRequest()) {
+            $id = $request->request->get('id');
+//            $id = 6;
+            $doctrine = $this->getDoctrine();
+            $service = $doctrine->getRepository(Service::class)->find($id);
+
+            $response = new JsonResponse(['id' => $service->getId(), 'valeur' => intval($service->getValue()), 'tva' => intval($service->getTaxRate()->getValue())]);
+            return $response;
+        }
     }
 
 
