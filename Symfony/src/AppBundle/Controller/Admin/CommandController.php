@@ -37,7 +37,7 @@ class CommandController extends Controller
 //        $vehicule = $doctrine->getRepository(Vehicule::class)->find($idVehicule);
 
         $rc = $doctrine->getRepository(Category::class);
-        $results = $rc->findAllOrderByPosition();
+        $results = $rc->findAllOrderByPositionMagic();
 
 
 

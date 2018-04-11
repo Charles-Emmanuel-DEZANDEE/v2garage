@@ -40,100 +40,92 @@ class LoadService extends Fixture implements  FixtureInterface,DependentFixtureI
         $unite6 = $this->getReference('kit');
 
 // On créé des services pour main d'oeuvre
-        $service1 = new Service();
+        $service1 = new Service($category1);
         $service1->setName('1 heure');
         $service1->setValue(50);
         $service1->setUnite($unite3);
         $service1->setTaxRate($taxRate);
-        $service1->setCategory($category1);
 
         // On la persiste
         $manager->persist($service1);
 
-        $service12 = new Service();
+        $service12 = new Service($category1);
         $service12->setName('1 demi journée');
         $service12->setValue(180);
         $service12->setUnite($unite4);
         $service12->setTaxRate($taxRate);
-        $service12->setCategory($category1);
 
         // On la persiste
         $manager->persist($service12);
 
 
-        $service13 = new Service();
+        $service13 = new Service($category1);
         $service13->setName('1 journée');
         $service13->setValue(350);
         $service13->setUnite($unite5);
         $service13->setTaxRate($taxRate);
-        $service13->setCategory($category1);
 
         // On la persiste
         $manager->persist($service13);
 
 // On créé un service forfait
-        $service2 = new Service();
+        $service2 = new Service($category2);
         $service2->setName('révision');
         $service2->setValue(90);
         $service2->setUnite($unite1);
         $service2->setTaxRate($taxRate);
-        $service2->setCategory($category2);
+        $service2->setCategory();
 
         // On la persiste
         $manager->persist($service2);
 
 // On créé un service kit
-        $service3 = new Service();
+        $service3 = new Service($category3);
         $service3->setName('phare avant');
         $service3->setValue(15.60);
         $service3->setUnite($unite6);
         $service3->setTaxRate($taxRate);
-        $service3->setCategory($category3);
 
         // On la persiste
         $manager->persist($service3);
 
 
 // On créé un service piece
-        $service4 = new Service();
+        $service4 = new Service($category4);
         $service4->setName('carrosserie');
         $service4->setValue(15.60);
         $service4->setUnite($unite2);
         $service4->setTaxRate($taxRate);
-        $service4->setCategory($category4);
 
         // On la persiste
         $manager->persist($service4);
 
 
-        $service42 = new Service();
+        $service42 = new Service($category4);
         $service42->setName('courroie distribution');
         $service42->setValue(26.54);
         $service42->setUnite($unite2);
         $service42->setTaxRate($taxRate);
-        $service42->setCategory($category4);
 
         // On la persiste
         $manager->persist($service42);
 
 
-        $service42 = new Service();
+        $service42 = new Service($category4);
         $service42->setName('bougie');
         $service42->setValue(4.54);
         $service42->setUnite($unite2);
         $service42->setTaxRate($taxRate);
-        $service42->setCategory($category4);
 
         // On la persiste
         $manager->persist($service42);
 
 // On créé un service pour consommable
-        $service5 = new Service();
+        $service5 = new Service($category5);
         $service5->setName('huile');
         $service5->setValue(7.30);
         $service5->setUnite($unite);
         $service5->setTaxRate($taxRate);
-        $service5->setCategory($category5);
 
         // On la persiste
         $manager->persist($service5);
