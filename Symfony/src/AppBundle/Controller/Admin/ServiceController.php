@@ -128,12 +128,11 @@ class ServiceController extends Controller
     public function remplissageAjaxAction(Request $request)
     {
         if ($request->isXMLHttpRequest()) {
-            $id = $request->request->get('id');
-//            $id = 6;
+            $idCategory = $request->request->get('id');
             $doctrine = $this->getDoctrine();
-            $service = $doctrine->getRepository(Service::class)->find($id);
+            $services = $doctrine->getRepository(Service::class)->findBy(['category' => $idCategory]);
 
-            $response = new JsonResponse(['id' => $service->getId(), 'valeur' => intval($service->getValue()), 'tva' => intval($service->getTaxRate()->getValue())]);
+            $response = new JsonResponse(['tabservice' => $services]);
             return $response;
         }
     }

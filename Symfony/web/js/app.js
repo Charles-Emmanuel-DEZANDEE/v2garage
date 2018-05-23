@@ -1,35 +1,39 @@
 'use strict'
 
-// currencies
-let linkCurrencies = $('.link-currency');
+function loadDataFromDomStorage(name)
+{
+    var jsonData;
 
-linkCurrencies.on('click', (e) => {
-    //e.preventDefault();
-    let dataCurrency = $(e.target).data('currency');
-    let data = 'currency=' + dataCurrency;
+    jsonData = window.localStorage.getItem(name);
 
-    $.ajax({
-        data: data,
-        dataType: 'json',
-        method: 'post',
-        url: '/fr/change-currency',
-        success: onChangeCurrencySuccess
-    });
-});
-
-let onChangeCurrencySuccess = function(response){
-    console.log(response);
+    /*
+     * Donnée simple (chaîne) -> JSON parse (= désérialisation) -> Donnée complexe
+     *
+     * Voir ci-dessous pour plus d'explications sur le pourquoi du JSON.
+     */
+    return JSON.parse(jsonData);
 }
 
-// cookies disclaimer
-let closeCookieDisclaimer = $('.close-cookie-disclaimer');
+function saveDataToDomStorage(name, data)
+{
+    var jsonData;
 
-closeCookieDisclaimer.on('click', (e) => {
-   $.ajax({
-       method: 'post',
-       url: '/fr/cookie-disclaimer'
-   });
-});
+    /*
+     * Le DOM storage ne permet pas de stocker des données complexes (objet, tableau...).
+     * On doit donc d'aborder sérialiser nos données dans un format simple, le JSON.
+     *
+     * On obtient une chaîne représentant l'objet complexe, et c'est cette chaîne que
+     * l'on stocke dans le DOM storage.
+     *
+     * Donnée complexe -> JSON stringify (= sérialisation) -> Donnée simple (chaîne)
+     */
+    jsonData = JSON.stringify(data);
+
+    window.localStorage.setItem(name, jsonData);
+}
+
+
+
 
 
 

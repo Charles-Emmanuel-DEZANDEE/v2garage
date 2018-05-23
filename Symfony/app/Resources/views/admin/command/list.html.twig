@@ -2,217 +2,168 @@
 
 {% block body %}
 
-    <div class="container jumbotron ">
+<div class="container jumbotron ">
 
 
-        <h1>Devis</h1>
+    <h1>Devis</h1>
 
-        <div class="row entete">
-            <div class="col-sm-3 espaceBoutton"><a href="{{ url('app_admin_customer_list') }}" class="btn bg-primary ">
-                    Retour </a></div>
-            <div class="col-sm-6"><h2>{{ vehicule.brand }} {{ vehicule.model }} {{ vehicule.registration }}</h2></div>
-        </div>
+    <div class="row entete">
+        <div class="col-sm-3 espaceBoutton"><a href="{{ url('app_admin_customer_list') }}" class="btn bg-primary ">
+                Retour </a></div>
+        <div class="col-sm-6"><h2>{{ vehicule.brand }} {{ vehicule.model }} {{ vehicule.registration }}</h2></div>
+    </div>
 
-        <div class="row">
-            <div id="panier" class="col-sm-12 entete">
-                <div class="panel-success">
-                    <div class="panel-heading">Panier</div>
-                    <div class="panel-body">
-                        <p>test</p>
-                        <p>test</p>
-                        <p>test</p>
+    <div class="row">
+        <div class="col-sm-12 entete">
+            <div class="panel-success">
+                <div class="panel-heading">Panier</div>
+                <div class="panel-body" id="panier">
+                    <p>ligne 1</p>
+                    <p>test</p>
+                    <p>test</p>
 
-                    </div>
-                    <div class="panel-footer">
-                        <div class="row">
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
 
-                            <div class="col-xs-4 "><a href="#" class="btn btn-success">Valider</a></div>
-                            <div class="col-xs-4"><a href="#" class="btn btn-danger">Vider</a></div>
-                        </div>
-
+                        <div class="col-xs-3 pull-left"><a href="#" class="btn btn-danger">Vider</a></div>
+                        <div class="col-xs-3 pull-left"><a href="#" class="btn btn-success">Valider</a></div>
                     </div>
 
                 </div>
+
             </div>
         </div>
-        <div class="row">
-            <div id="produits" class="col-sm-12">
-                {% for categorie in results %}
-                    <article class="panel-info entete">
-                        <div class="panel-heading">{{ categorie.name }} </div>
-                        <div class="panel-body">
-                            <div class="form-horizontal">
-                                <div class="form-group">
-                                    <label class="control-label" for="sel1">Select list:</label>
-                                    <select class="form-control" id="sel1">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                    </select>
-                                    </div>
-                                <div class="form-group well-sm">
-                                    <label class="form-group">Service</label>
-                                    <div class="form-group">
-                                        <select class="selectservice form-control">
-                                            {% for service in categorie.services %}
-                                                <option value="{{ service.id }}">{{ service.name }}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group well-sm ht">
-                                    <label class="control-label"> Valeur HT</label>
-                                    <input class="form-control valeurserviceHT" type="text" value="">
-                                    <label class="form-group">€</label>
-                                </div>
-                                <div class="form-group well-sm tva">
-                                    <div class="form-inline">
-                                        <label class="form-group">TVA</label>
-                                        <div class="form-group  valeurtva"></div>
-                                        <label class="form-group">%</label>
+    </div>
+    <div class="container">
 
-                                    </div>
-                                </div>
-                                <div class="form-group well-sm">
-                                    <div class="form-inline">
-                                        <label class="form-group">Quantité</label>
-                                        <div class="form-group form-control input-sm center merge-bottom-input">1
-                                        </div>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label" for="selectcategorie">Categorie : </label>
+                    <select class="form-control" id="selectcategorie">
+                        {% for categorie in results %}
+                            <option  value="{{ categorie.id }}">{{ categorie.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
 
-                                        <div class="form-group btn-group btn-block" role="group"
-                                             aria-label="plus-minus">
-                                            <button type="button"
-                                                    class="btn btn-sm btn-default minus-button merge-top-left-button">
-                                                <span class="glyphicon glyphicon-minus"></span></button>
-                                            <button type="button"
-                                                    class="btn btn-sm btn-success plus-button merge-top-right-button">
-                                                <span class="glyphicon glyphicon-plus"></span></button>
-                                        </div><!-- end button group -->
-                                    </div>
-                                </div>
+                <div class="form-group">
+                    <label class="control-label" for="selectservice">Service : </label>
+                    <select class="form-control" id="selectservice">
+                    </select>
+                </div>
 
-                                <div class="form-group well-sm">
-                                    <label class="control-label"> Référence </label>
-                                    <input class="form-control referenceservice" type="text" value="">
-                                </div>
+                <div class="form-group">
+                    <label class="control-label required"> Référence </label>
+                    <input class="form-control" id="reference" type="text">
+                </div>
 
-                                <div class="form-group well-sm">
-                                    <label class="form-group">Remise</label>
+                <div class="form-group">
+                    <label class="control-label required"> Valeur HT en euros</label>
+                    <input type="number" class="form-control" id="valeurHT" value="">
+                </div>
 
-                                    <select class="selectremise form-control">
-                                        {% for i in range(0,100,5) %}
-                                            <option value="{{ i }}">{{ i }}</option>
-                                        {% endfor %}
-                                    </select>
-                                    <label class="form-group">%</label>
+                <div class="form-group">
+                    <label class="control-label">TVA en %</label>
+                    <input type="number" class="form-control " id="tauxTVA" disabled value=20>
 
-                                </div>
+                </div>
 
-                                <div class="form-group well-sm ttc">
-                                    <label class="control-label"> Valeur TTC : </label>
-                                    <label class="form-group valeurserviceTTC"></label>
-                                    <label class="form-group">€</label>
-                                </div>
-                            </div>
-                            <div class="panel-footer">
-                                <div class="ajouterservice btn btn-warning">Ajouter</div>
-                            </div>
-                    </article>
-                {% endfor %}
+                <div class="form-group">
+                    <label class="control-label" for="selectquantite">Quantité : </label>
+                    <select class="form-control" id="selectquantite">
+                        {% for i in range(1,20,1) %}
+                            <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+
+
+                <div class="form-group">
+                    <label class="ontrol-label" for="selectremise">Remise en %</label>
+
+                    <select class="form-control" id="selectremise">
+                        {% for i in range(0,100,5) %}
+                            <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">TTC en euros</label>
+                    <input class="form-control " id="TTC" disabled>
+
+                </div>
+
+                <div class="ajouterservice btn btn-warning pull-right" id="ajouterservice">Ajouter</div>
             </div>
-        </div>
 
     </div>
 
-{% endblock %}
+    {% endblock %}
 
-{% block stylesheets %}
+    {% block stylesheets %}
 
-{% endblock %}
+    {% endblock %}
 
- {% block javascripts %}
-     {#<script src="{{ asset('datepicker/js/bootstrap-datepicker.js') }}"></script>#}
-     <script>
-         $(document).ready(function () {
+    {% block javascripts %}
+    <script src="{{ asset('js/app.js') }}"></script>
 
-             $('.minus-button').click(function (e) {
-                 e.preventDefault();
-                 const currentInput = $(e.currentTarget).parent().prev()[0];
+    <script>
+        $(document).ready(function () {
 
-                 let minusInputValue = $(currentInput).html();
-                 if (minusInputValue > 1) {
-                     minusInputValue--;
-                 }
 
-                 $(currentInput).html(minusInputValue);
-             });
+            //ecouteur sur le montant HT
+            $('#valeurHT').on('input', function () {
+                majTTC(parseInt($('#valeurHT').val()));
+            });
 
-             $('.plus-button').click(function (e) {
-                 e.preventDefault();
-                 const currentInput = $(e.currentTarget).parent().prev()[0];
+            function majTTC(val) {
+                console.log(val);
+                console.log(parseInt($('#tauxTVA').val()));
+                var ttc = Math.round(val * (1 + (parseInt($('#tauxTVA').val()) / 100)) * 100) / 100;
+                console.log(ttc);
 
-                 let plusInputValue = $(currentInput).html();
+                $('#TTC').val(ttc);
 
-                 plusInputValue++;
-                 $(currentInput).html(plusInputValue);
-             });
-             //ecouteur sur le montant HT
-             $('.valeurserviceHT').on('change', function (e) {
-                 majTTC(e);
-             });
+            }
 
-             function majTTC(e) {
-                 var val = parseInt($(e.currentTarget).val());
-                 console.log(val);
-                 var divtva = $(e.currentTarget).parent().next();
-                 var tva = parseInt($(divtva).find('.valeurtva').text());
-                 console.log(tva);
-                 var ttc = Math.round(val * (1 + (tva / 100)) * 100) / 100;
-                 console.log(ttc);
-                 var divttc = $(e.currentTarget).parent().next().next().next().next().next();
-                 console.log(divttc);
+            function majService() {
+console.log($('#selectcategorie option:selected').val());
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {'id': $('#selectcategorie option:selected').val()},
+                    async: true,
+                    url: '{{ path('app_admin_service_ajax') }}',
+                    success: function (response) {
+                        console.log(response);
+                        //on alimente les services
+                        (response.tabservice).forEach(function(element) {
+                          console.log(element);
+                        });
 
-                 $(divttc).find('.valeurserviceTTC').text(ttc);
+                    },
+                    error: function () {
+                        // J'affiche un message d'erreur
+                        console.log('erreur');
+                    }
+                });
 
-             }
+            }
 
-             $('.selectservice option:selected').each(function () {
-                 var select = $(this);
-                 $.ajax({
-                     type: 'POST',
-                     dataType: 'json',
-                     data: {'id': $(this).val()},
-                     async: true,
-                     url: '{{ path('app_admin_service_ajax') }}',
-                     success: function (response) {
-//                         console.log(response);
-                         majHTetTVA(select, response);
+            $('#selectcategorie').on('change', function () {
+                majService();
 
-                     },
-                     error: function () {
-                         // J'affiche un message d'erreur
-                         console.log('erreur');
-                     }
-                 });
 
-             });
+            });
 
-             function majHTetTVA(div, values) {
-                 var divselect = $(div).parent().parent().parent();
-                 console.log(divselect.attr('class'));
-                 console.log(values);
-                 console.log($(divselect).next());
-                 console.log($(divselect).next().next());
-                 var divht = $(divselect).next();
-                 var divtva = $(divselect).next();
-//                 on affecte la valeur
-                 $(divht).children('input').val(values['valeur']);
-                 //on affect la tva
-                 $(divtva).children('div').find('.valeurtva').text(values['tva'])
-             }
 
-         });
-     </script>
+
+        });
+    </script>
+
 
  {% endblock %}
