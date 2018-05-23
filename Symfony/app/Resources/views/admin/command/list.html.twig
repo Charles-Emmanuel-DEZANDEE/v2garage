@@ -17,7 +17,7 @@
         <div class="col-sm-12 entete">
             <div class="panel-success">
                 <div class="panel-heading">Panier</div>
-                <div class="panel-body" id="panier">
+                <div class="panel-body" data-idvehicule="{{ vehicule.id }}" id="panier">
                     <p>ligne 1</p>
                     <p>test</p>
                     <p>test</p>
@@ -60,12 +60,12 @@
 
                 <div class="form-group">
                     <label class="control-label required"> Valeur HT en euros</label>
-                    <input type="number" class="form-control" id="valeurHT" value="">
+                    <input type="number" data-unite="" class="form-control" id="valeurHT" value="">
                 </div>
 
                 <div class="form-group">
                     <label class="control-label">TVA en %</label>
-                    <input type="number" class="form-control " id="tauxTVA" disabled value=20>
+                    <input type="number" class="form-control " id="tauxTVA" disabled value=>
 
                 </div>
 
@@ -112,55 +112,81 @@
     <script src="{{ asset('js/app.js') }}"></script>
 
     <script>
-        $(document).ready(function () {
 
-
-            //ecouteur sur le montant HT
-            $('#valeurHT').on('input', function () {
-                majTTC(parseInt($('#valeurHT').val()));
-            });
-
-            function majTTC(val) {
-                console.log(val);
-                console.log(parseInt($('#tauxTVA').val()));
-                var ttc = Math.round(val * (1 + (parseInt($('#tauxTVA').val()) / 100)) * 100) / 100;
-                console.log(ttc);
-
+            function majTTC() {
+                var val = parseInt($('#valeurHT').val());
+                if (val != null) {
+                var ttc = Math.round( val * (1 + (parseInt($('#tauxTVA').val()) / 100)) * 100) / 100;
                 $('#TTC').val(ttc);
-
+                 }
             }
 
             function majService() {
-console.log($('#selectcategorie option:selected').val());
+
                 $.ajax({
                     type: 'POST',
-                    dataType: 'json',
+                    dataType: 'html',
                     data: {'id': $('#selectcategorie option:selected').val()},
                     async: true,
                     url: '{{ path('app_admin_service_ajax') }}',
-                    success: function (response) {
-                        console.log(response);
+                    success: function (response, statut) {
+                        //on vide les options
+                        $('#selectservice').html('');
                         //on alimente les services
-                        (response.tabservice).forEach(function(element) {
-                          console.log(element);
-                        });
+                        $(response).appendTo("#selectservice");
+                        majEltService();
+                    },
+                    error: function (resulta, statut, error) {
+                        // J'affiche un message d'erreur
+                        console.log(error);
+                    }
+                });
+            }
+            function majEltService() {
+                if ($('#selectservice option:selected').val()) {
+
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {'id': $('#selectservice option:selected').val()},
+                    async: true,
+                    url: '{{ path('app_admin_elt_service_ajax') }}',
+                    success: function (response, statut) {
+                        //on alimente les champs
+                        $('#tauxTVA').val(parseInt(response.taxrate));
+                        $('#valeurHT').val(parseInt(response.valHT));
+                        $('#valeurHT').data('unite',response.unite);
+
+                        majTTC();
 
                     },
-                    error: function () {
+                    error: function (resultat, statut, error) {
                         // J'affiche un message d'erreur
-                        console.log('erreur');
+                        console.log(error);
                     }
                 });
 
+                }
             }
+
+        $(document).ready(function () {
+
+
+            //ecouteurs
+            $('#valeurHT').on('input', function () {
+                majTTC();
+            });
 
             $('#selectcategorie').on('change', function () {
                 majService();
-
-
+            });
+            $('#selectservice').on('change', function () {
+                majEltService();
             });
 
-
+            //action
+            majService();
+            majEltService();
 
         });
     </script>

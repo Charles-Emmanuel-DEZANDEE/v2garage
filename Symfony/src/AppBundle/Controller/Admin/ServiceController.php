@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-
+use Symfony\Component\HttpFoundation\Response;
 /**
  * @Route("/admin")
  */
@@ -121,11 +121,11 @@ class ServiceController extends Controller
     /**
      * @Route("/serviceajax}", name="app_admin_service_ajax")
      * @Method({"POST"})
-     * @return JsonResponse
+     * @return html
      * @param Request $request
      * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
      */
-    public function remplissageAjaxAction(Request $request)
+    public function serviceAjax(Request $request)
     {
         if ($request->isXMLHttpRequest()) {
             $idCategory = $request->request->get('id');
@@ -133,6 +133,27 @@ class ServiceController extends Controller
             $services = $doctrine->getRepository(Service::class)->findBy(['category' => $idCategory]);
 
             $response = new JsonResponse(['tabservice' => $services]);
+            $template = $this->render('ajax/service.html.twig', [
+                'result' => $services
+            ])->getContent();
+            return new Response($template);
+        }
+    }
+    /**
+     * @Route("/eltserviceajax}", name="app_admin_elt_service_ajax")
+     * @Method({"POST"})
+     * @return JsonResponse
+     * @param Request $request
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     */
+    public function eltServiceAjax(Request $request)
+    {
+        if ($request->isXMLHttpRequest()) {
+            $id = $request->request->get('id');
+            $doctrine = $this->getDoctrine();
+            $service = $doctrine->getRepository(Service::class)->find($id);
+
+            $response = new JsonResponse(['taxrate' => $service->getTaxRate()->getValue(), 'valHT' => $service->getValue(), 'unite' => $service->getUnite()]);
             return $response;
         }
     }
