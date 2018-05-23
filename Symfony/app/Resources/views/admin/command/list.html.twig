@@ -14,7 +14,7 @@
         </div>
 
         <div class="row">
-            <div id="panier" class="col-sm-4 entete">
+            <div id="panier" class="col-sm-12 entete">
                 <div class="panel-success">
                     <div class="panel-heading">Panier</div>
                     <div class="panel-body">
@@ -26,20 +26,31 @@
                     <div class="panel-footer">
                         <div class="row">
 
-                            <div class="col-sm-4 "><a href="#" class="btn btn-success">Valider</a></div>
-                            <div class="col-sm-4"><a href="#" class="btn btn-danger">Vider</a></div>
+                            <div class="col-xs-4 "><a href="#" class="btn btn-success">Valider</a></div>
+                            <div class="col-xs-4"><a href="#" class="btn btn-danger">Vider</a></div>
                         </div>
 
                     </div>
 
                 </div>
             </div>
-            <div id="produits" class="col-sm-8">
+        </div>
+        <div class="row">
+            <div id="produits" class="col-sm-12">
                 {% for categorie in results %}
                     <article class="panel-info entete">
                         <div class="panel-heading">{{ categorie.name }} </div>
                         <div class="panel-body">
-                            <div class="form-inline">
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="control-label" for="sel1">Select list:</label>
+                                    <select class="form-control" id="sel1">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                    </select>
+                                    </div>
                                 <div class="form-group well-sm">
                                     <label class="form-group">Service</label>
                                     <div class="form-group">
@@ -121,8 +132,10 @@
 {% endblock %}
 
  {% block javascripts %}
+     {#<script src="{{ asset('datepicker/js/bootstrap-datepicker.js') }}"></script>#}
      <script>
          $(document).ready(function () {
+
              $('.minus-button').click(function (e) {
                  e.preventDefault();
                  const currentInput = $(e.currentTarget).parent().prev()[0];
@@ -165,19 +178,19 @@
              }
 
              $('.selectservice option:selected').each(function () {
-              var select = $(this);
+                 var select = $(this);
                  $.ajax({
                      type: 'POST',
                      dataType: 'json',
-                     data: {'id' : $(this).val()},
+                     data: {'id': $(this).val()},
                      async: true,
                      url: '{{ path('app_admin_service_ajax') }}',
                      success: function (response) {
 //                         console.log(response);
-                         majHTetTVA(select,response);
+                         majHTetTVA(select, response);
 
                      },
-                     error: function() {
+                     error: function () {
                          // J'affiche un message d'erreur
                          console.log('erreur');
                      }
@@ -185,7 +198,7 @@
 
              });
 
-             function majHTetTVA(div,values) {
+             function majHTetTVA(div, values) {
                  var divselect = $(div).parent().parent().parent();
                  console.log(divselect.attr('class'));
                  console.log(values);
