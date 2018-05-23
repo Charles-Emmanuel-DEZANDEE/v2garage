@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * unite
  *
- * @ORM\Table(name="Unite")
+ * @ORM\Table(name="unite")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UniteRepository")
  */
 class Unite

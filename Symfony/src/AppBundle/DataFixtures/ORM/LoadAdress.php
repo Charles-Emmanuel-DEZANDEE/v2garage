@@ -25,27 +25,25 @@ class LoadAdress extends Fixture implements  FixtureInterface,DependentFixtureIn
         $customer2 = $this->getReference('customer2');
 
 // On créé une adresse
-        $adress1 = new Address_intervention();
+        $adress1 = new Address_intervention($customer1);
         $adress1->setName('Travail');
         $adress1->setNumber('2');
         $adress1->setRoad1('impasse perdue');
         $adress1->setZipcode('41560');
         $adress1->setCity('toronto');
         $adress1->setCountry('canada');
-        $adress1->setCustomer($customer1);
 
         // On la persiste
         $manager->persist($adress1);
 
 // On créé une adresse
-        $adress2 = new Address_intervention();
+        $adress2 = new Address_intervention($customer2);
         $adress2->setName('Travail');
         $adress2->setNumber('4');
         $adress2->setRoad1('boulevard trouvee');
         $adress2->setZipcode('65987');
         $adress2->setCity('vouille');
         $adress2->setCountry('france');
-        $adress2->setCustomer($customer2);
 
         // On la persiste
         $manager->persist($adress2);
