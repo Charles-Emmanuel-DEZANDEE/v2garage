@@ -8,26 +8,31 @@
     <h1>Devis</h1>
 
     <div class="row entete">
-        <div class="col-sm-3 espaceBoutton"><a href="{{ url('app_admin_customer_list') }}" class="btn bg-primary ">
+        <div id="retour" class="col-sm-3 espaceBoutton"><a href="{{ url('app_admin_customer_list') }}" class="btn bg-primary ">
                 Retour </a></div>
-        <div class="col-sm-6"><h2>{{ vehicule.brand }} {{ vehicule.model }} {{ vehicule.registration }}</h2></div>
+        <div class="col-sm-6"><h2>Marque : {{ vehicule.brand }} -  Modèle: {{ vehicule.model }} Immatriculation : {{ vehicule.registration }}</h2></div>
     </div>
 
     <div class="row">
         <div class="col-sm-12 entete">
             <div class="panel-success">
-                <div class="panel-heading">Panier</div>
+                <div class="panel-heading">Devis</div>
                 <div class="panel-body" data-idvehicule="{{ vehicule.id }}" id="panier">
-                    <p>ligne 1</p>
-                    <p>test</p>
-                    <p>test</p>
+
+                <ul class="list-group">
+
+</ul>
 
                 </div>
                 <div class="panel-footer">
                     <div class="row">
 
-                        <div class="col-xs-3 pull-left"><a href="#" class="btn btn-danger">Vider</a></div>
-                        <div class="col-xs-3 pull-left"><a href="#" class="btn btn-success">Valider</a></div>
+                        <div  class="col-xs-3 pull-left ">
+                        <button id="allErase" class="btn btn-danger">Vider</button>
+                        </div>
+                        <div class="col-xs-3 pull-right ">
+                        <button id="validerpanier" class="btn btn-success">Valider le devis</button>
+                        </div>
                     </div>
 
                 </div>
@@ -97,7 +102,7 @@
 
                 </div>
 
-                <div class="ajouterservice btn btn-warning pull-right" id="ajouterservice">Ajouter</div>
+                <div class="btn btn-warning pull-right" id="ajouterProduit">Ajouter</div>
             </div>
 
     </div>
@@ -110,13 +115,14 @@
 
     {% block javascripts %}
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/classes/PanierSession.class.js') }}"></script>
 
     <script>
 
             function majTTC() {
-                var val = parseInt($('#valeurHT').val());
+                var val = parseFloat($('#valeurHT').val());
                 if (val != null) {
-                var ttc = Math.round( val * (1 + (parseInt($('#tauxTVA').val()) / 100)) * 100) / 100;
+                var ttc = Math.round( val * (1 + (parseFloat($('#tauxTVA').val()) / 100)) * 100) / 100;
                 $('#TTC').val(ttc);
                  }
             }
@@ -168,6 +174,31 @@
 
                 }
             }
+            function validerDevis() {
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {'devis': loadDataFromDomStorage('panier')},
+                    async: true,
+                    url: '{{ path('app_admin_command_ajax') }}',
+                    success: function (response, statut) {
+                        var idCommand = response.idcommand;
+                        var urlbase = "{{ url('app_admin_command_view')}}";
+                        console.log(urlbase);
+                        var url = urlbase +"/"+ idCommand;
+                        window.location = url;
+                          //on vide le panier
+//                          clearPanier();
+                    },
+                    error: function (resultat, statut, error) {
+                        // J'affiche un message d'erreur
+                        console.log(error);
+                    }
+                });
+            }
+            function clearPanier() {
+              saveDataToDomStorage('panier', null);
+            }
 
         $(document).ready(function () {
 
@@ -183,10 +214,21 @@
             $('#selectservice').on('change', function () {
                 majEltService();
             });
+            $('#validerpanier').on('click', function() {
+              validerDevis();
+            });
+            $('#retour').on('click', function() {
+              //                          clearPanier();
+            });
 
             //action
             majService();
             majEltService();
+
+            console.log($('#panier').data('idvehicule'));
+
+            var panier = new PanierSession($('#panier').data('idvehicule'));
+            panier.refreshPanier();
 
         });
     </script>

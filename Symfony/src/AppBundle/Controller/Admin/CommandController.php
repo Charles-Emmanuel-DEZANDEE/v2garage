@@ -3,13 +3,15 @@
 namespace AppBundle\Controller\Admin;
 
 use AppBundle\Entity\Category;
+use AppBundle\Entity\Command;
 use AppBundle\Entity\Customer;
 use AppBundle\Entity\Vehicule;
-use AppBundle\Form\CustomerSearchType;
-use AppBundle\Form\CustomerType;
+use AppBundle\Form\CommandSearchType;
+use AppBundle\Form\CommandType;
 use AppBundle\Service\DuplicateAddressesService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
@@ -29,7 +31,7 @@ class CommandController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
      */
-    public function listAction(Request $request, Vehicule $vehicule)
+    public function devisAction(Request $request, Vehicule $vehicule)
     {
 
         $doctrine = $this->getDoctrine();
@@ -39,9 +41,7 @@ class CommandController extends Controller
         $rc = $doctrine->getRepository(Category::class);
         $results = $rc->findAllOrderByPositionMagic();
 
-
-
-        return $this->render('admin/command/list.html.twig', [
+        return $this->render('admin/command/devis.html.twig', [
             'results' => $results,
             'vehicule' => $vehicule,
 
@@ -49,21 +49,21 @@ class CommandController extends Controller
     }
 
     /**
-     * @Route("/customer/add", name="app_admin_customer_add", defaults={"id" : null })
-     * @Route("/customer/update/{id}", name="app_admin_customer_update")
+     * @Route("/command/add", name="app_admin_command_add", defaults={"id" : null })
+     * @Route("/command/update/{id}", name="app_admin_command_update")
      *
      */
-    public function addCustomerAction(Request $request, $id = null, DuplicateAddressesService $service)
+    public function addCommandAction(Request $request, $id = null, DuplicateAddressesService $service)
     {
         $doctrine = $this->getDoctrine();
         $em = $doctrine->getManager();
-        $rcCustomer = $doctrine->getRepository(Customer::class);
+        $rcCommand = $doctrine->getRepository(Command::class);
         $typePage = 'ajout';
 
 
-        $customerEntity = $id ? $rcCustomer->find($id) : new Customer();
+        $commandEntity = $id ? $rcCommand->find($id) : new Command();
 
-        $form = $this->createForm(CustomerType::class, $customerEntity);
+        $form = $this->createForm(CommandType::class, $commandEntity);
         $form->handleRequest($request);
         if($id) {
             //personnalisation du formulaire
@@ -71,7 +71,7 @@ class CommandController extends Controller
         }
         if ($form->isSubmitted() && $form->isValid()) {
             $saisie = $form->getData();
-            $pasDeDoublon = $rcCustomer->customerNotExist($saisie->getEmail(),$saisie->getLastName(),$saisie->getAddressZipcode());
+            $pasDeDoublon = $rcCommand->commandNotExist($saisie->getEmail(),$saisie->getLastName(),$saisie->getAddressZipcode());
 
 
             // en update
@@ -84,68 +84,90 @@ class CommandController extends Controller
 
 
                 //insertion
-                $em->persist($customerEntity);
+                $em->persist($commandEntity);
                 // création de l'adresse d'intervention par défaut
-                $service->duplicateMainAddresse($customerEntity);
+                $service->duplicateMainAddresse($commandEntity);
 
                 $em->flush();
 
                 //message flash
-                $message = $id ? 'Le client a été mis à jour' : 'Le client a été inséré';
+                $message = $id ? 'Le commande a été mis à jour' : 'Le commande a été inséré';
                 $this->addFlash('info', $message);
 
                 if($id) {
 
-                    // redirection vers la page du client
-                    return $this->redirectToRoute('app_admin_customer_view', array(
-                            'id' => $customerEntity->getId()
+                    // redirection vers la page du commande
+                    return $this->redirectToRoute('app_admin_command_view', array(
+                            'id' => $commandEntity->getId()
                         )
                     );
                 }
 
                 // redirection vers la saisie du véhicule
                 return $this->redirectToRoute('app_admin_vehicule_add', array(
-                    'idCustomer' => $customerEntity->getId()
+                    'idCommand' => $commandEntity->getId()
                     )
                 );
             }
             else{
                 //message flash
-                $message = 'Le client existe déjà';
+                $message = 'La commande existe déjà';
                 $this->addFlash('warning', $message);
 
                 // redirection vers le formulaire
-                return $this->redirectToRoute('app_admin_customer_add');
+                return $this->redirectToRoute('app_admin_command_add');
             }
 
 
         }
 
-        return $this->render('admin/customer/addCustomer.html.twig', [
+        return $this->render('admin/command/addCommand.html.twig', [
             'form' => $form->createView(),
             'typePage' => $typePage
         ]);
     }
     /**
-     * @Route("/customer/{id}", name="app_admin_customer_view")
+     * @Route("/command/view/{id}", name="app_admin_command_view")
      */
-    public function viewCustomer(Request $request, $id = null)
+    public function viewCommand(Request $request, $id = null)
     {
         if ($id == null){
-            $message = 'Veuillez selectionner un client';
+            $message = 'Veuillez selectionner une commande';
             $this->addFlash('danger', $message);
             return $this->redirectToRoute('app_admin_customer_list');
         }
 
         $doctrine = $this->getDoctrine();
-        $rc = $doctrine->getRepository(Customer::class);
+        $rc = $doctrine->getRepository(Command::class);
         $result = $rc->find($id);
 
         dump($result);
 
-        return $this->render('admin/customer/viewCustomer.html.twig', [
+        return $this->render('admin/command/viewCommand.html.twig', [
             'result' => $result
         ]);
     }
+
+    /**
+     * @Route("/commandeajax}", name="app_admin_command_ajax")
+     * @Method({"POST"})
+     * @return JsonResponse
+     * @param Request $request
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     */
+    public function eltServiceAjax(Request $request)
+    {
+        if ($request->isXMLHttpRequest()) {
+            $devis = $request->request->get('devis');
+            $doctrine = $this->getDoctrine();
+            $vehicule = $doctrine->getRepository(Vehicule::class)->find($devis['idVehicule']);
+            $command = new Command();
+            $command->setVehicule($vehicule);
+
+            $response = new JsonResponse(['idcommand' => 1]);
+            return $response;
+        }
+    }
+
 
 }
