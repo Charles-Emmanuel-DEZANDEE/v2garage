@@ -49,7 +49,7 @@ PanierSession.prototype.refreshPanier = function()
             var valeurligne = panier[i].quantity * panier[i].valeurHT;
             if (remise > 0){
 
-                var valeurligne = valeurligne - ((valeurligne*(remise /100))*100);
+                valeurligne = valeurligne - (valeurligne*(remise /100));
             }
 
             totalPanier += valeurligne;
@@ -92,6 +92,11 @@ PanierSession.prototype.onAddproduct = function()
     this.savePanier(this.$panier);
     //on refresh
     this.refreshPanier();
+
+    //on vide les champs pour une nouvelle saisie
+    $('#reference').val(null);
+    $('#selectremise').val("0");
+    $('#selectquantite').val("1");
 
 };
 PanierSession.prototype.onSupprimProduct = function(event)
