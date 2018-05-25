@@ -44,7 +44,7 @@ class CommandController extends Controller
         $results = $rc->findAllOrderByPositionMagic();
 
         return $this->render('admin/command/devis.html.twig', [
-            'results' => $results,
+            'result' => $results,
             'vehicule' => $vehicule,
 
         ]);
@@ -143,7 +143,7 @@ class CommandController extends Controller
         $rc = $doctrine->getRepository(Command::class);
         $result = $rc->find($id);
 
-        dump($result);
+//        dump($result);
 
         return $this->render('admin/command/viewCommand.html.twig', [
             'result' => $result
@@ -177,6 +177,7 @@ class CommandController extends Controller
                 $serviceCommand->setValue($ligne['valeurHT']);
                 $serviceCommand->setQuantity($ligne['quantity']);
                 $serviceCommand->setDiscountRate($ligne['remise']);
+                $serviceCommand->setTaxRate($ligne['taxerate']);
                 $em->persist($serviceCommand);
             }
 

@@ -4,9 +4,44 @@
 
 <div class="container jumbotron">
 
-    <h1>recap devis </h1>
+    <h1>recap devis n° {{ result.ref }}</h1>
+    <h2>{{ result.vehicule.brand }} - {{ result.vehicule.model }} - {{ result.vehicule.registration }} </h2>
 
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Désignation</th>
+                <th>Quantité</th>
+                <th>Unité</th>
+                <th>Prix HT</th>
+                <th>Remise</th>
+                <th>TVA</th>
+                <th>Total HT</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for ligne in result.commandsServices %}
+            <tr>
+                <td>{{ligne.service.name}}  ref : {{ ligne.reference }} </td>
+                <td>{{ligne.quantity}}</td>
+                <td>{{ligne.service.unite.libelle}}</td>
+                <td>{{ligne.value}}</td>
+                <td>{{ligne.discountRate}}%</td>
+                <td>{{ligne.taxRate}}%</td>
+                <td>{{ligne.value * ligne.quantity}}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
+    <div class="row">
+        <div class="col-xs-4 pull-right">
+            <p>total HT : <strong> {{result.totalHt}} €</strong></p>
+            <p>total TTC : <strong>{{result.totalTtc}} €</strong></p>
+        </div>
+    </div>
 
 
 </div>
