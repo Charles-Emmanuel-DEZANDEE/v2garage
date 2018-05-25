@@ -4,7 +4,9 @@ namespace AppBundle\Controller\Admin;
 
 use AppBundle\Entity\Category;
 use AppBundle\Entity\Command;
+use AppBundle\Entity\CommandsServices;
 use AppBundle\Entity\Customer;
+use AppBundle\Entity\Service;
 use AppBundle\Entity\Vehicule;
 use AppBundle\Form\CommandSearchType;
 use AppBundle\Form\CommandType;
@@ -160,11 +162,31 @@ class CommandController extends Controller
         if ($request->isXMLHttpRequest()) {
             $devis = $request->request->get('devis');
             $doctrine = $this->getDoctrine();
+            $em = $doctrine->getManager();
             $vehicule = $doctrine->getRepository(Vehicule::class)->find($devis['idVehicule']);
             $command = new Command();
             $command->setVehicule($vehicule);
+            //todo service generation n° de devis
+            $command->setRef('D5646475');
+            $em->persist($command);
+            //ajout des lignes
+            foreach ($devis['tabElt'] as $ligne) {
+                $service = $doctrine->getRepository(Service::class)->find($ligne['idservice']);
+                $serviceCommand = new CommandsServices($service,$command);
+                $serviceCommand->setReference($ligne['reference']);
+                $serviceCommand->setValue($ligne['valeurHT']);
+                $serviceCommand->setQuantity($ligne['quantity']);
+                $serviceCommand->setDiscountRate($ligne['remise']);
+                $em->persist($serviceCommand);
+            }
 
-            $response = new JsonResponse(['idcommand' => 1]);
+            $em->flush();
+
+
+            $message = 'Le devis a été enregistré';
+            $this->addFlash('info', $message);
+
+            $response = new JsonResponse(['idcommand' => $command->getId()]);
             return $response;
         }
     }

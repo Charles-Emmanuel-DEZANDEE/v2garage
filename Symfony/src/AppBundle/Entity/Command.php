@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @ORM\Table(name="command")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CommandRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Command
 {
@@ -136,6 +137,14 @@ class Command
         $this->setTotalTva($totalTva);
         $this->setTotalTtc($totalTtc);
         $this->setTotalDiscount($totalDiscount);
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function updateDate()
+    {
+        $this->setDateLastUpdate(new \Datetime());
     }
 
 
@@ -397,6 +406,8 @@ class Command
     {
         $this->commandsServices = new \Doctrine\Common\Collections\ArrayCollection();
         $this->dateCreate = new \DateTime();
+        $this->dateLastUpdate = new \DateTime();
+        $this->commandeValidate = false;
     }
 
     /**

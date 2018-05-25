@@ -42,7 +42,7 @@
                     <ul>
                         {% for address in result.addresses %}
 
-                            <p><span>{{ address.name }} </span> <span>{{ address.number }} {{ address.road1 }} - {{ address.zipcode }} {{ address.city }} </span><a href="#" class="btn bg-primary "> Modifier </a></p>
+                            <p><span>{{ address.name }} </span> <span>{{ address.number }} {{ address.road1 }} - {{ address.zipcode }} {{ address.city }} </span><a href="{{ path('app_admin_addresses_update', {'idCustomer' : result.id, 'idAddresses' : address.id}) }}" class="btn bg-primary "> Modifier </a></p>
                         {% endfor %}
                     </ul>
                 </div>

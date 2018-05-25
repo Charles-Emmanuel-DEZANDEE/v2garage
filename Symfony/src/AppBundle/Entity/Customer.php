@@ -438,7 +438,7 @@ class Customer
      */
     public function setAddressRegion($addressRegion = null)
     {
-        $this->addressRegion = $addressRegion;
+        $this->addressRegion = ucwords($addressRegion);
 
         return $this;
     }
@@ -462,7 +462,7 @@ class Customer
      */
     public function setAddressCity($addressCity)
     {
-        $this->addressCity = $addressCity;
+        $this->addressCity = ucwords($addressCity);
 
         return $this;
     }
@@ -486,7 +486,7 @@ class Customer
      */
     public function setAddressCountry($addressCountry = null)
     {
-        $this->addressCountry = $addressCountry;
+        $this->addressCountry = ucwords($addressCountry);
 
         return $this;
     }

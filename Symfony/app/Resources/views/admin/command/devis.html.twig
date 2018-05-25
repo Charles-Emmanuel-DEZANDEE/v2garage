@@ -188,7 +188,7 @@
                         var url = urlbase +"/"+ idCommand;
                         window.location = url;
                           //on vide le panier
-//                          clearPanier();
+                          clearPanier();
                     },
                     error: function (resultat, statut, error) {
                         // J'affiche un message d'erreur
@@ -218,14 +218,14 @@
               validerDevis();
             });
             $('#retour').on('click', function() {
-              //                          clearPanier();
+            clearPanier();
             });
 
             //action
             majService();
             majEltService();
 
-            console.log($('#panier').data('idvehicule'));
+//            console.log($('#panier').data('idvehicule'));
 
             var panier = new PanierSession($('#panier').data('idvehicule'));
             panier.refreshPanier();

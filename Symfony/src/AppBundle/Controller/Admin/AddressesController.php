@@ -20,7 +20,7 @@ class AddressesController extends Controller
 
     /**
      * @Route("/addresses/add/{idCustomer}", name="app_admin_addresses_add")
-     * @Route("/addresses/update/{idCustomer}/{idVehicule}", name="app_admin_addresses_update")
+     * @Route("/addresses/update/{idCustomer}/{idAddresses}", name="app_admin_addresses_update")
      *
      */
     public function addVehiculeAction(Request $request, $idCustomer, $idAddresses= null)

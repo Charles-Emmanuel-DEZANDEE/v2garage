@@ -82,12 +82,12 @@ PanierSession.prototype.onAddproduct = function()
         remise : remise,
         quantity : quantity
     };
-    console.log(objetElementpanier);
+    // console.log(objetElementpanier);
     // il faut récuper la liste existante
     this.$panier = this.loadPanier();
     //on ajoute un produit
     this.$panier.tabElt.push(objetElementpanier);
-    console.log(this.$panier);
+    // console.log(this.$panier);
     //on sauvegarde la liste dans le local storage
     this.savePanier(this.$panier);
     //on refresh
@@ -103,15 +103,15 @@ PanierSession.prototype.onSupprimProduct = function(event)
 {
 
     // event.preventDefault();
-    console.log("suppression");
+    // console.log("suppression");
     // il faut récuper la liste existante
     this.$panier = this.loadPanier();
     var index = $(event.currentTarget).data('index');
-    console.log(index);
+    // console.log(index);
 
     // //on supprime le produit
     this.$panier.tabElt.splice(index,1);
-    console.log(this.$panier);
+    // console.log(this.$panier);
     //on sauvegarde la liste dans le local storage
     this.savePanier(this.$panier);
     //on refresh

@@ -116,7 +116,7 @@ class Address_intervention
      */
     public function setName($name)
     {
-        $this->name = $name;
+        $this->name = ucwords($name);
 
         return $this;
     }
@@ -260,7 +260,7 @@ class Address_intervention
      */
     public function setCity($city)
     {
-        $this->city = $city;
+        $this->city = ucwords($city);
 
         return $this;
     }
@@ -284,7 +284,7 @@ class Address_intervention
      */
     public function setRegion($region = null)
     {
-        $this->region = $region;
+        $this->region = ucwords($region);
 
         return $this;
     }
@@ -308,7 +308,7 @@ class Address_intervention
      */
     public function setCountry($country = null)
     {
-        $this->country = $country;
+        $this->country = ucwords($country);
 
         return $this;
     }
