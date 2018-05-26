@@ -44,7 +44,7 @@ class CommandController extends Controller
         $results = $rc->findAllOrderByPositionMagic();
 
         return $this->render('admin/command/devis.html.twig', [
-            'result' => $results,
+            'results' => $results,
             'vehicule' => $vehicule,
 
         ]);
