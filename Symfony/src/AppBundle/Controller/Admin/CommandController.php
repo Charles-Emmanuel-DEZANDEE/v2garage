@@ -10,6 +10,7 @@ use AppBundle\Entity\Service;
 use AppBundle\Entity\Vehicule;
 use AppBundle\Form\CommandSearchType;
 use AppBundle\Form\CommandType;
+use AppBundle\Service\CommandService;
 use AppBundle\Service\DuplicateAddressesService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -38,8 +39,6 @@ class CommandController extends Controller
 
         $doctrine = $this->getDoctrine();
 
-//        $vehicule = $doctrine->getRepository(Vehicule::class)->find($idVehicule);
-
         $rc = $doctrine->getRepository(Category::class);
         $results = $rc->findAllOrderByPositionMagic();
 
@@ -51,83 +50,30 @@ class CommandController extends Controller
     }
 
     /**
-     * @Route("/command/add", name="app_admin_command_add", defaults={"id" : null })
      * @Route("/command/update/{id}", name="app_admin_command_update")
-     *
+     * @Method({"GET", "POST"})
+     * @param Request $request
+     * @param Command $command
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
      */
-    public function addCommandAction(Request $request, $id = null, DuplicateAddressesService $service)
+    public function devisUpdateAction(Request $request, Command $command)
     {
+
         $doctrine = $this->getDoctrine();
-        $em = $doctrine->getManager();
-        $rcCommand = $doctrine->getRepository(Command::class);
-        $typePage = 'ajout';
 
+        $rc = $doctrine->getRepository(Category::class);
+        $results = $rc->findAllOrderByPositionMagic();
 
-        $commandEntity = $id ? $rcCommand->find($id) : new Command();
+        return $this->render('admin/command/devis.html.twig', [
+            'results' => $results,
+            'vehicule' => $command->getVehicule(),
+            'commande' => $command,
 
-        $form = $this->createForm(CommandType::class, $commandEntity);
-        $form->handleRequest($request);
-        if($id) {
-            //personnalisation du formulaire
-            $typePage = 'modif';
-        }
-        if ($form->isSubmitted() && $form->isValid()) {
-            $saisie = $form->getData();
-            $pasDeDoublon = $rcCommand->commandNotExist($saisie->getEmail(),$saisie->getLastName(),$saisie->getAddressZipcode());
-
-
-            // en update
-            if($id){
-
-                //pour permettre la mise à jour
-                $pasDeDoublon = true;
-            }
-            if ($pasDeDoublon){
-
-
-                //insertion
-                $em->persist($commandEntity);
-                // création de l'adresse d'intervention par défaut
-                $service->duplicateMainAddresse($commandEntity);
-
-                $em->flush();
-
-                //message flash
-                $message = $id ? 'Le commande a été mis à jour' : 'Le commande a été inséré';
-                $this->addFlash('info', $message);
-
-                if($id) {
-
-                    // redirection vers la page du commande
-                    return $this->redirectToRoute('app_admin_command_view', array(
-                            'id' => $commandEntity->getId()
-                        )
-                    );
-                }
-
-                // redirection vers la saisie du véhicule
-                return $this->redirectToRoute('app_admin_vehicule_add', array(
-                    'idCommand' => $commandEntity->getId()
-                    )
-                );
-            }
-            else{
-                //message flash
-                $message = 'La commande existe déjà';
-                $this->addFlash('warning', $message);
-
-                // redirection vers le formulaire
-                return $this->redirectToRoute('app_admin_command_add');
-            }
-
-
-        }
-
-        return $this->render('admin/command/addCommand.html.twig', [
-            'form' => $form->createView(),
-            'typePage' => $typePage
         ]);
     }
+
+
     /**
      * @Route("/command/view/{id}", name="app_admin_command_view")
      */
@@ -157,18 +103,33 @@ class CommandController extends Controller
      * @param Request $request
      * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
      */
-    public function eltServiceAjax(Request $request)
+    public function eltServiceAjax(Request $request, CommandService $commandService)
     {
         if ($request->isXMLHttpRequest()) {
             $devis = $request->request->get('devis');
             $doctrine = $this->getDoctrine();
             $em = $doctrine->getManager();
+
+
             $vehicule = $doctrine->getRepository(Vehicule::class)->find($devis['idVehicule']);
+            $idCommand = $devis['idCommande'];
+            if ($idCommand != null){
+                $command= $doctrine->getRepository(Command::class)->find($idCommand);
+                //vider les lignes commandServices
+                $commandeServices = $doctrine->getRepository(CommandsServices::class)->findBy(['command' => $command]);
+                foreach ($commandeServices as $ligne){
+
+                $em->remove($ligne);
+                }
+                $em->flush();
+            }
+            else{
             $command = new Command();
             $command->setVehicule($vehicule);
-            //todo service generation n° de devis
-            $command->setRef('D5646475');
+            $command->setRef($commandService->getNumeroDevis());
             $em->persist($command);
+            }
+
             //ajout des lignes
             foreach ($devis['tabElt'] as $ligne) {
                 $service = $doctrine->getRepository(Service::class)->find($ligne['idservice']);
@@ -183,8 +144,12 @@ class CommandController extends Controller
 
             $em->flush();
 
-
+            if ($idCommand != null){
+            $message = 'Le devis a été modifié';
+            }
+            else {
             $message = 'Le devis a été enregistré';
+            }
             $this->addFlash('info', $message);
 
             $response = new JsonResponse(['idcommand' => $command->getId()]);

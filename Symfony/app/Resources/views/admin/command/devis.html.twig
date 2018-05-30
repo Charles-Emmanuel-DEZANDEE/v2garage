@@ -225,10 +225,26 @@
             majService();
             majEltService();
 
-//            console.log($('#panier').data('idvehicule'));
-
             var panier = new PanierSession($('#panier').data('idvehicule'));
             panier.refreshPanier();
+
+            {% if commande is defined %}
+            panier.addIdCommand(parseInt({{ commande.id }}));
+            {% for ligne in commande.commandsServices %}
+            var objetElementpanier = {
+                idservice : parseInt({{ligne.service.id}}),
+                nomservice : "{{ligne.service.name}}",
+                reference : "{{ligne.reference}}",
+                valeurHT : parseInt({{ligne.value}}),
+                taxerate : parseInt({{ligne.taxRate}}),
+                remise : parseInt({{ligne.discountRate}}),
+                quantity : parseInt({{ligne.quantity}})
+            };
+            panier.pushProduct(objetElementpanier);
+
+            {% endfor %}
+
+            {% endif %}
 
         });
     </script>

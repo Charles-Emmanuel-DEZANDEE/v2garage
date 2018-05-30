@@ -10,4 +10,19 @@ namespace AppBundle\Repository;
  */
 class CommandRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function referenceNotExist($ref){
+        $response = true;
+        $results = $this->createQueryBuilder('command')
+            ->andwhere('command.ref = :ref')
+            ->setParameter('ref' , $ref)
+            ->getQuery()
+            ->getResult()
+        ;
+        if (!empty($results)){
+            $response = false;
+        }
+
+        return $response;
+    }
+
 }

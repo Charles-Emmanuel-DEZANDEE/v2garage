@@ -10,6 +10,7 @@ var PanierSession = function(id)
 
     this.$panier = {
         idVehicule : id,
+        idCommande : null,
         tabElt : []
     };
     this.$emplacementStorage  = "panier";
@@ -64,7 +65,7 @@ PanierSession.prototype.refreshPanier = function()
 PanierSession.prototype.onAddproduct = function()
 {
 
-    event.preventDefault();
+
     var idservice = $('#selectservice option:selected').val();
     var nomservice = $('#selectservice option:selected').text();
     var reference = $('#reference').val();
@@ -99,6 +100,39 @@ PanierSession.prototype.onAddproduct = function()
     $('#selectquantite').val("1");
 
 };
+
+PanierSession.prototype.pushProduct = function(objetElementpanier)
+{
+
+
+    // il faut récuper la liste existante
+    this.$panier = this.loadPanier();
+    //on ajoute un produit
+    this.$panier.tabElt.push(objetElementpanier);
+    //on sauvegarde la liste dans le local storage
+    this.savePanier(this.$panier);
+    //on refresh
+    this.refreshPanier();
+
+};
+
+PanierSession.prototype.addIdCommand = function(id)
+{
+
+
+    // il faut récuper la liste existante
+    this.$panier = this.loadPanier();
+    //on ajoute un produit
+    this.$panier.idCommande = id;
+    //on sauvegarde la liste dans le local storage
+    this.savePanier(this.$panier);
+
+
+};
+
+
+
+
 PanierSession.prototype.onSupprimProduct = function(event)
 {
 

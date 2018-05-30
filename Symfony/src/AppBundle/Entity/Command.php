@@ -115,7 +115,7 @@ class Command
 
     /**
      * one command have Many CommandsServices.
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\CommandsServices", mappedBy="command", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\CommandsServices", mappedBy="command", cascade={"persist"}, cascade={"remove"})
           */
     private $commandsServices;
 

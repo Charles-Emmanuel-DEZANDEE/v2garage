@@ -2,8 +2,8 @@
 
 namespace AppBundle\Service;
 
-use AppBundle\Entity\Address_intervention;
-use AppBundle\Entity\Customer;
+
+use AppBundle\Entity\Command;
 use Doctrine\ORM\EntityManager;
 use  Doctrine\ORM\EntityManagerInterface;
 
@@ -25,28 +25,16 @@ class CommandService
     }
 
 
-    public function duplicateMainAddresse(Customer $Customer){
-        $addresses = $Customer->getAddresses();
-        $addressMainFree = true;
-        foreach ($addresses as $address){
-            if ($address->getName() === 'Principale') $addressMainFree = false;
-        }
-        if ($addressMainFree) {
-            $addressesEntity = new Address_intervention($Customer);
-//peuplement
-            $addressesEntity->setName('Principale');
-            $addressesEntity->setNumber($Customer->getAddressNumber());
-            $addressesEntity->setRoad1($Customer->getAddressRoad1());
-            $addressesEntity->setRoad2($Customer->getAddressRoad2());
-            $addressesEntity->setZipcode($Customer->getAddressZipcode());
-            $addressesEntity->setCity($Customer->getAddressCity());
-            $addressesEntity->setRegion($Customer->getAddressRegion());
-            $addressesEntity->setCountry($Customer->getAddressCountry());
+    public function getNumeroDevis(){
+        $ref = '';
+        $rcCommande = $this->em->getRepository(Command::class);
 
-            $this->em->persist($addressesEntity);
+        do{
+            $ref = "D" . date('Y'). mt_rand(10000,99999);
+        } while(!$rcCommande->referenceNotExist($ref));
 
-            //$this->em->flush();
-        }
+
+        return $ref;
 
     }
 
