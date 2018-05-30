@@ -16,12 +16,7 @@ class Command
 {
 
 
-    /**
-     * Many commands have One Vehicule.
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Vehicule", inversedBy="commands")
-     * @ORM\JoinColumn(name="vehicule_id", referencedColumnName="id")
-     */
-    private $vehicule;
+
 
     /**
      * @var int
@@ -82,14 +77,14 @@ class Command
     private $dateCreate;
 
     /**
-     * @var bool
+     * @var \DateTime|null
      *
-     * @ORM\Column(name="commande_validate", type="boolean")
+     * @ORM\Column(name="commande_validate", type="datetime", nullable=true)
      */
     private $commandeValidate;
 
     /**
-     * @var datetime|null
+     * @var \DateTime|null
      *
      * @ORM\Column(name="date_last_update", type="datetime", nullable=true)
      */
@@ -102,11 +97,34 @@ class Command
      */
     private $dateBill;
 
+
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="date_bill_acquited", type="datetime", nullable=true)
+     */
+    private $dateBillAcquited;
+
+    /**
+     * Many commands have One Vehicule.
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Vehicule", inversedBy="commands")
+     * @ORM\JoinColumn(name="vehicule_id", referencedColumnName="id")
+     */
+    private $vehicule;
+
     /**
      * one command have Many CommandsServices.
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\CommandsServices", mappedBy="command", cascade={"persist"})
           */
     private $commandsServices;
+
+    /**
+     * Many commands have One paymentType.
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\PaymentType", inversedBy="commands")
+     * @ORM\JoinColumn(name="paymentType_id", referencedColumnName="id")
+     */
+    private $paymentType;
 
 
     /**
@@ -145,7 +163,18 @@ class Command
     public function updateDate()
     {
         $this->setDateLastUpdate(new \Datetime());
+        $this->setTotalAll();
     }
+
+    /**
+     * @ORM\PreFlush()
+     */
+    public function setTotal()
+    {
+        $this->setTotalAll();
+    }
+
+
 
 
     /**
@@ -302,29 +331,7 @@ class Command
         return $this->dateCreate;
     }
 
-    /**
-     * Set commandeValidate.
-     *
-     * @param bool $commandeValidate
-     *
-     * @return Command
-     */
-    public function setCommandeValidate($commandeValidate)
-    {
-        $this->commandeValidate = $commandeValidate;
 
-        return $this;
-    }
-
-    /**
-     * Get commandeValidate.
-     *
-     * @return bool
-     */
-    public function getCommandeValidate()
-    {
-        return $this->commandeValidate;
-    }
 
     /**
      * Set dateLastUpdate.
@@ -375,6 +382,22 @@ class Command
     }
 
     /**
+     * @return \DateTime|null
+     */
+    public function getDateBillAcquited()
+    {
+        return $this->dateBillAcquited;
+    }
+
+    /**
+     * @param \DateTime|null $dateBillAcquited
+     */
+    public function setDateBillAcquited($dateBillAcquited)
+    {
+        $this->dateBillAcquited = $dateBillAcquited;
+    }
+
+    /**
      * Set vehicule.
      *
      * @param \AppBundle\Entity\Vehicule|null $vehicule
@@ -407,7 +430,6 @@ class Command
         $this->commandsServices = new \Doctrine\Common\Collections\ArrayCollection();
         $this->dateCreate = new \DateTime();
         $this->dateLastUpdate = new \DateTime();
-        $this->commandeValidate = false;
     }
 
     /**
@@ -468,5 +490,53 @@ class Command
     public function getTotalDiscount()
     {
         return $this->totalDiscount;
+    }
+
+    /**
+     * Set paymentType.
+     *
+     * @param \AppBundle\Entity\PaymentType|null $paymentType
+     *
+     * @return Command
+     */
+    public function setPaymentType(\AppBundle\Entity\PaymentType $paymentType = null)
+    {
+        $this->paymentType = $paymentType;
+
+        return $this;
+    }
+
+    /**
+     * Get paymentType.
+     *
+     * @return \AppBundle\Entity\PaymentType|null
+     */
+    public function getPaymentType()
+    {
+        return $this->paymentType;
+    }
+
+    /**
+     * Set commandeValidate.
+     *
+     * @param \DateTime|null $commandeValidate
+     *
+     * @return Command
+     */
+    public function setCommandeValidate($commandeValidate = null)
+    {
+        $this->commandeValidate = $commandeValidate;
+
+        return $this;
+    }
+
+    /**
+     * Get commandeValidate.
+     *
+     * @return \DateTime|null
+     */
+    public function getCommandeValidate()
+    {
+        return $this->commandeValidate;
     }
 }
