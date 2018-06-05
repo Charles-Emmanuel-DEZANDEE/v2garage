@@ -26,10 +26,15 @@
                 <td>{{ligne.service.name}}  ref : {{ ligne.reference }} </td>
                 <td>{{ligne.quantity}}</td>
                 <td>{{ligne.service.unite.libelle}}</td>
-                <td>{{ligne.value}}</td>
-                <td>{{ligne.discountRate}}%</td>
-                <td>{{ligne.taxRate}}%</td>
-                <td>{{ligne.value * ligne.quantity}}</td>
+                <td>{{ligne.value|number_format(2, '.', ' ')}}</td>
+                <td>{{ligne.discountRate}} %</td>
+                <td>{{ligne.taxRate|number_format(2, '.', ' ')}} %</td>
+                {% if  result.totalDiscount != 0 %}
+                <td>{{((ligne.value * ligne.quantity)-((ligne.value * ligne.quantity )* ligne.discountRate/100))|number_format(2, '.', ' ')}}</td>
+                {% else %}
+                <td>{{ligne.value * ligne.quantity|number_format(2, '.', ' ')}}</td>
+                {% endif %}
+
             </tr>
             {% endfor %}
             </tbody>
@@ -38,8 +43,12 @@
 
     <div class="row">
         <div class="col-xs-4 pull-right">
-            <p>total HT : <strong> {{result.totalHt}} €</strong></p>
-            <p>total TTC : <strong>{{result.totalTtc}} €</strong></p>
+            {% if  result.totalDiscount != 0 %}
+            <p>total remise : <strong> {{result.totalDiscount|number_format(2, '.', ' ')}} €</strong></p>
+            {% endif %}
+            <p>total HT : <strong> {{result.totalHt|number_format(2, '.', ' ')}} €</strong></p>
+            <p>total TVA : <strong> {{result.totalTva|number_format(2, '.', ' ')}} €</strong></p>
+            <p>total TTC : <strong>{{result.totalTtc|number_format(2, '.', ' ')}} €</strong></p>
         </div>
     </div>
 

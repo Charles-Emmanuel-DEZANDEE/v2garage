@@ -10,6 +10,10 @@ var PanierSession = function(id)
 
     this.$panier = {
         idVehicule : id,
+        totalHT : 0,
+        totalRemise: 0,
+        totalTva: 0,
+        totalTtc:0,
         idCommande : null,
         tabElt : []
     };
@@ -27,8 +31,37 @@ PanierSession.prototype.loadPanier = function()
     }
     return panierLoaded;
 };
+
 PanierSession.prototype.savePanier = function(liste)
 {
+
+    //mise à jour des totaux
+    for (var i= 0;i < liste.tabElt.length; i++) {
+        var ligneTotalHT = liste.tabElt[i].valeurHT * liste.tabElt[i].quantity;
+        var ligneRemise = liste.tabElt[i].remise;
+        if (ligneRemise != 0){
+            var ligneTotalRemise = ligneTotalHT * ligneRemise /100;
+            liste.totalRemise += ligneTotalRemise;
+            ligneTotalHT = ligneTotalHT - ligneTotalRemise;
+        }
+
+        var ligneTotalTVA = ligneTotalHT * liste.tabElt[i].taxerate /100;
+        var ligneTotalTTC = ligneTotalHT + ligneTotalTVA;
+
+
+        liste.totalHT += (liste.tabElt[i].valeurHT * liste.tabElt[i].quantity);
+        if (liste.tabElt[i].remise != 0){
+            liste.totalRemise += (liste.tabElt[i].valeurHT * liste.tabElt[i].quantity * liste.tabElt[i].remise / 100);
+            liste.totalTva = liste.totalTva - (liste.tabElt[i].valeurHT * liste.tabElt[i].quantity * liste.tabElt[i].remise / 100);
+        }
+        liste.totalTva += (liste.tabElt[i].valeurHT * liste.tabElt[i].quantity * liste.tabElt[i].taxerate / 100);
+        liste.totalTtc = liste.totalTva + liste.totalTva;
+
+        liste.totalTva += ligneTotalTVA;
+        liste.totalTtc += ligneTotalTTC;
+        liste.totalHT += ligneTotalHT;
+    }
+
     saveDataToDomStorage(this.$emplacementStorage,liste);
 };
 
@@ -57,7 +90,7 @@ PanierSession.prototype.refreshPanier = function()
     // Ajouter un LI contenant prenom et nom
         eltUL.append("<li class='list-group-item' ><strong>Nom</strong>: "+ panier[i].nomservice + "     - <strong>référence:</strong>   " + panier[i].reference + "      - <strong>Quantité</strong>:  " + panier[i].quantity + "      - <strong>Total HT (remise inclue)</strong>:  " + valeurligne  +" €<span data-index='"+ i +"' class='glyphicon glyphicon-remove-circle pull-right supprimerProduit' ></span></li>");
         }
-    eltUL.append("<button class='btn btn-success'>"+ totalPanier +" €</button>");
+    eltUL.append("<button class='btn btn-success'> Total HT "+ totalPanier +" €</button>");
 // on met les ecouteur sur les lignes créées
     $(".supprimerProduit").on('click', this.onSupprimProduct.bind(this));
 };
@@ -146,6 +179,7 @@ PanierSession.prototype.onSupprimProduct = function(event)
     // //on supprime le produit
     this.$panier.tabElt.splice(index,1);
     // console.log(this.$panier);
+
     //on sauvegarde la liste dans le local storage
     this.savePanier(this.$panier);
     //on refresh
@@ -158,7 +192,7 @@ PanierSession.prototype.onSupprimAllProduct = function(event)
     event.preventDefault();
     // il faut récuper la liste existante
     this.$panier.tabElt = [];
-
+    this.clearTotal();
     //on sauvegarde la liste dans le local storage
     this.savePanier(this.$panier);
     //on refresh
@@ -171,4 +205,14 @@ PanierSession.prototype.clear = function()
 {
     // Destruction du panier dans le DOM storage.
     saveDataToDomStorage(this.$emplacementStorage, null);
+};
+
+PanierSession.prototype.clearTotal = function()
+{
+    // Destruction du panier dans le DOM storage.
+    this.$panier.totalTva = 0;
+    this.$panier.totalRemise = 0;
+    this.$panier.totalTtc = 0;
+    this.$panier.totalHT = 0;
+    saveDataToDomStorage(this.$emplacementStorage, this.$panier);
 };

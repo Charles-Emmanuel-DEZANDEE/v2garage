@@ -229,6 +229,7 @@
             panier.refreshPanier();
 
             {% if commande is defined %}
+            panier.clearTotal();
             panier.addIdCommand(parseInt({{ commande.id }}));
             {% for ligne in commande.commandsServices %}
             var objetElementpanier = {

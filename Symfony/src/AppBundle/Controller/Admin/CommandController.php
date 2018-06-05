@@ -127,8 +127,13 @@ class CommandController extends Controller
             $command = new Command();
             $command->setVehicule($vehicule);
             $command->setRef($commandService->getNumeroDevis());
-            $em->persist($command);
             }
+            $command->setTotalHt($devis['totalHT']);
+            $command->setTotalDiscount($devis['totalRemise']);
+            $command->setTotalTva($devis['totalTva']);
+            $command->setTotalTtc($devis['totalTtc']);
+
+            $em->persist($command);
 
             //ajout des lignes
             foreach ($devis['tabElt'] as $ligne) {
