@@ -75,9 +75,12 @@
 
                 {% for command in vehicule.commands %}
                         {% if command.dateBill is empty %}
-
-                            <p> <span>{{ command.ref }} </span> <span> montant </span> <a href="{{ path('app_admin_command_view', {'id' : command.id}) }}" class="btn bg-warning "> Voir </a> <a href="{{ path('app_admin_command_update', {'id' : command.id}) }}" class="btn bg-primary "> Modifier </a> </p>
-
+                            <div class="row">
+                                <div class="col-xs-3">{{ command.ref }}</div>
+                                <div class="col-xs-3">{{ command.totalHt }}</div>
+                                <div class="col-xs-3"><a href="{{ path('app_admin_command_view', {'id' : command.id}) }}" class="btn bg-warning "> Voir </a></div>
+                                <div class="col-xs-3"><a href="{{ path('app_admin_command_update', {'id' : command.id}) }}" class="btn bg-primary "> Modifier </a></div>
+                            </div>
                         {% endif %}
                     {% endfor %}
                 {% endfor %}
@@ -97,9 +100,14 @@
 
                 {% for command in vehicule.commands %}
                         {% if command.dateBill is not empty %}
-
-                            <p> <span>{{ command.ref }} </span> <span> montant </span>  <span><a href="#" class="btn bg-info "> Envoyer </a><a href="#" class="btn bg-primary "> Imprimer </a></span></p>
-
+                            <div class="row">
+                                <div class="col-xs-3">{{ command.ref }}</div>
+                                <div class="col-xs-3">{{ command.totalHt }}</div>
+                                <div class="col-xs-3"><a href="{{ path('app_admin_command_view', {'id' : command.id}) }}" class="btn bg-warning "> Voir </a></div>
+                                <div class="col-xs-3"><a href="{{ path('app_admin_command_update', {'id' : command.id}) }}" class="btn bg-primary "> Modifier </a></div>
+                                <div class="col-xs-3"><a href="#" class="btn bg-info "> Envoyer </a></div>
+                                <div class="col-xs-3"><a href="#" class="btn bg-primary "> Imprimer </a></div>
+                            </div>
                         {% endif %}
                     {% endfor %}
                     {% endfor %}

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Subscriber\CommandFormSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -13,7 +14,21 @@ class CommandType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('ref')->add('billRef')->add('totalHt')->add('totalTva')->add('totalTtc')->add('totalDiscount')->add('dateCreate')->add('commandeValidate')->add('dateLastUpdate')->add('dateBill')->add('customer');
+        $builder
+            ->add('ref')
+            ->add('billRef')
+            ->add('totalHt')
+            ->add('totalTva')
+            ->add('totalTtc')
+            ->add('totalDiscount')
+            ->add('dateCreate')
+            ->add('commandeValidate')
+            ->add('dateLastUpdate')
+            ->add('dateBill')
+            ->add('customer');
+
+        // souscripteur
+        $builder->addEventSubscriber(new CommandFormSubscriber());
     }/**
      * {@inheritdoc}
      */

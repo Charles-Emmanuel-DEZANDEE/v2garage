@@ -4,6 +4,9 @@
 
 <div class="container jumbotron">
 
+    <div id="retour" class="col-sm-3 espaceBoutton"><a href="{{ path('app_admin_customer_view', {'id': result.vehicule.customer.id}) }}" class="btn bg-primary ">
+            Retour </a></div>
+
     <h1>recap devis </h1>
     <h2>n° {{ result.ref }}</h2>
     <h3>{{ result.vehicule.brand }} - {{ result.vehicule.model }} - {{ result.vehicule.registration }} </h3>

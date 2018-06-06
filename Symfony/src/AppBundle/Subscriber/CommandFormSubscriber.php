@@ -5,7 +5,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
-class UserFormSubscriber implements EventSubscriberInterface
+class CommandFormSubscriber implements EventSubscriberInterface
 {
     public static function getSubscribedEvents()
     {
@@ -25,22 +25,22 @@ class UserFormSubscriber implements EventSubscriberInterface
         // objet relié au formulaire
         $entity = $form->getData();
 
-        // nouvel utilisateur
+        // validation du devis
         if(!$entity->getId()){
             $form
-                ->remove('username')
+                ->remove('address')
 
             ;
         }
 
-        // mise à jour du profil
+        // création de la fcature
         else {
             $form
                 ->remove('username')
-                ->remove('password')
-                ->remove('email')
+                
             ;
         }
+        //paiement de la facture
 
 
 
