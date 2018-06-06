@@ -136,26 +136,7 @@ class Command
         return round($value,2);
     }
 
-    /**
-     * fait les totaux ht, ttc et remise
-     *
-     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
-     */
-    public function setTotalAll(){
-        $totalTtc =0;
-        $totalTva =0;
-        $totalDiscount =0;
-        $listlignes = $this->getCommandsServices();
-        foreach ($listlignes as $ligne){
-            $totalTva += $ligne->getTotalTva();
-            $totalTtc += $ligne->getTotalTtc();
-            $totalDiscount += $ligne->getTotalDiscount();
-        }
-        //on set les totaux
-        $this->setTotalTva($totalTva);
-        $this->setTotalTtc($totalTtc);
-        $this->setTotalDiscount($totalDiscount);
-    }
+
 
     /**
      * @ORM\PreUpdate
@@ -163,16 +144,10 @@ class Command
     public function updateDate()
     {
         $this->setDateLastUpdate(new \Datetime());
-        $this->setTotalAll();
+
     }
 
-    /**
-     * @ORM\PreFlush()
-     */
-    public function setTotal()
-    {
-        $this->setTotalAll();
-    }
+
 
 
 
