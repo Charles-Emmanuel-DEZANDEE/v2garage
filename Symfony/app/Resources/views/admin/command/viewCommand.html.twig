@@ -4,8 +4,9 @@
 
 <div class="container jumbotron">
 
-    <h1>recap devis n° {{ result.ref }}</h1>
-    <h2>{{ result.vehicule.brand }} - {{ result.vehicule.model }} - {{ result.vehicule.registration }} </h2>
+    <h1>recap devis </h1>
+    <h2>n° {{ result.ref }}</h2>
+    <h3>{{ result.vehicule.brand }} - {{ result.vehicule.model }} - {{ result.vehicule.registration }} </h3>
 
     <div class="table-responsive">
         <table class="table">
@@ -13,26 +14,26 @@
             <tr>
                 <th>Désignation</th>
                 <th>Quantité</th>
-                <th>Unité</th>
-                <th>Prix HT</th>
-                <th>Remise</th>
-                <th>TVA</th>
+                <th class="hidden-xs">Unité</th>
+                <th class="hidden-xs">Prix HT</th>
+                <th class="hidden-xs">Remise</th>
+                <th class="hidden-xs">TVA</th>
                 <th>Total HT</th>
             </tr>
             </thead>
             <tbody>
             {% for ligne in result.commandsServices %}
             <tr>
-                <td>{{ligne.service.name}}  ref : {{ ligne.reference }} </td>
+                <td>{{ligne.service.name}} {% if  ligne.reference is not empty %} - {% endif %} {{ ligne.reference }} </td>
                 <td>{{ligne.quantity}}</td>
-                <td>{{ligne.service.unite.libelle}}</td>
-                <td>{{ligne.value|number_format(2, '.', ' ')}}</td>
-                <td>{{ligne.discountRate}} %</td>
-                <td>{{ligne.taxRate|number_format(2, '.', ' ')}} %</td>
-                {% if  result.totalDiscount != 0 %}
-                <td>{{((ligne.value * ligne.quantity)-((ligne.value * ligne.quantity )* ligne.discountRate/100))|number_format(2, '.', ' ')}}</td>
+                <td class="hidden-xs">{{ligne.service.unite.libelle}}</td>
+                <td class="hidden-xs">{{ligne.value|number_format(2, '.', ' ')}} €</td>
+                <td class="hidden-xs">{{ligne.discountRate|number_format(0, '.', ' ')}} %</td>
+                <td class="hidden-xs">{{ligne.taxRate|number_format(2, '.', ' ')}} %</td>
+                {% if  ligne.discountRate != 0 %}
+                <td>{{((ligne.value * ligne.quantity)-((ligne.value * ligne.quantity )* ligne.discountRate/100))|number_format(2, '.', ' ')}} €</td>
                 {% else %}
-                <td>{{ligne.value * ligne.quantity|number_format(2, '.', ' ')}}</td>
+                <td>{{(ligne.value * ligne.quantity)|number_format(2, '.', ' ')}} €</td>
                 {% endif %}
 
             </tr>
@@ -42,7 +43,7 @@
     </div>
 
     <div class="row">
-        <div class="col-xs-4 pull-right">
+        <div class="col-xs-6 col-xs-offset-6">
             {% if  result.totalDiscount != 0 %}
             <p>total remise : <strong> {{result.totalDiscount|number_format(2, '.', ' ')}} €</strong></p>
             {% endif %}

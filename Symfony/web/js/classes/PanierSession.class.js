@@ -34,6 +34,11 @@ PanierSession.prototype.loadPanier = function()
 
 PanierSession.prototype.savePanier = function(liste)
 {
+    // initialisation des totaux
+    liste.totalTva = 0;
+    liste.totalRemise = 0;
+    liste.totalTtc = 0;
+    liste.totalHT = 0;
 
     //mise à jour des totaux
     for (var i= 0;i < liste.tabElt.length; i++) {
@@ -41,25 +46,16 @@ PanierSession.prototype.savePanier = function(liste)
         var ligneRemise = liste.tabElt[i].remise;
         if (ligneRemise != 0){
             var ligneTotalRemise = ligneTotalHT * ligneRemise /100;
-            liste.totalRemise += ligneTotalRemise;
             ligneTotalHT = ligneTotalHT - ligneTotalRemise;
         }
-
-        var ligneTotalTVA = ligneTotalHT * liste.tabElt[i].taxerate /100;
+        var ligneTotalTVA = ligneTotalHT * (liste.tabElt[i].taxerate /100);
         var ligneTotalTTC = ligneTotalHT + ligneTotalTVA;
 
 
-        liste.totalHT += (liste.tabElt[i].valeurHT * liste.tabElt[i].quantity);
-        if (liste.tabElt[i].remise != 0){
-            liste.totalRemise += (liste.tabElt[i].valeurHT * liste.tabElt[i].quantity * liste.tabElt[i].remise / 100);
-            liste.totalTva = liste.totalTva - (liste.tabElt[i].valeurHT * liste.tabElt[i].quantity * liste.tabElt[i].remise / 100);
-        }
-        liste.totalTva += (liste.tabElt[i].valeurHT * liste.tabElt[i].quantity * liste.tabElt[i].taxerate / 100);
-        liste.totalTtc = liste.totalTva + liste.totalTva;
-
-        liste.totalTva += ligneTotalTVA;
-        liste.totalTtc += ligneTotalTTC;
-        liste.totalHT += ligneTotalHT;
+        liste.totalRemise += ligneTotalRemise;
+        liste.totalTva = liste.totalTva + ligneTotalTVA;
+        liste.totalTtc = liste.totalTtc + ligneTotalTTC;
+        liste.totalHT = liste.totalHT + ligneTotalHT;
     }
 
     saveDataToDomStorage(this.$emplacementStorage,liste);
@@ -192,7 +188,7 @@ PanierSession.prototype.onSupprimAllProduct = function(event)
     event.preventDefault();
     // il faut récuper la liste existante
     this.$panier.tabElt = [];
-    this.clearTotal();
+
     //on sauvegarde la liste dans le local storage
     this.savePanier(this.$panier);
     //on refresh

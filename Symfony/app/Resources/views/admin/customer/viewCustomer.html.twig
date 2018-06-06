@@ -76,7 +76,7 @@
                 {% for command in vehicule.commands %}
                         {% if command.dateBill is empty %}
 
-                            <p> <span>{{ command.ref }} </span> <span> montant </span> <a href="{{ path('app_admin_command_view', {'id' : command.id}) }}" class="btn bg-warning "> Voir </a> <a href="#" class="btn bg-primary "> Modifier </a> </p>
+                            <p> <span>{{ command.ref }} </span> <span> montant </span> <a href="{{ path('app_admin_command_view', {'id' : command.id}) }}" class="btn bg-warning "> Voir </a> <a href="{{ path('app_admin_command_update', {'id' : command.id}) }}" class="btn bg-primary "> Modifier </a> </p>
 
                         {% endif %}
                     {% endfor %}
