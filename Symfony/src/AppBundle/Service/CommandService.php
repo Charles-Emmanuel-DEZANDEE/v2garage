@@ -38,4 +38,17 @@ class CommandService
 
     }
 
+    public function getNumeroFacture(){
+        $ref = '';
+        $rcCommande = $this->em->getRepository(Command::class);
+
+        do{
+            $ref = "F" . date('Y'). mt_rand(10000,99999);
+        } while(!$rcCommande->billReferenceNotExist($ref));
+
+
+        return $ref;
+
+    }
+
 }

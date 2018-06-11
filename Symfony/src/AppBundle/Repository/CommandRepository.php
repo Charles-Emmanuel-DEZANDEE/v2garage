@@ -25,4 +25,19 @@ class CommandRepository extends \Doctrine\ORM\EntityRepository
         return $response;
     }
 
+    public function billReferenceNotExist($ref){
+        $response = true;
+        $results = $this->createQueryBuilder('command')
+            ->andwhere('command.billRef = :ref')
+            ->setParameter('ref' , $ref)
+            ->getQuery()
+            ->getResult()
+        ;
+        if (!empty($results)){
+            $response = false;
+        }
+
+        return $response;
+    }
+
 }
