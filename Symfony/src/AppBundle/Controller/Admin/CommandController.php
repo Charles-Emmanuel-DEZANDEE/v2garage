@@ -49,7 +49,7 @@ class CommandController extends Controller
         ]);
     }
 
-    /**
+    /** accés à la modification du devis
      * @Route("/command/update/{id}", name="app_admin_command_update")
      * @Method({"GET", "POST"})
      * @param Request $request
@@ -59,6 +59,14 @@ class CommandController extends Controller
      */
     public function devisUpdateAction(Request $request, Command $command)
     {
+        //control de la modification du devis: ok si pas validé
+        if ($command->getCommandeValidate()) {
+            $message = 'Le devis a été validé par le client et n\'est plus modifiable';
+
+            $this->addFlash('danger', $message);
+
+            return $this->redirectToRoute('app_admin_command_view', ['id' => $command->getId()]);
+        }
 
         $doctrine = $this->getDoctrine();
 
@@ -73,13 +81,118 @@ class CommandController extends Controller
         ]);
     }
 
+    /** devis accepté par le client
+     * @Route("/command/validedevis/{id}", name="app_admin_command_valide_devis")
+     * @Method({"GET", "POST"})
+     * @param Request $request
+     * @param Command $command
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     */
+    public function devisAccepteAction(Request $request, Command $command)
+    {
+
+        $doctrine = $this->getDoctrine();
+
+        //on met à jour la date de validation du devis
+        $command->setCommandeValidate(new \DateTime());
+
+        $em = $doctrine->getManager();
+        $em->persist($command);
+        $em->flush();
+
+
+        $message = 'Le devis a été validé par le client et n\'est plus modifiable';
+
+        $this->addFlash('info', $message);
+
+        return $this->redirectToRoute('app_admin_command_view', ['id' => $command->getId()]);
+
+    }
+
+    /** travaux realisés suivant le devis accepté: generation de la facture
+     * @Route("/command/travauxfait/{id}", name="app_admin_command_travaux_fait")
+     * @Method({"GET", "POST"})
+     * @param Request $request
+     * @param Command $command
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     */
+    public function travauxFaitsAction(Request $request, Command $command, CommandService $commandService)
+    {
+
+        $doctrine = $this->getDoctrine();
+
+        //on met à jour la date de validation du devis
+        $command->setDateBill(new \DateTime());
+        //on attribut un numero de facture
+        $command->setBillRef($commandService->getNumeroFacture());
+
+
+        $em = $doctrine->getManager();
+        $em->persist($command);
+        $em->flush();
+
+
+        $message = 'La facture a été créée';
+
+        $this->addFlash('info', $message);
+
+        return $this->redirectToRoute('app_admin_command_view', ['id' => $command->getId()]);
+
+    }
+
+    /** envoi par mail du devis ou commande
+     * @Route("/command/mail/{id}", name="app_admin_command_mail")
+     * @Method({"GET", "POST"})
+     * @param Request $request
+     * @param Command $command
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     */
+    public function mailAction(Request $request, Command $command, CommandService $commandService)
+    {
+
+        //on genére le pdf
+        //$command
+
+        $html = $this->renderView("AppBundle::content.html.twig", []);
+        $filename = 'filename.pdf';
+        $pdf = $this->get("knp_snappy.pdf")->getOutputFromHtml($html);
+        $message = \Swift_Message::newInstance()
+            ->setSubject('...')
+            ->setFrom('...')
+            ->setTo('...');
+        $body = $this->templating->render('AppBundle::yourcontent.html.twig', []);
+        $message->setBody($body, 'text/html');
+
+//join PDF
+        $attachement = \Swift_Attachment::newInstance($pdf, $filename, 'application/pdf' );
+        $message->attach($attachement);
+        //envoi du mail
+        $this->mailer->send($message);
+
+
+        if ($command->getBillRef()) {
+
+            $message = 'La facture a été envoyée par mail';
+        } else {
+
+            $message = 'Le devis a été envoyée par mail';
+        }
+        $this->addFlash('info', $message);
+
+        return $this->redirectToRoute('app_admin_command_view', ['id' => $command->getId()]);
+
+    }
+
 
     /**
      * @Route("/command/view/{id}", name="app_admin_command_view")
      */
     public function viewCommand(Request $request, $id = null)
     {
-        if ($id == null){
+        if ($id == null) {
             $message = 'Veuillez selectionner une commande';
             $this->addFlash('danger', $message);
             return $this->redirectToRoute('app_admin_customer_list');
@@ -89,7 +202,7 @@ class CommandController extends Controller
         $rc = $doctrine->getRepository(Command::class);
         $result = $rc->find($id);
 
-//        dump($result);
+        dump($result);
 
 
         return $this->render('admin/command/viewCommand.html.twig', [
@@ -114,20 +227,20 @@ class CommandController extends Controller
 
             $vehicule = $doctrine->getRepository(Vehicule::class)->find($devis['idVehicule']);
             $idCommand = $devis['idCommande'];
-            if ($idCommand != null){
-                $command= $doctrine->getRepository(Command::class)->find($idCommand);
+            if ($idCommand != null) {
+                $command = $doctrine->getRepository(Command::class)->find($idCommand);
                 //vider les lignes commandServices
                 $commandeServices = $doctrine->getRepository(CommandsServices::class)->findBy(['command' => $command]);
-                foreach ($commandeServices as $ligne){
+                foreach ($commandeServices as $ligne) {
 
-                $em->remove($ligne);
+                    $em->remove($ligne);
                 }
                 $em->flush();
-            }
-            else{
-            $command = new Command();
-            $command->setVehicule($vehicule);
-            $command->setRef($commandService->getNumeroDevis());
+            } else {
+                $command = new Command();
+                $command->setVehicule($vehicule);
+                //on attribut un numero de devis
+                $command->setRef($commandService->getNumeroDevis());
             }
             $command->setTotalHt($devis['totalHT']);
             $command->setTotalDiscount($devis['totalRemise']);
@@ -139,7 +252,7 @@ class CommandController extends Controller
             //ajout des lignes
             foreach ($devis['tabElt'] as $ligne) {
                 $service = $doctrine->getRepository(Service::class)->find($ligne['idservice']);
-                $serviceCommand = new CommandsServices($service,$command);
+                $serviceCommand = new CommandsServices($service, $command);
                 $serviceCommand->setReference($ligne['reference']);
                 $serviceCommand->setValue($ligne['valeurHT']);
                 $serviceCommand->setQuantity($ligne['quantity']);
@@ -150,11 +263,10 @@ class CommandController extends Controller
 
             $em->flush();
 
-            if ($idCommand != null){
-            $message = 'Le devis a été modifié';
-            }
-            else {
-            $message = 'Le devis a été enregistré';
+            if ($idCommand != null) {
+                $message = 'Le devis a été modifié';
+            } else {
+                $message = 'Le devis a été enregistré';
             }
             $this->addFlash('info', $message);
 

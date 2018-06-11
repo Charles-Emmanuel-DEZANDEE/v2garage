@@ -2,64 +2,78 @@
 
 {% block body %}
 
-<div class="container jumbotron">
+    <div class="container jumbotron">
 
-    <div id="retour" class="col-sm-3 espaceBoutton"><a href="{{ path('app_admin_customer_view', {'id': result.vehicule.customer.id}) }}" class="btn bg-primary ">
-            Retour </a></div>
+        <div id="retour" class="col-sm-3 espaceBoutton"><a
+                    href="{{ path('app_admin_customer_view', {'id': result.vehicule.customer.id}) }}"
+                    class="btn bg-primary ">
+                Retour </a></div>
 
-    <h1>recap devis </h1>
-    <h2>n° {{ result.ref }}</h2>
-    <h3>{{ result.vehicule.brand }} - {{ result.vehicule.model }} - {{ result.vehicule.registration }} </h3>
+        <h1>recap devis </h1>
+        <h2>n° {{ result.ref }}</h2>
+        <h3>{{ result.vehicule.brand }} - {{ result.vehicule.model }} - {{ result.vehicule.registration }} </h3>
 
-    <div class="table-responsive">
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Désignation</th>
-                <th>Quantité</th>
-                <th class="hidden-xs">Unité</th>
-                <th class="hidden-xs">Prix HT</th>
-                <th class="hidden-xs">Remise</th>
-                <th class="hidden-xs">TVA</th>
-                <th>Total HT</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for ligne in result.commandsServices %}
-            <tr>
-                <td>{{ligne.service.name}} {% if  ligne.reference is not empty %} - {% endif %} {{ ligne.reference }} </td>
-                <td>{{ligne.quantity}}</td>
-                <td class="hidden-xs">{{ligne.service.unite.libelle}}</td>
-                <td class="hidden-xs">{{ligne.value|number_format(2, '.', ' ')}} €</td>
-                <td class="hidden-xs">{{ligne.discountRate|number_format(0, '.', ' ')}} %</td>
-                <td class="hidden-xs">{{ligne.taxRate|number_format(2, '.', ' ')}} %</td>
-                {% if  ligne.discountRate != 0 %}
-                <td>{{((ligne.value * ligne.quantity)-((ligne.value * ligne.quantity )* ligne.discountRate/100))|number_format(2, '.', ' ')}} €</td>
-                {% else %}
-                <td>{{(ligne.value * ligne.quantity)|number_format(2, '.', ' ')}} €</td>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Désignation</th>
+                    <th>Quantité</th>
+                    <th class="hidden-xs">Unité</th>
+                    <th class="hidden-xs">Prix HT</th>
+                    <th class="hidden-xs">Remise</th>
+                    <th class="hidden-xs">TVA</th>
+                    <th>Total HT</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for ligne in result.commandsServices %}
+                    <tr>
+                        <td>{{ ligne.service.name }} {% if  ligne.reference is not empty %} - {% endif %} {{ ligne.reference }} </td>
+                        <td>{{ ligne.quantity }}</td>
+                        <td class="hidden-xs">{{ ligne.service.unite.libelle }}</td>
+                        <td class="hidden-xs">{{ ligne.value|number_format(2, '.', ' ') }} €</td>
+                        <td class="hidden-xs">{{ ligne.discountRate|number_format(0, '.', ' ') }} %</td>
+                        <td class="hidden-xs">{{ ligne.taxRate|number_format(2, '.', ' ') }} %</td>
+                        {% if  ligne.discountRate != 0 %}
+                            <td>{{ ((ligne.value * ligne.quantity)-((ligne.value * ligne.quantity )* ligne.discountRate/100))|number_format(2, '.', ' ') }}
+                                €
+                            </td>
+                        {% else %}
+                            <td>{{ (ligne.value * ligne.quantity)|number_format(2, '.', ' ') }} €</td>
+                        {% endif %}
+
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-6 col-xs-offset-6">
+                {% if  result.totalDiscount != 0 %}
+                    <p>total remise : <strong> {{ result.totalDiscount|number_format(2, '.', ' ') }} €</strong></p>
+                {% endif %}
+                <p>total HT : <strong> {{ result.totalHt|number_format(2, '.', ' ') }} €</strong></p>
+                <p>total TVA : <strong> {{ result.totalTva|number_format(2, '.', ' ') }} €</strong></p>
+                <p>total TTC : <strong>{{ result.totalTtc|number_format(2, '.', ' ') }} €</strong></p>
+                {% if result.commandeValidate is not empty %}
+                    <p>Le devis a été accepté par le client le : {{ result.commandeValidate | date('d-m-Y') }}</p>
                 {% endif %}
 
-            </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
-    <div class="row">
-        <div class="col-xs-6 col-xs-offset-6">
-            {% if  result.totalDiscount != 0 %}
-            <p>total remise : <strong> {{result.totalDiscount|number_format(2, '.', ' ')}} €</strong></p>
-            {% endif %}
-            <p>total HT : <strong> {{result.totalHt|number_format(2, '.', ' ')}} €</strong></p>
-            <p>total TVA : <strong> {{result.totalTva|number_format(2, '.', ' ')}} €</strong></p>
-            <p>total TTC : <strong>{{result.totalTtc|number_format(2, '.', ' ')}} €</strong></p>
+            </div>
         </div>
+
+        {% if result.commandeValidate is empty %}
+            <a href="{{ path('app_admin_command_update', {'id' : result.id}) }}" class="btn btn-success">Modifier le devis</a>
+            <a href="{{ path('app_admin_command_valide_devis', {'id' : result.id}) }}" class="btn btn-primary">Devis accepté par le client</a>
+
+        {% endif %}
+        <a href="{{ path('app_admin_command_update', {'id' : result.id}) }}" class="btn btn-danger"><span class="glyphicon glyphicon-envelope"></span> Envoyer le devis</a>
+        <a href="{{ path('app_admin_command_update', {'id' : result.id}) }}" class="btn btn-warning"><span class="glyphicon glyphicon-print"></span> Imprimer le devis</a>
+
+
     </div>
-
-    <a href="{{ path('app_admin_command_update', {'id' : result.id}) }}" class="btn btn-success"> modifier le devis</a>
-
-
-</div>
 
 
 
