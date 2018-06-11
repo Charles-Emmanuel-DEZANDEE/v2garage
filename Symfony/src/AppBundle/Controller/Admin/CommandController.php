@@ -150,7 +150,7 @@ class CommandController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
      */
-    public function mailAction(Request $request, Command $command, CommandService $commandService)
+    public function mailAction(Request $request, Command $command, \Swift_Mailer $mailer)
     {
 
         //on genére le pdf
@@ -170,7 +170,7 @@ class CommandController extends Controller
         $attachement = \Swift_Attachment::newInstance($pdf, $filename, 'application/pdf' );
         $message->attach($attachement);
         //envoi du mail
-        $this->mailer->send($message);
+        $mailer->send($message);
 
 
         if ($command->getBillRef()) {
