@@ -106,6 +106,13 @@ class Command
      */
     private $dateBillAcquited;
 
+    /** champ observation
+     * @var string|null
+     *
+     * @ORM\Column(name="note", type="text", nullable=true)
+     */
+    private $note;
+
     /**
      * Many commands have One Vehicule.
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Vehicule", inversedBy="commands")
@@ -513,5 +520,29 @@ class Command
     public function getCommandeValidate()
     {
         return $this->commandeValidate;
+    }
+
+    /**
+     * Set note.
+     *
+     * @param string|null $note
+     *
+     * @return Command
+     */
+    public function setNote($note = null)
+    {
+        $this->note = $note;
+
+        return $this;
+    }
+
+    /**
+     * Get note.
+     *
+     * @return string|null
+     */
+    public function getNote()
+    {
+        return $this->note;
     }
 }

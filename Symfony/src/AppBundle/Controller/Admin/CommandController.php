@@ -91,6 +91,7 @@ class CommandController extends Controller
 
 //        dump($result);
 
+
         return $this->render('admin/command/viewCommand.html.twig', [
             'result' => $result
         ]);
