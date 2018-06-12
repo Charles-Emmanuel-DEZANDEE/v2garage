@@ -17,6 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\Response;
 
 
 /**
@@ -141,8 +142,31 @@ class CommandController extends Controller
         return $this->redirectToRoute('app_admin_command_view', ['id' => $command->getId()]);
 
     }
+    /** enregistrement du devis ou facture en pdf
+     * @Route("/command/pdf/{id}", name="app_admin_command_pdf")
+     * @Method({"GET", "POST"})
+     * @param Request $request
+     * @param Command $command
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     */
+    public function pdfAction(Request $request, Command $command)
+    {
+        $html = $this->renderView('AppBundle:Demo:pdf.html.twig');
 
-    /** envoi par mail du devis ou commande
+        $filename = sprintf('test-%s.pdf', date('Y-m-d'));
+
+        return new Response(
+            $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
+            200,
+            [
+                'Content-Type'        => 'application/pdf',
+                'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
+            ]
+        );
+    }
+
+    /** envoi par mail du devis ou facture
      * @Route("/command/mail/{id}", name="app_admin_command_mail")
      * @Method({"GET", "POST"})
      * @param Request $request

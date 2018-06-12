@@ -87,3 +87,11 @@ knp_paginator:
             #@KnpPaginator/Pagination/twitter_bootstrap_v3_pagination.html.twig
             #@KnpPaginator/Pagination/twitter_bootstrap_pagination.html.twig
             #@KnpPaginator/Pagination/foundation_v5_pagination.html.twig
+# app/config/config.yml
+knp_snappy:
+    pdf:
+        enabled:    true
+        binary:     '%kernel.root_dir%/../vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-amd64'
+            options:
+                - { name: 'viewport-size', value: ‘1024x768’ }
+                - { name: 'page-size', value: 'A4' }
