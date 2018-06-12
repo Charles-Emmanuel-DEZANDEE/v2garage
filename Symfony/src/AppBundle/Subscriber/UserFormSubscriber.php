@@ -1,4 +1,5 @@
 <?php
+
 namespace AppBundle\Subscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -26,14 +27,11 @@ class UserFormSubscriber implements EventSubscriberInterface
         $entity = $form->getData();
 
         // nouvel utilisateur
-        if(!$entity->getId()){
-            $form
-                ->remove('username')
+        if (!$entity->getId()) {
+            $form//->remove('username')
 
             ;
-        }
-
-        // mise à jour du profil
+        } // mise à jour du profil
         else {
             $form
                 ->remove('username')
@@ -41,7 +39,6 @@ class UserFormSubscriber implements EventSubscriberInterface
                 //->remove('email')
             ;
         }
-
 
 
         //dump($data, $form, $entity);

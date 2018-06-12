@@ -1,45 +1,50 @@
 {{ form_start(form, { 'attr' : { 'novalidate' : 'novalidate' } }) }}
-<p>
-    {% if form.email is defined %}
-        {{ form_label(form.email, 'entity.user.email' | trans | capitalize ~ ' :') }}
-        {{ form_widget(form.email) }}
+
+    {% if form.username is defined %}
+        <div class="form-group required">
+            <div class="col-sm-3">   {{ form_label(form.username, "Nom d'utilisateur"  | capitalize) }}</div>
+            <div class="col-sm-9"> {{ form_widget(form.username) }} </div>
+        </div>
     {% endif %}
-</p>
-<p>
-    {% if form.password is defined %}
-        {{ form_label(form.password, 'entity.user.password' | trans | capitalize ~ ' :') }}
-        {{ form_widget(form.password) }}
-    {% endif %}
-</p>
+{% if form.email is defined %}
+    <div class="form-group required">
+        <div class="col-sm-3">   {{ form_label(form.email, 'Email'  | capitalize) }}</div>
+        <div class="col-sm-9"> {{ form_widget(form.email) }} </div>
+    </div>
+{% endif %}
+
 {% if form.password.first is defined %}
-    <p>
-        {{ form_label(form.password.first, "entity.user.password"|trans) }}
-        {{ form_widget(form.password.first, { 'attr': {'placeholder': "entity.required"|trans, 'class' : 'form-control'} }) }}
-    </p>
+    <div class="form-group required">
+        <div class="col-sm-3">  {{ form_label(form.password.first, 'password') }}</div>
+        <div class="col-sm-9"> {{ form_widget(form.password.first, { 'attr': {'placeholder': "...", 'class' : 'form-control'} }) }}</div>
+    </div>
 {% endif %}
 
     {% if form.password.second is defined %}
-        <p>
-            {{ form_label(form.password.second, "entity.user.passwordSecond"|trans) }}
-            {{ form_widget(form.password.second, { 'attr': {'placeholder': "entity.required"|trans, 'class' : 'form-control'} }) }}
-        </p>
+        <div class="form-group required">
+            <div class="col-sm-3"> {{ form_label(form.password.second, 'répéter le password') }}</div>
+            <div class="col-sm-9">   {{ form_widget(form.password.second, { 'attr': {'placeholder': "...", 'class' : 'form-control'} }) }}</div>
+        </div>
     {% endif %}
 
 <p>
-    <input type="submit" class="btn btn-primary" name="submit" value="{{ 'button.submit' | trans | capitalize }}">
+    <input type="submit" class="btn btn-primary" name="submit" value="{{ 'Modifier'  | capitalize }}">
 </p>
 {{ form_end(form) }}
 
 {% if form.email is defined %}
-    {{ form_errors(form.email) }}
+    <p class="alert"> {{ form_errors(form.email) }} </p>
 {% endif %}
 
 {% if form.password is defined %}
-    {{ form_errors(form.password) }}
+    <p class="alert">{{ form_errors(form.password.first) }}</p>
+{% endif %}
+{% if form.password is defined %}
+    <p class="alert">{{ form_errors(form.password.second) }}</p>
 {% endif %}
 
 {% if form.email is defined %}
-    {{ form_errors(form.email) }}
+    <p class="alert">{{ form_errors(form.email) }}</p>
 {% endif %}
 
 

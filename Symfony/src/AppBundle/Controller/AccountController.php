@@ -213,6 +213,78 @@ class AccountController extends Controller
 
     }
 
+    /**
+     * @Route("/admin/account/add", name="app_admin_account_add")
+     * @Route("/admin/account/update/{id}", name="app_admin_accountupdate")
+     *
+     */
+    public function addAccountAction(Request $request, $id = null)
+    {
+        $doctrine = $this->getDoctrine();
+        $em = $doctrine->getManager();
+        $rcUser = $doctrine->getRepository(User::class);
+        $typePage = 'ajout';
+
+
+        $userEntity = $id ? $rcUser->find($id) : new User();
+
+
+        $form = $this->createForm(UserType::class, $userEntity);
+        $form->handleRequest($request);
+
+        if ($id) {
+            $typePage = 'modif';
+        }
+
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $saisie = $form->getData();
+
+
+            // vérification qu'il n'y a pas de doublon
+            $pasDeDoublon = $rcUser->userNotExist($saisie->getValue());
+
+
+            // en update
+            if ($id) {
+
+                //pour permettre la mise à jour
+                $pasDeDoublon = true;
+            }
+            if ($pasDeDoublon) {
+
+
+                //insertion de la unité
+                $em->persist($userEntity);
+
+                $em->flush();
+
+                //message flash
+                $message = $id ? 'Le compte a été mis à jour' : 'Le compte a été créé';
+                $this->addFlash('info', $message);
+
+                // redirection vers la page de la catégorie
+                return $this->redirectToRoute('app_admin_customer_list');
+            } else {
+                //message flash
+                $message = 'L\'unité existe déjà';
+                $this->addFlash('warning', $message);
+
+                // redirection vers le formulaire
+                return $this->redirectToRoute('app_admin_account_add');
+            }
+
+
+        }
+
+        return $this->render('account/update.html.twig', [
+            'form' => $form->createView(),
+            'typePage' => $typePage,
+            'unite' => $userEntity,
+        ]);
+    }
+
+
 }
 
 
