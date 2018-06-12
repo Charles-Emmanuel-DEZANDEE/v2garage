@@ -10,4 +10,19 @@ namespace AppBundle\Repository;
  */
 class PaymentTypeRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function paymentTypeNotExist($name)
+    {
+        $response = true;
+        $results = $this->createQueryBuilder('PaymentType')
+            ->where('PaymentType.name = :vname')
+            ->setParameter('vname', $name)
+            ->getQuery()
+            ->getResult();
+        if (!empty($results)) {
+            $response = false;
+        }
+
+        return $response;
+    }
+
 }

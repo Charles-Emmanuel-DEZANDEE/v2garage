@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<main>
+
+    {%  include 'inc/flashMessage.html.twig' %}
+
+
+   <h1>Mise à jour du mot de pass</h1>
+
+    {{ form_start(form,{'attr' : {'novalidate' : 'novalidate'} }) }}
+
+    <p>
+        {{ form_label(form.password,'entity.user.password' |trans) }}
+        {{ form_widget(form.password) }}
+    </p>
+    <p>
+
+        {{ form_errors(form.password) }}
+    </p>
+
+    <p>
+        <input type="submit" name="Valider" class="btn btn-primary" value="Valider">
+    </p>
+    {{ form_end(form) }}
+
+    </article>
+
+    </article>
+
+
+</main>
+
+    </div>
+{% endblock %}
+
+

@@ -17,7 +17,17 @@
             <ul class="nav navbar-nav">
                 <li class="active"><a href="{{ url('app_admin_customer_add') }}">Ajouter un client</a></li>
                 <li ><a href="{{ url('app_admin_customer_list') }}">Liste clients</a></li>
-                <li><a href="{{ url('app_admin_category_list') }}">Prestations</a></li>
+
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Configuration
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ url('app_admin_category_list') }}">Prestations</a></li>
+                        <li><a href="{{ url('app_admin_paymentType_list') }}">Type de paiement</a></li>
+                        <li><a href="#">Compte</a></li>
+                        <li><a href="#">Page 1-3</a></li>
+                    </ul>
+                </li>
             </ul>
             {% endif %}
             <ul class="nav navbar-nav navbar-right">

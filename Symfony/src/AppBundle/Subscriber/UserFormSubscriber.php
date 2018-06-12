@@ -37,8 +37,8 @@ class UserFormSubscriber implements EventSubscriberInterface
         else {
             $form
                 ->remove('username')
-                ->remove('password')
-                ->remove('email')
+                //->remove('password')
+                //->remove('email')
             ;
         }
 

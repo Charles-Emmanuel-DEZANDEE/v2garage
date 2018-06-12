@@ -37,7 +37,7 @@ class CommandFormSubscriber implements EventSubscriberInterface
         else {
             $form
                 ->remove('username')
-                
+
             ;
         }
         //paiement de la facture

@@ -10,7 +10,6 @@
       <path value="$PROJECT_DIR$/Symfony/vendor/psr/simple-cache" />
       <path value="$PROJECT_DIR$/Symfony/vendor/symfony/polyfill-php70" />
       <path value="$PROJECT_DIR$/Symfony/vendor/doctrine/doctrine-cache-bundle" />
-      <path value="$PROJECT_DIR$/Symfony/vendor/kriswallsmith/assetic" />
       <path value="$PROJECT_DIR$/Symfony/vendor/doctrine/cache" />
       <path value="$PROJECT_DIR$/Symfony/vendor/doctrine/annotations" />
       <path value="$PROJECT_DIR$/Symfony/vendor/doctrine/lexer" />
@@ -44,12 +43,14 @@
       <path value="$PROJECT_DIR$/Symfony/vendor/monolog/monolog" />
       <path value="$PROJECT_DIR$/Symfony/vendor/symfony/polyfill-apcu" />
       <path value="$PROJECT_DIR$/Symfony/vendor/symfony/polyfill-intl-icu" />
-      <path value="$PROJECT_DIR$/Symfony/vendor/symfony/assetic-bundle" />
       <path value="$PROJECT_DIR$/Symfony/vendor/symfony/swiftmailer-bundle" />
       <path value="$PROJECT_DIR$/Symfony/vendor/psr/container" />
       <path value="$PROJECT_DIR$/Symfony/vendor/symfony/polyfill-php56" />
       <path value="$PROJECT_DIR$/Symfony/vendor/psr/cache" />
       <path value="$PROJECT_DIR$/Symfony/vendor/symfony/polyfill-util" />
+      <path value="$PROJECT_DIR$/Symfony/vendor/knplabs/knp-snappy" />
+      <path value="$PROJECT_DIR$/Symfony/vendor/knplabs/knp-snappy-bundle" />
+      <path value="$PROJECT_DIR$/Symfony/vendor/h4cc/wkhtmltopdf-amd64" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="5.5.0" />
