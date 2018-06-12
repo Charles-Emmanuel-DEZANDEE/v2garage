@@ -7,6 +7,7 @@ use AppBundle\Entity\User;
 use AppBundle\Entity\UserToken;
 use AppBundle\Event\AccountEvents;
 use AppBundle\Event\AccountPasswordForgotEvent;
+use AppBundle\Service\StringUtilsService;
 use AppBundle\Form\PasswordForgottenType;
 use AppBundle\Form\PasswordRecoveryType;
 use AppBundle\Form\UserType;
@@ -53,7 +54,7 @@ class AccountController extends Controller
     /**
      * @Route("/password/forgotten", name="app_account_password_forgotten")
      */
-    public function passwordForgottenAction(Request $request){
+    public function passwordForgottenAction(Request $request, StringUtilsService $stringUtils, \Swift_Mailer $mailer, \Twig_Environment $twig){
         $formType = PasswordForgottenType::class;
 
         $form = $this->createForm($formType);
@@ -64,22 +65,63 @@ class AccountController extends Controller
             $data = $form->getData();
             $email = $data['email'];
 
-            // service de déclenchement d'événement
-            $eventDispatcherService = $this->get('event_dispatcher');
 
-            // événement
-            $event = new AccountPasswordForgotEvent();
-            $event->setEmail($email);
+            // doctrine
+            $doctrine = $this->getDoctrine();
+            $em = $doctrine->getManager();
 
-            // déclencher l'évenement
-            $eventDispatcherService->dispatch(AccountEvents::PASSWORD_FORGOT, $event);
+            // vérification de l'existence de l'email dans la table User
+            $userExists = $doctrine->getRepository(User::class)->findOneBy([
+                'email' => $email
+            ]) ? true : false;
 
-            //exit;
+            // vérification de l'existence de l'email dans la table UserToken
+            $userTokenExists = $doctrine->getRepository(UserToken::class)->findOneBy(['email' => $email]);
 
-            // message flash
-            $message = 'mail envoyé';
-            $this->addFlash('notice', $message);
+            // date actuelle
+            $date = new \DateTime();
 
+            // utilisateur existant et token inexistant OU utilisateur existant et date d'expiration valide
+            if(($userExists && !$userTokenExists) || ($userExists && $userTokenExists->getDateExpiration() < $date)){
+
+                // création du token
+                $token = $stringUtils->generateToken(16);
+
+                // date d'expiration
+                $date = new \DateTime('+1 day');
+
+                // instance
+                $userToken = new UserToken();
+                $userToken->setToken($token);
+                $userToken->setEmail($email);
+                $userToken->setDateExpiration($date);
+
+                // BDD
+                $em->persist($userToken);
+                $em->flush();
+
+                // envoi d'un mail
+                $message = (new \Swift_Message())
+                    ->setFrom('garage@garage.fr')
+                    ->setTo($email)
+                    ->setSubject('oubli du mot de passe')
+                    ->setContentType('text/html')
+                    ->setBody(
+                        $twig->render('mailing/account.password.forgotten.txt.twig', [
+                            'token' => $token,
+                            'email' => $email,
+                        ])
+                    )
+                ;
+
+                // envoi du mail
+                $mailer->send($message);
+
+                // message flash
+                $message = 'mail envoyé';
+                $this->addFlash('notice', $message);
+
+            }
             // redirection
             return $this->redirectToRoute('app_security_login');
         }
