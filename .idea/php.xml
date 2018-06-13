@@ -50,7 +50,7 @@
       <path value="$PROJECT_DIR$/Symfony/vendor/symfony/polyfill-util" />
       <path value="$PROJECT_DIR$/Symfony/vendor/knplabs/knp-snappy" />
       <path value="$PROJECT_DIR$/Symfony/vendor/knplabs/knp-snappy-bundle" />
-      <path value="$PROJECT_DIR$/Symfony/vendor/h4cc/wkhtmltopdf-amd64" />
+      <path value="$PROJECT_DIR$/Symfony/vendor/symfony/polyfill-ctype" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="5.5.0" />

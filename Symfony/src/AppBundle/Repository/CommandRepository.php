@@ -40,4 +40,22 @@ class CommandRepository extends \Doctrine\ORM\EntityRepository
         return $response;
     }
 
+    public function findOneOrderByPositionMagic($id)
+    {
+        $results = $this->createQueryBuilder('command')
+            ->addSelect('cmdservice')
+            ->addSelect('service')
+            ->addSelect('category')
+            ->join('command.commandsServices', 'cmdservice')
+            ->join('cmdservice.service', 'service')
+            ->join('service.category', 'category')
+            ->andWhere('command.id = :id')
+            ->setParameter('id' , $id)
+            ->orderBy('category.position')
+            ->getQuery()
+            ->getResult();
+
+        return $results;
+    }
+
 }

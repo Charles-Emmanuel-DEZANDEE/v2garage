@@ -1,117 +1,237 @@
-{% extends 'base.html.twig' %}
 
-{% block title %} Facture {% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Example 1</title>
+    <style>
+        .clearfix:after {
+  content: "";
+  display: table;
+  clear: both;
+}
 
-{% block body %}
+a {
+  color: #5D6975;
+  text-decoration: none;
+}
 
-<div class="invoice-box">
-    <table cellpadding="0" cellspacing="0">
-        <tr class="top">
-            <td colspan="2">
-                <table>
-                    <tr>
-                        <td class="title">
-                            <img src="https://www.sparksuite.com/images/logo.png" style="width:100%; max-width:300px;">
-                        </td>
+body {
+  position: relative;
+  width: 21cm;  
+  height: 29.7cm; 
+  margin: 0 auto; 
+  color: #001028;
+  background: #FFFFFF; 
+  font-family: Arial, sans-serif; 
+  font-size: 12px; 
+  font-family: Arial;
+}
 
-                        <td>
-                            Invoice #: 123<br>
-                            Created: January 1, 2015<br>
-                            Due: February 1, 2015
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
+header {
+  padding: 10px 0;
+  margin-bottom: 30px;
+}
 
-        <tr class="information">
-            <td colspan="2">
-                <table>
-                    <tr>
-                        <td>
-                            Sparksuite, Inc.<br>
-                            12345 Sunny Road<br>
-                            Sunnyville, CA 12345
-                        </td>
+#logo {
+  text-align: center;
+  margin-bottom: 10px;
+}
 
-                        <td>
-                            Acme Corp.<br>
-                            John Doe<br>
-                            john@example.com
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
+#logo img {
+  height: 90px;
+}
 
-        <tr class="heading">
-            <td>
-                Payment Method
-            </td>
+h1 {
+  border-top: 1px solid  #5D6975;
+  border-bottom: 1px solid  #5D6975;
+  color: #5D6975;
+  font-size: 2.4em;
+  line-height: 1.4em;
+  font-weight: normal;
+  text-align: center;
+  margin: 0 0 20px 0;
+}
 
-            <td>
-                Check #
-            </td>
-        </tr>
+#project {
+  float: left;
+}
 
-        <tr class="details">
-            <td>
-                Check
-            </td>
+#project span {
+  color: #5D6975;
+  text-align: right;
+  width: 52px;
+  margin-right: 10px;
+  display: inline-block;
+  font-size: 0.8em;
+}
 
-            <td>
-                1000
-            </td>
-        </tr>
+#company {
+  float: right;
+  text-align: right;
+}
 
-        <tr class="heading">
-            <td>
-                Item
-            </td>
+#project div,
+#company div {
+  white-space: nowrap;        
+}
 
-            <td>
-                Price
-            </td>
-        </tr>
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin-bottom: 20px;
+}
 
-        <tr class="item">
-            <td>
-                Website design
-            </td>
+table tr:nth-child(2n-1) td {
+  background: #F5F5F5;
+}
 
-            <td>
-                $300.00
-            </td>
-        </tr>
+table th,
+table td {
+  text-align: center;
+}
 
-        <tr class="item">
-            <td>
-                Hosting (3 months)
-            </td>
+table th {
+  padding: 5px 20px;
+  color: #5D6975;
+  border-bottom: 1px solid #C1CED9;
+  white-space: nowrap;        
+  font-weight: normal;
+}
 
-            <td>
-                $75.00
-            </td>
-        </tr>
+table .service,
+table .desc {
+  text-align: left;
+}
 
-        <tr class="item last">
-            <td>
-                Domain name (1 year)
-            </td>
+table td {
+  padding: 10px;
+  text-align: right;
+}
 
-            <td>
-                $10.00
-            </td>
-        </tr>
+table td.service,
+table td.desc {
+  vertical-align: top;
+}
 
-        <tr class="total">
-            <td></td>
+table td.tva,
+table td.qty,
+table td.prix,
+table td.rms,
+table td.total {
+  font-size: 1.2em;
+}
 
-            <td>
-                Total: $385.00
-            </td>
-        </tr>
-    </table>
-</div>
+table td.grand {
+  border-top: 1px solid #5D6975;;
+}
+.desc {
+  width: 35%;
+}
 
-{% endblock %}
+#notices .notice {
+  color: #5D6975;
+  font-size: 1.2em;
+}
+
+footer {
+  color: #5D6975;
+  width: 100%;
+  height: 30px;
+  position: absolute;
+  bottom: 0;
+  border-top: 1px solid #C1CED9;
+  padding: 8px 0;
+  text-align: center;
+}
+      </style>
+  </head>
+  <body>
+    <header class="clearfix">
+      <div id="logo">
+        <img src="{{ asset('img/logo/logo.png') }}">
+      </div>
+
+      <h1>Facture {% if command.billRef != 0 %}{{ command.billRef}}{% endif %}</h1>
+      <div id="company" class="clearfix">
+        <div>EIRL MIKE AUTO 17</div>
+        <div>Mr BOEX Mikael,<br /> 17560 Bourcefranc le Chapus</div>
+        <div><a href="tel:+33629584310">06 29 58 43 10</a></div>
+        <div><a href="mailto:contacts@mikeauto17.fr">contacts@mikeauto17.fr</a></div>
+      </div>
+
+      <div id="project">
+        <div><span>CLIENT</span>{{ command.vehicule.customer.civility }} {{ command.vehicule.customer.firstName }} {{ command.vehicule.customer.lastName }}</div>
+        <div><span>ADDRESSE</span>{%   if command.vehicule.customer.socialReason is not null%}{{ command.vehicule.customer.socialReason }}, {% endif %}{{ command.vehicule.customer.addressNumber }} {{ command.vehicule.customer.addressRoad1 }}{%   if command.vehicule.customer.addressRoad2 is not null%} - {{ command.vehicule.customer.addressRoad2 }}{% endif %}, {{ command.vehicule.customer.addressZipcode }} {{ command.vehicule.customer.addressCity }}, {{ command.vehicule.customer.addressCountry }}</div>
+        {% if command.vehicule.customer.email is not null %}<div><span>EMAIL</span><a href="mailto:{{ command.vehicule.customer.email }}">{{ command.vehicule.customer.email }}</a></div>{% endif %}
+        <div><span>VEHICULE</span>{{ command.vehicule.brand }} - {{ command.vehicule.model }} - {{ command.vehicule.registration }} -  {{ command.vehicule.mileage | number_format(0,',',' ')}} Km - {{ command.vehicule.vin | upper}} </div>
+        <br>
+        <div><span>DATE</span>{{ command.dateBill }}</div>
+        {% if command.dateBillAcquited is not null %}<div><span>STATUT</span>réglé le {{ command.dateBillAcquited }} par {{ command.paymentType.name }}</div>
+          {% else %}
+            <div><span>STATUT</span>En attente de réglement</div>
+        {% endif %}
+      </div>
+
+    </header>
+    <main>
+      <table>
+        <thead>
+          <tr>
+            <th class="service">SERVICE</th>
+            <th class="desc">DESCRIPTION</th>
+            <th>PRIX</th>
+            <th>QTÉ</th>
+            <th>TVA</th>
+            <th>REMISE</th>
+            <th>TOTAL</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for ligne in command.commandsServices %}
+          <tr>
+            <td class="service">{{ ligne.service.category.name }}</td>
+            <td class="desc">{{ ligne.service.name }}{% if ligne.reference is not empty %} - {{ ligne.reference }}{% endif %}</td>
+            <td class="prix">{{ ligne.value | number_format(2,',',' ') }} €</td>
+            <td class="qty">{{ ligne.quantity }}</td>
+            <td class="tva">{{ ligne.taxRate | number_format(0,',',' ')}} %</td>
+            <td class="rms">{% if ligne.discountRate != 0 %}{{ ligne.discountRate | number_format(0,' ','.')}} %{% endif %}</td>
+            <td class="total">{% if ligne.discountRate == 0 %}
+                    {{ (ligne.value * ligne.quantity) | number_format(2,'.',' ') }} €
+                {% else %}
+                  {{((ligne.value * ligne.quantity)-((ligne.value * ligne.quantity) * (ligne.discountRate / 100)) ) | number_format(2,',',' ')}} €
+                {% endif %}</td>
+          </tr>
+        {% endfor %}
+          <tr>
+            <td colspan="6">TOTAL HT</td>
+            <td class="total">{{ command.totalHt | number_format(2,',',' ')}} €</td>
+          </tr>
+        {% if command.totalDiscount != 0 %}
+          <tr>
+            <td colspan="6">REMISE</td>
+            <td class="total">{{ command.totalDiscount | number_format(2,',',' ')}} €</td>
+          </tr>
+
+        {% endif %}
+          <tr>
+            <td colspan="6">TVA</td>
+            <td class="total">{{ command.totalTva | number_format(2,',',' ')}} €</td>
+          </tr>
+          <tr>
+            <td colspan="6" class="grand total">TOTAL TTC</td>
+            <td class="grand total">{{ command.totalTtc | number_format(2,',',' ')}} €</td>
+          </tr>
+        </tbody>
+      </table>
+      <div id="notices">
+        <div>obsevation:</div>
+        <div class="notice">{{ command.note }}</div>
+      </div>
+    </main>
+    <footer>
+      EIRL MIKE AUTO 17, Mr BOEX Mikael, 17560 Bourcefranc le Chapus, Siret n°828.654.301.00013, TVA FR64828654301
+    </footer>
+  </body>
+</html>

@@ -6,6 +6,7 @@ use AppBundle\Entity\Category;
 use AppBundle\Entity\Command;
 use AppBundle\Entity\CommandsServices;
 use AppBundle\Entity\Customer;
+use AppBundle\Entity\PaymentType;
 use AppBundle\Entity\Service;
 use AppBundle\Entity\Vehicule;
 use AppBundle\Form\CommandSearchType;
@@ -142,19 +143,62 @@ class CommandController extends Controller
         return $this->redirectToRoute('app_admin_command_view', ['id' => $command->getId()]);
 
     }
-    /** enregistrement du devis ou facture en pdf
-     * @Route("/command/pdf/{id}", name="app_admin_command_pdf")
+
+    /** la facture a été payée
+     * @Route("/command/facturepayee/{id}", name="app_admin_command_facture_payee")
      * @Method({"GET", "POST"})
      * @param Request $request
      * @param Command $command
      * @return \Symfony\Component\HttpFoundation\Response
      * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
      */
-    public function pdfAction(Request $request, Command $command)
+    public function facturePayeeAction(Request $request, Command $command, CommandService $commandService)
     {
-        $html = $this->renderView('template/facture.html.twig');
 
-        $filename = sprintf('test-%s.pdf', date('Y-m-d'));
+        $doctrine = $this->getDoctrine();
+
+        //on met à jour la date de validation du devis
+        $command->setDateBillAcquited(new \DateTime());
+
+        //todo récupérer le mode de paiement
+        $idPayment = 1;
+        $rc = $doctrine->getRepository(PaymentType::class);
+        $paymentType = $rc->find($idPayment);
+        $command->setPaymentType($paymentType);
+
+        $em = $doctrine->getManager();
+        $em->persist($command);
+        $em->flush();
+
+
+        $message = 'La facture a été créée';
+
+        $this->addFlash('info', $message);
+
+        return $this->redirectToRoute('app_admin_command_view', ['id' => $command->getId()]);
+
+    }
+
+    /** enregistrement de la facture en pdf
+     * @Route("/command/facture/pdf/{id}", name="app_admin_command_facture_pdf")
+     * @Method({"GET", "POST"})
+     * @param Request $request
+     * @param Command $command
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     */
+    public function FacturePdfAction(Request $request, Command $command)
+    {
+        $doctrine = $this->getDoctrine();
+
+        $rc = $doctrine->getRepository(Command::class);
+        $result = $rc->findOneOrderByPositionMagic($command->getId());
+        $html = $this->renderView('/template/facture.html.twig', [
+            'command' => $result[0],
+
+        ]);
+
+        $filename = sprintf('Facture-%s.pdf', $command->getBillRef());
 
         return new Response(
             $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
@@ -166,8 +210,29 @@ class CommandController extends Controller
         );
     }
 
-    /** envoi par mail du devis ou facture
-     * @Route("/command/mail/{id}", name="app_admin_command_mail")
+    /** vue du devis ou facture
+     * @Route("/command/vue/{id}", name="app_admin_command_vue")
+     * @Method({"GET", "POST"})
+     * @param Request $request
+     * @param Command $command
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     */
+    public function vue(Request $request, Command $command)
+    {
+        $doctrine = $this->getDoctrine();
+
+        $rc = $doctrine->getRepository(Command::class);
+        $result = $rc->findOneOrderByPositionMagic($command->getId());
+
+        return $this->render('/template/facture.html.twig', [
+            'command' => $result[0],
+
+        ]);
+    }
+
+    /** envoi par mail de la facture
+     * @Route("/command/facture/mail/{id}", name="app_admin_command_facture_mail")
      * @Method({"GET", "POST"})
      * @param Request $request
      * @param Command $command
@@ -185,9 +250,9 @@ class CommandController extends Controller
         $pdf = $this->get("knp_snappy.pdf")->getOutputFromHtml($html);
         $message = \Swift_Message::newInstance()
             ->setSubject('...')
-            ->setFrom('...')
-            ->setTo('...');
-        $body = $twig->render('mailing/authentication.succes.html.twig', []);
+            ->setFrom('cdezandee@gmail.com')
+            ->setTo('cdezandee@gmail.com');
+        $body = $twig->render('mailing/send.command.pdf.html.twig', ['command' => $command]);
         $message->setBody($body, 'text/html');
 
 //join PDF

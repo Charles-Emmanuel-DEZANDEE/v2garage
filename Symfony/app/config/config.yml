@@ -89,11 +89,13 @@ knp_paginator:
             #@KnpPaginator/Pagination/foundation_v5_pagination.html.twig
 # app/config/config.yml
 knp_snappy:
+    process_timeout: 20 # In seconds
     temporary_folder: "%kernel.cache_dir%/snappy"
     pdf:
         enabled: true
-        binary: 'C:\wkhtmltopdf\wkhtmltopdf.exe'
-        # binary:     '%kernel.root_dir%/../vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-i386'
+        # binary: 'C:\wkhtmltopdf\wkhtmltopdf.exe'
+        #binary:     '%kernel.root_dir%/../vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-i386'
+        binary:     '/usr/local/bin/wkhtmltopdf'
         options:
             - { name: 'viewport-size', value: ‘1024x768’ }
             - { name: 'page-size', value: 'A4' }
