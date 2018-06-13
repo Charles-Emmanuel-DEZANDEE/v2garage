@@ -69,8 +69,8 @@
             <a href="{{ path('app_admin_command_valide_devis', {'id' : result.id}) }}" class="btn btn-primary">Devis accepté par le client</a>
 
         {% endif %}
-        <a href="{{ path('app_admin_command_update', {'id' : result.id}) }}" class="btn btn-danger"><span class="glyphicon glyphicon-envelope"></span> Envoyer le devis</a>
-        <a href="{{ path('app_admin_command_update', {'id' : result.id}) }}" class="btn btn-warning"><span class="glyphicon glyphicon-print"></span> Imprimer le devis</a>
+        <a href="{{ path('app_admin_command_mail', {'id' : result.id}) }}" class="btn btn-danger"><span class="glyphicon glyphicon-envelope"></span> Envoyer le devis</a>
+        <a href="{{ path('app_admin_command_pdf', {'id' : result.id}) }}" class="btn btn-warning"><span class="glyphicon glyphicon-print"></span> Imprimer le devis</a>
 
 
     </div>

@@ -152,7 +152,7 @@ class CommandController extends Controller
      */
     public function pdfAction(Request $request, Command $command)
     {
-        $html = $this->renderView('AppBundle:Demo:pdf.html.twig');
+        $html = $this->renderView('template/facture.html.twig');
 
         $filename = sprintf('test-%s.pdf', date('Y-m-d'));
 
@@ -174,20 +174,20 @@ class CommandController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
      */
-    public function mailAction(Request $request, Command $command, \Swift_Mailer $mailer)
+    public function mailAction(Request $request, Command $command, \Swift_Mailer $mailer, \Twig_Environment $twig)
     {
 
         //on genére le pdf
         //$command
 
-        $html = $this->renderView("AppBundle::content.html.twig", []);
+        $html = $this->renderView("template/facture.html.twig", []);
         $filename = 'filename.pdf';
         $pdf = $this->get("knp_snappy.pdf")->getOutputFromHtml($html);
         $message = \Swift_Message::newInstance()
             ->setSubject('...')
             ->setFrom('...')
             ->setTo('...');
-        $body = $this->templating->render('AppBundle::yourcontent.html.twig', []);
+        $body = $twig->render('mailing/authentication.succes.html.twig', []);
         $message->setBody($body, 'text/html');
 
 //join PDF
