@@ -72,7 +72,7 @@
             <div class="panel-heading"><h2>Devis</h2></div>
             <div class="panel-body">
                 {% for vehicule in result.vehicules %}
-
+                    <p>{{ vehicule.brand }} - {{ vehicule.model }} - {{ vehicule.registration }}</p>
                 {% for command in vehicule.commands %}
                         {% if command.dateBill is empty %}
                             <div class="row">
@@ -96,19 +96,18 @@
 
     <section class="row">
         <article class="col-sm-12 panel-primary">
-            <div class="panel-heading"><h2>factures</h2></div>
+            <div class="panel-heading"><h2>Factures</h2></div>
             <div class="panel-body">
                 {% for vehicule in result.vehicules %}
-
+<p>{{ vehicule.brand }} - {{ vehicule.model }} - {{ vehicule.registration }}</p>
                 {% for command in vehicule.commands %}
                         {% if command.dateBill is not empty %}
                             <div class="row">
-                                <div class="col-xs-3">{{ command.ref }}</div>
-                                <div class="col-xs-3">{{ command.totalHt }}</div>
-                                <div class="col-xs-3"><a href="{{ path('app_admin_command_view', {'id' : command.id}) }}" class="btn bg-warning "> Voir </a></div>
-                                <div class="col-xs-3"><a href="{{ path('app_admin_command_update', {'id' : command.id}) }}" class="btn bg-primary "> Modifier </a></div>
-                                <div class="col-xs-3"><a href="{{ path('app_admin_command_mail', {'id' : command.id}) }}" class="btn btn-danger"><span class="glyphicon glyphicon-envelope"></span> Envoyer le devis</a></div>
-                                <div class="col-xs-3"><a href="{{ path('app_admin_command_pdf', {'id' : command.id}) }}" class="btn btn-warning"><span class="glyphicon glyphicon-print"></span> Imprimer le devis</a></div>
+                                <div class="col-xs-3"><a href="{{ path('app_admin_command_view', {'id' : command.id}) }}" >{{ command.ref }}</a></div>
+                                <div class="col-xs-2">{{ command.totalHt }} €</div>
+                                <div class="col-xs-2"><a href="{{ path('app_admin_command_update', {'id' : command.id}) }}" class="btn bg-primary "> Modifier </a></div>
+                                <div class="col-xs-2"><a href="{{ path('app_admin_command_facture_mail', {'id' : command.id}) }}" class="btn btn-danger btn-block"><span class="glyphicon glyphicon-envelope"></span></a></div>
+                                <div class="col-xs-2"><a href="{{ path('app_admin_command_facture_pdf', {'id' : command.id}) }}" class="btn btn-warning btn-block"><span class="glyphicon glyphicon-print"></span></a></div>
 
 
                             </div>

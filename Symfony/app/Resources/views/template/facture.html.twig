@@ -150,10 +150,10 @@ footer {
   <body>
     <header class="clearfix">
       <div id="logo">
-        <img src="{{ asset('img/logo/logo.png') }}">
+        <img src="{{ absolute_url(asset('img/logo/logo.png')) }}">
       </div>
 
-      <h1>Facture {% if command.billRef != 0 %}{{ command.billRef}}{% endif %}</h1>
+      <h1>Facture n°{{ command.billRef}}</h1>
       <div id="company" class="clearfix">
         <div>EIRL MIKE AUTO 17</div>
         <div>Mr BOEX Mikael,<br /> 17560 Bourcefranc le Chapus</div>
@@ -167,7 +167,7 @@ footer {
         {% if command.vehicule.customer.email is not null %}<div><span>EMAIL</span><a href="mailto:{{ command.vehicule.customer.email }}">{{ command.vehicule.customer.email }}</a></div>{% endif %}
         <div><span>VEHICULE</span>{{ command.vehicule.brand }} - {{ command.vehicule.model }} - {{ command.vehicule.registration }} -  {{ command.vehicule.mileage | number_format(0,',',' ')}} Km - {{ command.vehicule.vin | upper}} </div>
         <br>
-        <div><span>DATE</span>{{ command.dateBill }}</div>
+        <div><span>DATE</span>{{ command.dateBill| date('d-m-Y') }}</div>
         {% if command.dateBillAcquited is not null %}<div><span>STATUT</span>réglé le {{ command.dateBillAcquited }} par {{ command.paymentType.name }}</div>
           {% else %}
             <div><span>STATUT</span>En attente de réglement</div>
@@ -208,7 +208,7 @@ footer {
             <td colspan="6">TOTAL HT</td>
             <td class="total">{{ command.totalHt | number_format(2,',',' ')}} €</td>
           </tr>
-        {% if command.totalDiscount != 0 %}
+        {% if command.totalDiscount is not null %}
           <tr>
             <td colspan="6">REMISE</td>
             <td class="total">{{ command.totalDiscount | number_format(2,',',' ')}} €</td>
@@ -226,7 +226,7 @@ footer {
         </tbody>
       </table>
       <div id="notices">
-        <div>obsevation:</div>
+        <div>obsevations : </div>
         <div class="notice">{{ command.note }}</div>
       </div>
     </main>

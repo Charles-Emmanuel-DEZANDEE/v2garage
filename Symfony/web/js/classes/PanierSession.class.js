@@ -52,7 +52,7 @@ PanierSession.prototype.savePanier = function(liste)
         var ligneTotalTTC = ligneTotalHT + ligneTotalTVA;
 
 
-        liste.totalRemise += ligneTotalRemise;
+        liste.totalRemise += ligneRemise;
         liste.totalTva = liste.totalTva + ligneTotalTVA;
         liste.totalTtc = liste.totalTtc + ligneTotalTTC;
         liste.totalHT = liste.totalHT + ligneTotalHT;
