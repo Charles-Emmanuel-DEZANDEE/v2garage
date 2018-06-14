@@ -246,7 +246,7 @@ class CommandController extends Controller
         //$command
 
         $html = $this->renderView("template/facture.html.twig", ['command' => $command]);
-        $filename = 'filename.pdf';
+        $filename = 'facture-' . $command->getBillRef().'.pdf';
         $pdf = $this->get("knp_snappy.pdf")->getOutputFromHtml($html);
         $message = \Swift_Message::newInstance()
             ->setSubject('facture - ' . $command->getBillRef() )
