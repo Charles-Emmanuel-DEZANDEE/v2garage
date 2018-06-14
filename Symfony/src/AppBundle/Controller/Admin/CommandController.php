@@ -239,17 +239,17 @@ class CommandController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
      */
-    public function mailAction(Request $request, Command $command, \Swift_Mailer $mailer, \Twig_Environment $twig)
+    public function factureMailAction(Request $request, Command $command, \Swift_Mailer $mailer, \Twig_Environment $twig)
     {
 
         //on genére le pdf
         //$command
 
-        $html = $this->renderView("template/facture.html.twig", []);
+        $html = $this->renderView("template/facture.html.twig", ['command' => $command]);
         $filename = 'filename.pdf';
         $pdf = $this->get("knp_snappy.pdf")->getOutputFromHtml($html);
         $message = \Swift_Message::newInstance()
-            ->setSubject('...')
+            ->setSubject('facture - ' . $command->getBillRef() )
             ->setFrom('cdezandee@gmail.com')
             ->setTo('cdezandee@gmail.com');
         $body = $twig->render('mailing/send.command.pdf.html.twig', ['command' => $command]);
