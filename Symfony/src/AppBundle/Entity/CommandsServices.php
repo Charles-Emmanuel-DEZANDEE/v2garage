@@ -86,6 +86,15 @@ class CommandsServices
     }
 
     /**
+     * initialise l'id en vue d'une duplication
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     */
+    public function nullId()
+    {
+        $this->id = null;
+    }
+
+    /**
      * retourne le calcul de la remise sur le prix ht
      * @return decimal
      * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>

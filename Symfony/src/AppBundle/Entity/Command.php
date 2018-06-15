@@ -16,8 +16,6 @@ class Command
 {
 
 
-
-
     /**
      * @var int
      *
@@ -98,7 +96,6 @@ class Command
     private $dateBill;
 
 
-
     /**
      * @var \DateTime|null
      *
@@ -123,7 +120,7 @@ class Command
     /**
      * one command have Many CommandsServices.
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\CommandsServices", mappedBy="command", cascade={"persist"}, cascade={"remove"})
-          */
+     */
     private $commandsServices;
 
     /**
@@ -139,10 +136,10 @@ class Command
      * @return decimal
      * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
      */
-    private function getround($value){
-        return round($value,2);
+    private function getround($value)
+    {
+        return round($value, 2);
     }
-
 
 
     /**
@@ -154,9 +151,14 @@ class Command
 
     }
 
-
-
-
+    /**
+     * initialise l'id en vue d'une duplication
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     */
+    public function nullId()
+    {
+        $this->id = null;
+    }
 
 
     /**
@@ -312,7 +314,6 @@ class Command
     {
         return $this->dateCreate;
     }
-
 
 
     /**
