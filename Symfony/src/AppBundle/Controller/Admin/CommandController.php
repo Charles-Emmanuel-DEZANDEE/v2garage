@@ -244,14 +244,18 @@ class CommandController extends Controller
 
         //on genére le pdf
         //$command
+        $mailFrom = $this->getParameter('mail_from');
+        $subject = 'facture - ' . $command->getBillRef();
+        $mailtarget = $command->getVehicule()->getCustomer()->getEmail();
 
         $html = $this->renderView("template/facture.html.twig", ['command' => $command]);
         $filename = 'facture-' . $command->getBillRef().'.pdf';
         $pdf = $this->get("knp_snappy.pdf")->getOutputFromHtml($html);
         $message = \Swift_Message::newInstance()
-            ->setSubject('facture - ' . $command->getBillRef() )
-            ->setFrom('cdezandee@gmail.com')
-            ->setTo('cdezandee@gmail.com');
+            ->setSubject($subject )
+            ->setFrom($mailFrom)
+            ->setTo($mailtarget)
+            ->setBcc($mailFrom);// on met en copie cachée
         $body = $twig->render('mailing/send.command.pdf.html.twig', ['command' => $command]);
         $message->setBody($body, 'text/html');
 
