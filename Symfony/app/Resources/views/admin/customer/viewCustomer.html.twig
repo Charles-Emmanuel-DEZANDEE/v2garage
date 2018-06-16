@@ -2,125 +2,159 @@
 
 {% block body %}
 
-<div class="container jumbotron">
+    <div class="container jumbotron">
 
-    <h1>{{ result.lastName }} {{ result.firstName }}</h1>
-    {% if result.socialReason is not empty%}
-        <h2>{{ result.socialReason }}</h2>
-    {% endif %}
+        <h1>{{ result.lastName }} {{ result.firstName }}</h1>
+        {% if result.socialReason is not empty %}
+            <h2>{{ result.socialReason }}</h2>
+        {% endif %}
 
-    <section class="row">
-        <article class="col-sm-4 panel-primary">
-            <div class="panel-heading"><h2>Coordonnées</h2></div>
-            <div class="panel-body">
-                <ul>
-                    <li><strong>Tel 1:</strong> <a href="tel:{{ result.telephonePrimary }}">{{ result.telephonePrimary }}</a></li>
-                    {% if result.telephoneSecondary is not empty %}
-                    <li><strong>Tel 2:</strong> <a href="tel:{{ result.telephoneSecondary }}">{{ result.telephoneSecondary }}</a></li>
-                    {% endif %}
-                    <li><strong>Mail :</strong> <a href="mailto:{{ result.email }}">{{ result.email }}</a></li>
-                    <li><strong>Adresse :</strong></li>
-                    <li>{{ result.addressNumber }} {{ result.addressRoad1 }}</li>
-                    {% if result.addressRoad2 is not empty%}
-                        <li>{{ result.addressRoad2 }}</li>
-                    {% endif %}
+        <section class="row">
+            <article class="col-sm-4 panel-primary">
+                <div class="panel-heading"><h2>Coordonnées</h2></div>
+                <div class="panel-body">
+                    <ul>
+                        <li><strong>Tel 1:</strong> <a
+                                    href="tel:{{ result.telephonePrimary }}">{{ result.telephonePrimary }}</a></li>
+                        {% if result.telephoneSecondary is not empty %}
+                            <li><strong>Tel 2:</strong> <a
+                                        href="tel:{{ result.telephoneSecondary }}">{{ result.telephoneSecondary }}</a>
+                            </li>
+                        {% endif %}
+                        <li><strong>Mail :</strong> <a href="mailto:{{ result.email }}">{{ result.email }}</a></li>
+                        <li><strong>Adresse :</strong></li>
+                        <li>{{ result.addressNumber }} {{ result.addressRoad1 }}</li>
+                        {% if result.addressRoad2 is not empty %}
+                            <li>{{ result.addressRoad2 }}</li>
+                        {% endif %}
 
-                    <li>{{ result.addressZipcode }} {{ result.addressCity | capitalize}}</li>
-                    {% if result.addressRegion is not empty %}
-                        <li>{{ result.addressRegion }}</li>
-                    {% endif %}
-                    <li>{{ result.addressCountry | capitalize }} </li>
-                </ul>
-            </div>
-            <div class="panel-footer"><a href="{{ path('app_admin_customer_update', {'id' : result.id}) }}" class="btn btn-primary">Modifier</a></div>
+                        <li>{{ result.addressZipcode }} {{ result.addressCity | capitalize }}</li>
+                        {% if result.addressRegion is not empty %}
+                            <li>{{ result.addressRegion }}</li>
+                        {% endif %}
+                        <li>{{ result.addressCountry | capitalize }} </li>
+                    </ul>
+                </div>
+                <div class="panel-footer"><a href="{{ path('app_admin_customer_update', {'id' : result.id}) }}"
+                                             class="btn btn-primary">Modifier</a></div>
 
-        </article>
+            </article>
 
-        <article class="col-sm-8 panel-primary">
+            <article class="col-sm-8 panel-primary">
                 <div class="panel-heading"><h2>Adresses d'intervention</h2></div>
                 <div class="panel-body">
                     <ul>
                         {% for address in result.addresses %}
 
-                            <p><span>{{ address.name }} </span> <span>{{ address.number }} {{ address.road1 }} - {{ address.zipcode }} {{ address.city }} </span><a href="{{ path('app_admin_addresses_update', {'idCustomer' : result.id, 'idAddresses' : address.id}) }}" class="btn bg-primary "> Modifier </a></p>
+                            <p><span>{{ address.name }} </span> <span>{{ address.number }} {{ address.road1 }}
+                                    - {{ address.zipcode }} {{ address.city }} </span><a
+                                        href="{{ path('app_admin_addresses_update', {'idCustomer' : result.id, 'idAddresses' : address.id}) }}"
+                                        class="btn bg-primary "> Modifier </a></p>
                         {% endfor %}
                     </ul>
                 </div>
-            <div class="panel-footer"><a href="{{ path('app_admin_addresses_add', {'idCustomer' : result.id}) }}" class="btn btn-warning">Ajouter</a></div>
+                <div class="panel-footer"><a href="{{ path('app_admin_addresses_add', {'idCustomer' : result.id}) }}"
+                                             class="btn btn-warning">Ajouter</a></div>
             </article>
 
 
-        </article>
-    </section>
-    <section class="row">
-        <article class="col-sm-12 panel-primary">
-            <div class="panel-heading"><h2>Véhicules</h2></div>
-            <div class="panel-body">
+            </article>
+        </section>
+        <section class="row">
+            <article class="col-sm-12 panel-primary">
+                <div class="panel-heading"><h2>Véhicules</h2></div>
+                <div class="panel-body">
                     {% for vehicule in result.vehicules %}
 
-                       <p> <span>{{ vehicule.brand }} - {{ vehicule.model }}</span> <span> {{ vehicule.registration }}</span> <span class="visible-sm-block visible-md-block"> {{ vehicule.mileage |number_format(0, '.', ' ')}} Km </span>  <a href="{{ path('app_admin_vehicule_update', {'idCustomer' : result.id, 'idVehicule' : vehicule.id}) }}" class="btn bg-primary "> Modifier </a> <a href="{{ path('app_admin_command_list', {'id' : vehicule.id}) }} " class="btn btn-warning">Nouveau devis</a></p>
+                        <p><span>{{ vehicule.brand }} - {{ vehicule.model }}</span>
+                            <span> {{ vehicule.registration }}</span> <span
+                                    class="visible-sm-block visible-md-block"> {{ vehicule.mileage |number_format(0, '.', ' ') }}
+                                Km </span> <a
+                                    href="{{ path('app_admin_vehicule_update', {'idCustomer' : result.id, 'idVehicule' : vehicule.id}) }}"
+                                    class="btn bg-primary "> Modifier </a> <a
+                                    href="{{ path('app_admin_command_list', {'id' : vehicule.id}) }} "
+                                    class="btn btn-warning">Nouveau devis</a></p>
                     {% endfor %}
-            </div>
-            <div class="panel-footer"><a href="{{ path('app_admin_vehicule_add', {'idCustomer' : result.id}) }}" class="btn btn-warning">Ajouter</a></div>
+                </div>
+                <div class="panel-footer"><a href="{{ path('app_admin_vehicule_add', {'idCustomer' : result.id}) }}"
+                                             class="btn btn-warning">Ajouter</a></div>
 
-        </article>
+            </article>
 
-    </section>
+        </section>
 
-    <section class="row">
-        <article class="col-sm-12 panel-primary">
-            <div class="panel-heading"><h2>Devis</h2></div>
-            <div class="panel-body">
-                {% for vehicule in result.vehicules %}
-                    <p>{{ vehicule.brand }} - {{ vehicule.model }} - {{ vehicule.registration }}</p>
-                {% for command in vehicule.commands %}
-                        {% if command.dateBill is empty %}
-                            <div class="row">
-                                <div class="col-xs-3">{{ command.ref }}</div>
-                                <div class="col-xs-3">{{ command.totalHt }} €</div>
-                                <div class="col-xs-3"><a href="{{ path('app_admin_command_view', {'id' : command.id}) }}" class="btn bg-warning "> Voir </a></div>
-                                <div class="col-xs-3"><a href="{{ path('app_admin_command_update', {'id' : command.id}) }}" class="btn bg-primary "> Modifier </a></div>
-                                <div class="col-xs-3"><a href="{{ path('app_admin_command_vue', {'id' : command.id}) }}" class="btn bg-primary "> vue </a></div>
+        <section class="row">
+            <article class="col-sm-12 panel-primary">
+                <div class="panel-heading"><h2>Devis</h2></div>
+                <div class="panel-body">
+                    {% for vehicule in result.vehicules %}
+                        <p>{{ vehicule.brand }} - {{ vehicule.model }} - {{ vehicule.registration }}</p>
+                        {% for command in vehicule.commands %}
+                            {% if command.dateBill is empty %}
+                                <div class="row">
+                                    <div class="col-xs-3"><a
+                                                href="{{ path('app_admin_command_view', {'id' : command.id}) }}">{{ command.ref }}</a>
+                                    </div>
+                                    <div class="col-xs-3">{{ command.totalHt }} €</div>
+                                    <div class="col-xs-3"><a
+                                                href="{{ path('app_admin_command_update', {'id' : command.id}) }}"
+                                                class="btn bg-primary "> Modifier </a></div>
+                                    <div class="col-xs-3"><a
+                                                href="{{ path('app_admin_command_vue', {'id' : command.id}) }}"
+                                                class="btn bg-primary "> vue </a></div>
 
-                            </div>
-                        {% endif %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
                     {% endfor %}
-                {% endfor %}
 
-            </div>
-
-
-        </article>
-
-    </section>
-
-    <section class="row">
-        <article class="col-sm-12 panel-primary">
-            <div class="panel-heading"><h2>Factures</h2></div>
-            <div class="panel-body">
-                {% for vehicule in result.vehicules %}
-<p>{{ vehicule.brand }} - {{ vehicule.model }} - {{ vehicule.registration }}</p>
-                {% for command in vehicule.commands %}
-                        {% if command.dateBill is not empty %}
-                            <div class="row">
-                                <div class="col-xs-3"><a href="{{ path('app_admin_command_view', {'id' : command.id}) }}" >{{ command.ref }}</a></div>
-                                <div class="col-xs-2">{{ command.totalHt }} €</div>
-                                <div class="col-xs-2"><a href="{{ path('app_admin_command_update', {'id' : command.id}) }}" class="btn bg-primary "> Modifier </a></div>
-                                <div class="col-xs-2"><a href="{{ path('app_admin_command_facture_mail', {'id' : command.id}) }}" class="btn btn-danger btn-block"><span class="glyphicon glyphicon-envelope"></span></a></div>
-                                <div class="col-xs-2"><a href="{{ path('app_admin_command_facture_pdf', {'id' : command.id}) }}" class="btn btn-warning btn-block"><span class="glyphicon glyphicon-print"></span></a></div>
+                </div>
 
 
-                            </div>
-                        {% endif %}
+            </article>
+
+        </section>
+
+        <section class="row">
+            <article class="col-sm-12 panel-primary">
+                <div class="panel-heading"><h2>Factures</h2></div>
+                <div class="panel-body">
+                    {% for vehicule in result.vehicules %}
+                        <p>{{ vehicule.brand }} - {{ vehicule.model }} - {{ vehicule.registration }}</p>
+                        {% for command in vehicule.commands %}
+                            {% if command.dateBill is not empty %}
+                                <div class="row">
+                                    <div class="col-xs-2"><a
+                                                href="{{ path('app_admin_command_view', {'id' : command.id}) }}">{{ command.ref }}</a>
+                                    </div>
+                                    <div class="col-xs-2">{{ command.totalHt }} €</div>
+                                    {#                                <div class="col-xs-2"><a href="{{ path('app_admin_command_update', {'id' : command.id}) }}" class="btn bg-primary "> Modifier </a></div>#}
+                                    <div class="col-xs-2"><a
+                                                href="{{ path('app_admin_command_facture_mail', {'id' : command.id}) }}"
+                                                class="btn btn-danger btn-block"><span
+                                                    class="glyphicon glyphicon-envelope"></span></a></div>
+                                    <div class="col-xs-2"><a
+                                                href="{{ path('app_admin_command_facture_pdf', {'id' : command.id}) }}"
+                                                class="btn btn-warning btn-block"><span
+                                                    class="glyphicon glyphicon-print"></span></a></div>
+                                    <div class="col-xs-1">
+                                        {% if command.dateBillAcquited is not empty %}
+                                            <div class="btn btn-success">Payée</div> {% else %}
+                                            <div class="btn btn-danger">Non payée</div>{% endif %}
+                                    </div>
+
+
+                                </div>
+                            {% endif %}
+                        {% endfor %}
                     {% endfor %}
-                    {% endfor %}
-            </div>
-        </article>
+                </div>
+            </article>
 
-    </section>
+        </section>
 
 
-</div>
+    </div>
 
 
 

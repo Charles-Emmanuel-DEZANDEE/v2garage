@@ -11,7 +11,7 @@ use AppBundle\Entity\Service;
 use AppBundle\Entity\Vehicule;
 use AppBundle\Form\CommandSearchType;
 use AppBundle\Form\CommandType;
-use AppBundle\Form\FactureAcquiteType;
+use AppBundle\Form\NoteCommandType;
 use AppBundle\Service\CommandService;
 use AppBundle\Service\DuplicateAddressesService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -284,28 +284,39 @@ class CommandController extends Controller
 
 
     /**
+     * @Method({"GET", "POST"})
+     * @param Request $request
+     * @param Command $command
+     * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/command/view/{id}", name="app_admin_command_view")
      */
-    public function viewCommand(Request $request, $id = null)
+    public function viewCommand(Request $request,Command $command)
     {
-        if ($id == null) {
-            $message = 'Veuillez selectionner une commande';
-            $this->addFlash('danger', $message);
-            return $this->redirectToRoute('app_admin_customer_list');
-        }
+
 
         $doctrine = $this->getDoctrine();
-        $rc = $doctrine->getRepository(Command::class);
-        $result = $rc->find($id);
-
         $allPaymentType = $doctrine->getRepository(PaymentType::class)->findAll();
 
-        dump($result);
+        $form = $this->createForm(CommandType::class, $command);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()){
+            $em = $doctrine->getManager();
+            $em->persist($command);
+
+            $em->flush();
+            //message flash
+            $message = 'La note a été mise à jour';
+            $this->addFlash('info', $message);
+        }
+
+        dump($command);
 
 
         return $this->render('admin/command/viewCommand.html.twig', [
-            'result' => $result,
-            'select' => $allPaymentType
+            'result' => $command,
+            'select' => $allPaymentType,
+            'form' => $form->createView(),
         ]);
     }
 

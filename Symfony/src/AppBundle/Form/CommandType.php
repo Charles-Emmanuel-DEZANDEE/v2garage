@@ -15,7 +15,8 @@ class CommandType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('ref')
+            ->add('note')
+/*            ->add('ref')
             ->add('billRef')
             ->add('totalHt')
             ->add('totalTva')
@@ -25,10 +26,11 @@ class CommandType extends AbstractType
             ->add('commandeValidate')
             ->add('dateLastUpdate')
             ->add('dateBill')
-            ->add('customer');
+            ->add('customer')*/
+        ;
 
         // souscripteur
-        $builder->addEventSubscriber(new CommandFormSubscriber());
+        //$builder->addEventSubscriber(new CommandFormSubscriber());
     }/**
      * {@inheritdoc}
      */

@@ -2,13 +2,13 @@
 
 namespace AppBundle\Form;
 
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
-class FactureAcquiteType extends AbstractType
+
+class NoteCommandType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -16,14 +16,7 @@ class FactureAcquiteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('paymentType', EntityType::class, [
-                'class' => 'AppBundle\Entity\PaymentType',
-                'choice_label' => 'name',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'type de paiement requis requis'
-                    ])
-                ]
+            ->add('note', TextType::class, [
             ])
         ;
     }

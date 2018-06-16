@@ -44,15 +44,16 @@ PanierSession.prototype.savePanier = function(liste)
     for (var i= 0;i < liste.tabElt.length; i++) {
         var ligneTotalHT = liste.tabElt[i].valeurHT * liste.tabElt[i].quantity;
         var ligneRemise = liste.tabElt[i].remise;
+        var ligneTotalRemise = 0;
         if (ligneRemise != 0){
-            var ligneTotalRemise = ligneTotalHT * ligneRemise /100;
+            ligneTotalRemise = ligneTotalHT * ligneRemise /100;
             ligneTotalHT = ligneTotalHT - ligneTotalRemise;
         }
         var ligneTotalTVA = ligneTotalHT * (liste.tabElt[i].taxerate /100);
         var ligneTotalTTC = ligneTotalHT + ligneTotalTVA;
 
 
-        liste.totalRemise += ligneRemise;
+        liste.totalRemise += ligneTotalRemise;
         liste.totalTva = liste.totalTva + ligneTotalTVA;
         liste.totalTtc = liste.totalTtc + ligneTotalTTC;
         liste.totalHT = liste.totalHT + ligneTotalHT;
