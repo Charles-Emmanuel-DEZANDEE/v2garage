@@ -11,6 +11,7 @@ use AppBundle\Entity\Service;
 use AppBundle\Entity\Vehicule;
 use AppBundle\Form\CommandSearchType;
 use AppBundle\Form\CommandType;
+use AppBundle\Form\FactureAcquiteType;
 use AppBundle\Service\CommandService;
 use AppBundle\Service\DuplicateAddressesService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -152,7 +153,7 @@ class CommandController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
      */
-    public function facturePayeeAction(Request $request, Command $command, CommandService $commandService)
+    public function facturePayeeAction(Request $request, Command $command)
     {
 
         $doctrine = $this->getDoctrine();
@@ -160,11 +161,13 @@ class CommandController extends Controller
         //on met à jour la date de validation du devis
         $command->setDateBillAcquited(new \DateTime());
 
-        //todo récupérer le mode de paiement
-        $idPayment = 1;
+
+        $idPayment = $request->get('paymentType');
+
         $rc = $doctrine->getRepository(PaymentType::class);
         $paymentType = $rc->find($idPayment);
         $command->setPaymentType($paymentType);
+
 
         $em = $doctrine->getManager();
         $em->persist($command);
@@ -295,11 +298,14 @@ class CommandController extends Controller
         $rc = $doctrine->getRepository(Command::class);
         $result = $rc->find($id);
 
+        $allPaymentType = $doctrine->getRepository(PaymentType::class)->findAll();
+
         dump($result);
 
 
         return $this->render('admin/command/viewCommand.html.twig', [
-            'result' => $result
+            'result' => $result,
+            'select' => $allPaymentType
         ]);
     }
 

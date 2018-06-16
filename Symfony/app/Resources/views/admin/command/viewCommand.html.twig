@@ -10,8 +10,12 @@
                 Retour </a></div>
 
         <h1>Intervention</h1>
-        <h2>Devis n°: {{ result.ref }}</h2>
-        {% if result.dateBill is not empty %}  <h2>Facture n° {{ result.billref }}</h2> {% endif %}
+        <h2>Devis n°: {{ result.ref }}  {% if result.commandeValidate is not empty %}
+                accepté le : {{ result.commandeValidate | date('d-m-Y') }}
+            {% endif %}</h2>
+        {% if result.dateBill is not empty %}  <h2>Facture n° {{ result.billref }}{% if result.dateBillAcquited is not empty %}
+                payée le : {{ result.dateBillAcquited | date('d-m-Y') }} par {{ result.paymentType.name }}
+            {% endif %}</h2> {% endif %}
         <h3>{{ result.vehicule.brand }} - {{ result.vehicule.model }} - {{ result.vehicule.registration }} </h3>
 
         <div class="table-responsive">
@@ -58,9 +62,7 @@
                 <p>total HT : <strong> {{ result.totalHt|number_format(2, '.', ' ') }} €</strong></p>
                 <p>total TVA : <strong> {{ result.totalTva|number_format(2, '.', ' ') }} €</strong></p>
                 <p>total TTC : <strong>{{ result.totalTtc|number_format(2, '.', ' ') }} €</strong></p>
-                {% if result.commandeValidate is not empty %}
-                    <p>Le devis a été accepté par le client le : {{ result.commandeValidate | date('d-m-Y') }}</p>
-                {% endif %}
+
 
             </div>
         </div>
@@ -74,6 +76,32 @@
             <a href="{{ path('app_admin_command_travaux_fait', {'id' : result.id}) }}" class="btn btn-warning">Les travaux ont été réalisés</a>
 
 
+        {% endif %}
+
+        {% if result.dateBill is not null and result.dateBillAcquited is null %}
+            <form action="{{ url('app_admin_command_facture_payee', {'id' : result.id}) }}" method="post">
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <label   for="sel1">Type de paiement:</label>
+                        <select name="paymentType" class="form-control" id="sel1">
+                            {% for ligne in select %}
+                                <option value="{{ ligne.id }}">{{ ligne.name }}</option>
+                            {% endfor %}
+
+                        </select>
+                        </span>
+                        <span class="input-group-btn">
+                        <button type="submit" class="btn btn-primary">La facture a été acquitée</button>
+</span>
+
+                    </div>
+                </div>
+
+
+
+
+            </form>
         {% endif %}
 
 
