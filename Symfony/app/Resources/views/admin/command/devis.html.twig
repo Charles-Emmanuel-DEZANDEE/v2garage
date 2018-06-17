@@ -187,9 +187,9 @@
                     url: '{{ path('app_admin_command_ajax') }}',
                     success: function (response, statut) {
                         var idCommand = response.idcommand;
-                        var urlbase = "{{ url('app_admin_command_view')}}";
-                        console.log(urlbase);
-                        var url = urlbase +"/"+ idCommand;
+                        var urlbase = "{{ url('app_homepage_index') }}";
+                        //console.log(urlbase);
+                        var url = urlbase + "admin/command/view/"+ idCommand;
                         window.location = url;
                           //on vide le panier
                           clearPanier();

@@ -30,7 +30,7 @@ class CommandController extends Controller
 
 
     /**
-     * @Route("/command/{id}", name="app_admin_command_list")
+     * @Route("/command/devis/{id}", name="app_admin_command_devis")
      * @Method({"GET", "POST"})
      * @param Request $request
      * @param Vehicule $vehicule

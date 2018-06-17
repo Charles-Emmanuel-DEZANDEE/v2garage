@@ -110,15 +110,15 @@
 
         {{ form_start(form, { 'attr' : { 'novalidate' : 'novalidate' } }) }}
         <div class="form-group">
-            <div class="col-xs-2">
+            <div class="col-md-2">
                 {{ form_label(form.note, 'observation' | capitalize ~ ' :') }}
             </div>
 
-            <div class="col-xs-7">
+            <div class="col-md-7">
                 {{ form_widget(form.note) }}
             </div>
 
-            <div class="col-xs-3">
+            <div class="col-md-3">
                 <input type="submit" class="btn btn-primary" name="submit" value="Enregistrer l'observation">
             </div>
         </div>

@@ -57,7 +57,7 @@
                             <ul>
                                 {% for vehicule in result.vehicules %}
                                     <li>{{ vehicule.brand }} {{ vehicule.model }}     {{ vehicule.registration }} <a
-                                                href="{{ path('app_admin_command_list', {'id' : vehicule.id }) }}"
+                                                href="{{ path('app_admin_command_devis', {'id' : vehicule.id }) }}"
                                                 class="btn bg-primary "> Faire devis </a></li>
 
                                 {% endfor %}
