@@ -8,6 +8,11 @@
                     href="{{ path('app_admin_customer_view', {'id': result.vehicule.customer.id}) }}"
                     class="btn bg-primary ">
                 Retour </a></div>
+        <div class="col-sm-3 espaceBoutton pull-right"><a
+                    href="{{ path('app_admin_command_dupliquer', {'id': result.id}) }}"
+                    class="btn bg-warning ">
+                Dupliquer </a></div>
+
 
         <h1>Intervention</h1>
         <h2>Devis n°: {{ result.ref }}  {% if result.commandeValidate is not empty %}

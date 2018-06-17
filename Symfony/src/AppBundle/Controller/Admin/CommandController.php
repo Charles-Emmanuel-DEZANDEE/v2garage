@@ -5,15 +5,12 @@ namespace AppBundle\Controller\Admin;
 use AppBundle\Entity\Category;
 use AppBundle\Entity\Command;
 use AppBundle\Entity\CommandsServices;
-use AppBundle\Entity\Customer;
 use AppBundle\Entity\PaymentType;
 use AppBundle\Entity\Service;
 use AppBundle\Entity\Vehicule;
 use AppBundle\Form\CommandSearchType;
 use AppBundle\Form\CommandType;
-use AppBundle\Form\NoteCommandType;
 use AppBundle\Service\CommandService;
-use AppBundle\Service\DuplicateAddressesService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -50,6 +47,44 @@ class CommandController extends Controller
             'vehicule' => $vehicule,
 
         ]);
+    }
+
+    /** suppression d'une intervention non accepté par le client
+     * @Route("/command/remove/{id}", name="app_admin_command_remove")
+     * @Method({"GET", "POST"})
+     * @param Request $request
+     * @param Command $command
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     */
+    public function removeAction(Request $request, Command $command)
+    {
+        $idcustomer = $command->getVehicule()->getCustomer()->getId();
+        if (!$command->getCommandeValidate()){
+
+            $doctrine = $this->getDoctrine();
+            $em = $doctrine->getManager();
+
+            // on supprime les commandservices
+            foreach ($command->getCommandsServices() as $comService){
+                $em->remove($comService);
+            }
+            $em->remove($command);
+            $em->flush();
+
+            $message = 'Le devis a été supprimé';
+        }
+        else{
+            $message = "Il n'est pas possible supprimer un devis accepté par le client !" ;
+        }
+
+
+        $this->addFlash('danger', $message);
+
+
+        return $this->redirectToRoute('app_admin_customer_view', [
+            'id' => $idcustomer,
+                    ]);
     }
 
     /** accés à la modification du devis
@@ -145,6 +180,51 @@ class CommandController extends Controller
 
     }
 
+    /** duplication de la commande en devis
+     * @Route("/command/dupliquer/{id}", name="app_admin_command_dupliquer")
+     * @Method({"GET", "POST"})
+     * @param Request $request
+     * @param Command $command
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     */
+    public function dupliquerCommandAction(Request $request, Command $command, CommandService $commandService)
+    {
+
+        $doctrine = $this->getDoctrine();
+        $em = $doctrine->getManager();
+
+        $nouvelleCommand = clone $command;
+        $nouvelleCommand->setDateCreate(new \DateTime());
+        $nouvelleCommand->setBillRef(null);
+        $nouvelleCommand->setDateBill(null);
+        $nouvelleCommand->setCommandeValidate(null);
+        $nouvelleCommand->setPaymentType(null);
+        $nouvelleCommand->setRef($commandService->getNumeroDevis());
+        $nouvelleCommand->setNote(null);
+        $em->persist($nouvelleCommand);
+        $em->flush();
+
+        $ligneCommand = $command->getCommandsServices();
+
+
+        foreach ($ligneCommand as $commandService) {
+            $nouvelleCommandService = clone $commandService;
+            $nouvelleCommandService->nullId();
+            $nouvelleCommandService->setCommand($nouvelleCommand);
+            $em->persist($nouvelleCommandService);
+        }
+
+        $em->flush();
+
+        $message = "L'intervention a été dupliquée";
+
+        $this->addFlash('info', $message);
+
+        return $this->redirectToRoute('app_admin_command_view', ['id' => $nouvelleCommand->getId()]);
+
+    }
+
     /** la facture a été payée
      * @Route("/command/facturepayee/{id}", name="app_admin_command_facture_payee")
      * @Method({"GET", "POST"})
@@ -183,87 +263,115 @@ class CommandController extends Controller
     }
 
     /** enregistrement de la facture en pdf
-     * @Route("/command/facture/pdf/{id}", name="app_admin_command_facture_pdf")
+     * @Route("/command/facture/pdf/{id}/{devis}", name="app_admin_command_facture_pdf")
      * @Method({"GET", "POST"})
      * @param Request $request
      * @param Command $command
      * @return \Symfony\Component\HttpFoundation\Response
      * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
      */
-    public function FacturePdfAction(Request $request, Command $command)
+    public function pdfAction(Request $request, Command $command, int $devis)
     {
         $doctrine = $this->getDoctrine();
 
         $rc = $doctrine->getRepository(Command::class);
         $result = $rc->findOneOrderByPositionMagic($command->getId());
-        $html = $this->renderView('/template/facture.html.twig', [
-            'command' => $result[0],
+        if ($devis){
+            $html = $this->renderView('/template/devis.html.twig', [
+                'command' => $result[0],
+            ]);
+            $filename = sprintf('Devis-%s.pdf', $command->getRef());
 
-        ]);
+        }
+        else{
 
-        $filename = sprintf('Facture-%s.pdf', $command->getBillRef());
+            $html = $this->renderView('/template/facture.html.twig', [
+                'command' => $result[0],
+            ]);
+            $filename = sprintf('Facture-%s.pdf', $command->getBillRef());
+        }
 
         return new Response(
             $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
             200,
             [
-                'Content-Type'        => 'application/pdf',
+                'Content-Type' => 'application/pdf',
                 'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
             ]
         );
     }
 
     /** vue du devis ou facture
-     * @Route("/command/vue/{id}", name="app_admin_command_vue")
+     * @Route("/command/vue/{id}/{devis}", name="app_admin_command_vue")
      * @Method({"GET", "POST"})
      * @param Request $request
      * @param Command $command
      * @return \Symfony\Component\HttpFoundation\Response
      * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
      */
-    public function vue(Request $request, Command $command)
+    public function vue(Request $request, Command $command,int $devis)
     {
         $doctrine = $this->getDoctrine();
 
         $rc = $doctrine->getRepository(Command::class);
         $result = $rc->findOneOrderByPositionMagic($command->getId());
+        if ($devis){
 
-        return $this->render('/template/facture.html.twig', [
-            'command' => $result[0],
+            return $this->render('/template/devis.html.twig', [
+                'command' => $result[0],
+            ]);
+        }
+        else {
+            return $this->render('/template/facture.html.twig', [
+                'command' => $result[0],
+            ]);
 
-        ]);
+        }
+
     }
 
     /** envoi par mail de la facture
-     * @Route("/command/facture/mail/{id}", name="app_admin_command_facture_mail")
+     * @Route("/command/facture/mail/{id}/{devis}", name="app_admin_command_facture_mail")
      * @Method({"GET", "POST"})
      * @param Request $request
      * @param Command $command
      * @return \Symfony\Component\HttpFoundation\Response
      * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
      */
-    public function factureMailAction(Request $request, Command $command, \Swift_Mailer $mailer, \Twig_Environment $twig)
+    public function mailAction(Request $request, Command $command, \Swift_Mailer $mailer, \Twig_Environment $twig, int $devis)
     {
 
         //on genére le pdf
         //$command
         $mailFrom = $this->getParameter('mail_from');
-        $subject = 'facture - ' . $command->getBillRef();
         $mailtarget = $command->getVehicule()->getCustomer()->getEmail();
 
+        if ($devis){
+            $subject = 'devis - ' . $command->getRef();
+            $html = $this->renderView("template/devis.html.twig", ['command' => $command]);
+            $filename = 'devis-' . $command->getBillRef() . '.pdf';
+
+        }
+        else{
+        $subject = 'facture - ' . $command->getBillRef();
+
         $html = $this->renderView("template/facture.html.twig", ['command' => $command]);
-        $filename = 'facture-' . $command->getBillRef().'.pdf';
+            $filename = 'facture-' . $command->getBillRef() . '.pdf';
+        }
+
+
+
         $pdf = $this->get("knp_snappy.pdf")->getOutputFromHtml($html);
         $message = \Swift_Message::newInstance()
-            ->setSubject($subject )
+            ->setSubject($subject)
             ->setFrom($mailFrom)
             ->setTo($mailtarget)
             ->setBcc($mailFrom);// on met en copie cachée
-        $body = $twig->render('mailing/send.command.pdf.html.twig', ['command' => $command]);
+        $body = $twig->render('mailing/send.command.pdf.html.twig');
         $message->setBody($body, 'text/html');
 
 //join PDF
-        $attachement = \Swift_Attachment::newInstance($pdf, $filename, 'application/pdf' );
+        $attachement = \Swift_Attachment::newInstance($pdf, $filename, 'application/pdf');
         $message->attach($attachement);
         //envoi du mail
         $mailer->send($message);
@@ -290,7 +398,7 @@ class CommandController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/command/view/{id}", name="app_admin_command_view")
      */
-    public function viewCommand(Request $request,Command $command)
+    public function viewCommand(Request $request, Command $command)
     {
 
 
@@ -300,7 +408,7 @@ class CommandController extends Controller
         $form = $this->createForm(CommandType::class, $command);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $doctrine->getManager();
             $em->persist($command);
 

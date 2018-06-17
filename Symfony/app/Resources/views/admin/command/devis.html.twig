@@ -8,7 +8,14 @@
     <h1>Devis</h1>
 
     <div class="row entete">
-        <div id="retour" class="col-sm-3 espaceBoutton"><a href="{{ url('app_admin_customer_list') }}" class="btn bg-primary ">
+        <div id="retour" class="col-sm-3 espaceBoutton"><a href="
+        {% if commande is defined %}
+        {{ path('app_admin_customer_view', {'id': commande.vehicule.customer.id}) }}
+        {% else %}
+        {{ url('app_admin_customer_list') }}
+        {% endif %}
+
+        " class="btn bg-primary ">
                 Retour </a></div>
         <div class="col-sm-6"><h2>Marque : {{ vehicule.brand }} -  Modèle: {{ vehicule.model }} Immatriculation : {{ vehicule.registration }}</h2></div>
     </div>

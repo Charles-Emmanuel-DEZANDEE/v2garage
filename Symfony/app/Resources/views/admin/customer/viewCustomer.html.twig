@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% set devis, facture = 1, 0 %}
+
 {% block body %}
 
     <div class="container jumbotron">
@@ -88,20 +90,33 @@
                 <div class="panel-heading"><h2>Devis</h2></div>
                 <div class="panel-body">
                     {% for vehicule in result.vehicules %}
-                        <p>{{ vehicule.brand }} - {{ vehicule.model }} - {{ vehicule.registration }}</p>
+                        <div class=" btn btn-default">{{ vehicule.brand }} - {{ vehicule.model }}
+                            - {{ vehicule.registration }}</div>
                         {% for command in vehicule.commands %}
                             {% if command.dateBill is empty %}
                                 <div class="row">
-                                    <div class="col-xs-3"><a
+                                    <div class="col-xs-2"><a
                                                 href="{{ path('app_admin_command_view', {'id' : command.id}) }}">{{ command.ref }}</a>
                                     </div>
-                                    <div class="col-xs-3">{{ command.totalHt }} €</div>
-                                    <div class="col-xs-3"><a
+                                    <div class="col-xs-2">{{ command.totalHt }} €</div>
+                                    <div class="col-xs-2">{{ command.dateCreate | date('d-m-Y') }}</div>
+                                    <div class="col-xs-1"><a
                                                 href="{{ path('app_admin_command_update', {'id' : command.id}) }}"
-                                                class="btn bg-primary "> Modifier </a></div>
-                                    <div class="col-xs-3"><a
-                                                href="{{ path('app_admin_command_vue', {'id' : command.id}) }}"
-                                                class="btn bg-primary "> vue </a></div>
+                                                class="btn bg-primary "><span
+                                                    class="glyphicon glyphicon-pencil"></span></a></div>
+
+                                    <div class="col-xs-1"><a
+                                                href="{{ path('app_admin_command_remove', {'id' : command.id }) }}"
+                                                class="btn btn-danger "><span
+                                                    class="glyphicon glyphicon-remove-circle"></span></a></div>
+                                    <div class="col-xs-2"><a
+                                                href="{{ path('app_admin_command_facture_mail', {'id' : command.id, 'devis' : devis }) }}"
+                                                class="btn btn-info btn-block"><span
+                                                    class="glyphicon glyphicon-envelope"></span></a></div>
+                                    <div class="col-xs-2"><a
+                                                href="{{ path('app_admin_command_facture_pdf', {'id' : command.id, 'devis' : devis}) }}"
+                                                class="btn btn-warning btn-block"><span
+                                                    class="glyphicon glyphicon-print"></span></a></div>
 
                                 </div>
                             {% endif %}
@@ -120,7 +135,8 @@
                 <div class="panel-heading"><h2>Factures</h2></div>
                 <div class="panel-body">
                     {% for vehicule in result.vehicules %}
-                        <p>{{ vehicule.brand }} - {{ vehicule.model }} - {{ vehicule.registration }}</p>
+                        <div class=" btn btn-default">{{ vehicule.brand }} - {{ vehicule.model }}
+                            - {{ vehicule.registration }}</div>
                         {% for command in vehicule.commands %}
                             {% if command.dateBill is not empty %}
                                 <div class="row">
@@ -128,13 +144,13 @@
                                                 href="{{ path('app_admin_command_view', {'id' : command.id}) }}">{{ command.ref }}</a>
                                     </div>
                                     <div class="col-xs-2">{{ command.totalHt }} €</div>
-                                    {#                                <div class="col-xs-2"><a href="{{ path('app_admin_command_update', {'id' : command.id}) }}" class="btn bg-primary "> Modifier </a></div>#}
+                                    <div class="col-xs-2">{{ command.dateBill | date('d-m-Y') }}</div>
                                     <div class="col-xs-2"><a
-                                                href="{{ path('app_admin_command_facture_mail', {'id' : command.id}) }}"
-                                                class="btn btn-danger btn-block"><span
+                                                href="{{ path('app_admin_command_facture_mail', {'id' : command.id, 'devis' : facture}) }}"
+                                                class="btn btn-info btn-block"><span
                                                     class="glyphicon glyphicon-envelope"></span></a></div>
                                     <div class="col-xs-2"><a
-                                                href="{{ path('app_admin_command_facture_pdf', {'id' : command.id}) }}"
+                                                href="{{ path('app_admin_command_facture_pdf', {'id' : command.id, 'devis' : facture}) }}"
                                                 class="btn btn-warning btn-block"><span
                                                     class="glyphicon glyphicon-print"></span></a></div>
                                     <div class="col-xs-1">

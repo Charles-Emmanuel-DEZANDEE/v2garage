@@ -93,9 +93,9 @@ knp_snappy:
     temporary_folder: "%kernel.cache_dir%/snappy"
     pdf:
         enabled: true
-        binary: 'C:\wkhtmltopdf\wkhtmltopdf.exe'
+        #binary: 'C:\wkhtmltopdf\wkhtmltopdf.exe'
         #binary:     '%kernel.root_dir%/../vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-i386'
-        #binary:     '/usr/local/bin/wkhtmltopdf'
+        binary:     '/usr/local/bin/wkhtmltopdf'
         options:
-            - { name: 'viewport-size', value: ‘1024x768’ }
+            - { name: 'viewport-size', value: ‘1024x794’ }
             - { name: 'page-size', value: 'A4' }
