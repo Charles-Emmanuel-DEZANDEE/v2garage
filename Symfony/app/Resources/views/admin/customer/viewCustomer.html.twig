@@ -100,12 +100,12 @@
                                     </div>
                                     <div class="col-xs-2">{{ command.totalHt }} €</div>
                                     <div class="col-xs-2">{{ command.dateCreate | date('d-m-Y') }}</div>
-                                    <div class="col-xs-1"><a
+                                    <div class="col-xs-1 {% if command.commandeValidate is not empty %}invisible{% endif %}"><a
                                                 href="{{ path('app_admin_command_update', {'id' : command.id}) }}"
                                                 class="btn bg-primary "><span
                                                     class="glyphicon glyphicon-pencil"></span></a></div>
 
-                                    <div class="col-xs-1"><a
+                                    <div class="col-xs-1 {% if command.commandeValidate is not empty %}invisible{% endif %}"><a
                                                 href="{{ path('app_admin_command_remove', {'id' : command.id }) }}"
                                                 class="btn btn-danger "><span
                                                     class="glyphicon glyphicon-remove-circle"></span></a></div>
