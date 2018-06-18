@@ -141,7 +141,7 @@
                             {% if command.dateBill is not empty %}
                                 <div class="row">
                                     <div class="col-xs-2"><a
-                                                href="{{ path('app_admin_command_view', {'id' : command.id}) }}">{{ command.ref }}</a>
+                                                href="{{ path('app_admin_command_view', {'id' : command.id}) }}">{{ command.billRef }}</a>
                                     </div>
                                     <div class="col-xs-2">{{ command.totalHt }} €</div>
                                     <div class="col-xs-2">{{ command.dateBill | date('d-m-Y') }}</div>
