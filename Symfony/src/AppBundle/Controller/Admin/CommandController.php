@@ -474,7 +474,7 @@ class CommandController extends Controller
                 $serviceCommand->setReference($ligne['reference']);
                 $serviceCommand->setValue($ligne['valeurHT']);
                 $serviceCommand->setQuantity($ligne['quantity']);
-                $serviceCommand->setDiscountRate($ligne['remise']);
+                $serviceCommand->setDiscountRate($ligne['remiserate']);
                 $serviceCommand->setTaxRate($ligne['taxerate']);
                 $em->persist($serviceCommand);
             }

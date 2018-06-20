@@ -17,27 +17,56 @@
 
         " class="btn bg-primary ">
                 Retour </a></div>
-        <div class="col-sm-6"><h2>Marque : {{ vehicule.brand }} -  Modèle: {{ vehicule.model }} Immatriculation : {{ vehicule.registration }}</h2></div>
+        <div class="col-xs-9"><h2>Marque : <strong>{{ vehicule.brand }}</strong> -  Modèle: <strong>{{ vehicule.model }}</strong> - Immatriculation : <strong>{{ vehicule.registration }}</strong></h2></div>
     </div>
 
     <div class="row">
         <div class="col-sm-12 entete">
             <div class="panel-success">
                 <div class="panel-heading">Devis</div>
-                <div class="panel-body" data-idvehicule="{{ vehicule.id }}" id="panier">
+                <div id="panier" class="panel-body" data-idvehicule="{{ vehicule.id }}" >
 
-                <ul class="list-group">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Désignation</th>
+                            <th>Quantité</th>
+                            <th>Prix HT</th>
+                            <th class="hidden-xs">Remise</th>
+                            <th class="hidden-xs">TVA</th>
+                            <th>Total HT</th>
+                            <th>Modif</th>
+                            <th>Supp</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tablePanier">
 
+                        </tbody>
+                    </table>
+                    <div class="row">
+                        <div class="col-xs-3 pull-right">
+<ul>
+
+    <li>total remise : <strong><span id="remisepanier">0</span> €</strong></li>
+
+    <li>total HT : <strong><span id="htpanier">0</span> €</strong></li>
+    <li>total TVA : <strong><span id="tvapanier">0</span> €</strong></li>
+    <li>total TTC : <strong><span id="ttcpanier">0</span> €</strong></li>
 </ul>
+
+
+                        </div>
+                    </div>
+                </div>
 
                 </div>
                 <div class="panel-footer">
                     <div class="row">
 
-                        <div  class="col-xs-6">
+                        <div  class="pull-left">
                         <button id="allErase" class="btn btn-danger">Vider</button>
                         </div>
-                        <div class="col-xs-6">
+                        <div class="pull-right">
                         <button id="validerpanier" class="btn btn-success">Valider le devis</button>
                         </div>
                     </div>
@@ -82,7 +111,7 @@
                     <label class="control-label" for="selectquantite">Quantité : </label>
                     <select class="form-control" id="selectquantite">
                         {% for i in range(1,20,1) %}
-                            <option value="{{ i }}">{{ i }}</option>
+                            <option value={{ i }}>{{ i }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -100,7 +129,7 @@
 
                     <select class="form-control" id="selectremise">
                         {% for i in range(0,100,5) %}
-                            <option value="{{ i }}">{{ i }}</option>
+                            <option value={{ i }}>{{ i }}</option>
                         {% endfor %}
                     </select>
 
@@ -113,7 +142,8 @@
                 </div>
                 </div>
 
-                <div class="btn btn-warning pull-right" id="ajouterProduit">Ajouter</div>
+                <div class="btn btn-success pull-right" id="ajouterProduit">Ajouter</div>
+                <div data-index="" class="btn btn-warning pull-right" id="saveModifierProduit" style="display: none;">Modifier</div>
             </div>
 
     </div>
@@ -218,6 +248,9 @@
             $('#valeurHT').on('input', function () {
                 majTTC();
             });
+            $('#valeurHT').on('change', function () {
+                majTTC();
+            });
 
             $('#selectcategorie').on('change', function () {
                 majService();
@@ -236,27 +269,30 @@
             majService();
             majEltService();
 
-            var panier = new PanierSession($('#panier').data('idvehicule'));
+            var panier = new PanierSession({{ vehicule.id }});
             panier.refreshPanier();
 
             {% if commande is defined %}
+            if (performance.navigation.type !== 1){
 
-            panier.addIdCommand(parseInt({{ commande.id }}));
-            {% for ligne in commande.commandsServices %}
-            var objetElementpanier = {
-                idservice : parseInt({{ligne.service.id}}),
-                nomservice : "{{ligne.service.name}}",
-                reference : "{{ligne.reference}}",
-                valeurHT : parseInt({{ligne.value}}),
-                taxerate : parseInt({{ligne.taxRate}}),
-                remise : parseInt({{ligne.discountRate}}),
-                quantity : parseInt({{ligne.quantity}})
-            };
-            panier.pushProduct(objetElementpanier);
+                panier.addIdCommand(parseInt({{ commande.id }}));
+                {% for ligne in commande.commandsServices %}
+                var objetElementpanier = {
+                    idcategorie : parseInt({{ligne.service.category.id}}),
+                    idservice : parseInt({{ligne.service.id}}),
+                    nomservice : "{{ligne.service.name}}",
+                    reference : "{{ligne.reference}}",
+                    valeurHT : parseInt({{ligne.value}}),
+                    taxerate : parseInt({{ligne.taxRate}}),
+                    remiserate : parseInt({{ligne.discountRate}}),
+                    quantity : parseInt({{ligne.quantity}})
+                };
+                panier.pushProduct(objetElementpanier);
+
 
             {% endfor %}
 
-
+            }
             {% endif %}
 
         });
