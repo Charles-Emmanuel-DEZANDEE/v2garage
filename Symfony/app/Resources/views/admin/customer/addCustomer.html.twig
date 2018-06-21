@@ -16,22 +16,20 @@
 
     <legend>Identitée</legend>
 
-    {# Génération du label + error + widget pour un champ. #}
     <div class="form-group">
-        {# Génération du label. #}
-        {{ form_label(form.email, "Email", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+        {{ form_label(form.socialReason, "Raison sociale", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
 
         <div class="col-sm-8">
-            {# Génération de l'input. #}
-            {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+            {{ form_widget(form.socialReason, {'attr': {'class': 'form-control'}}) }}
         </div>
-        {# Affichage des erreurs pour ce champ précis. #}
-        <div class="col-sm-2">{{ form_errors(form.email) }} </div>
+        <div class="col-sm-2">{{ form_errors(form.socialReason) }} </div>
     </div>
+
+
 
     <div class="form-group">
         <label class="col-md-2 col-xs-2 control-label" for="civility">Civilité</label>
-        <div class="col-md-4">
+        <div class="col-xs-4">
             {{ form_widget(form.civility, {'attr': {'class': 'form-control'}}) }}
         </div>
     </div>
@@ -58,14 +56,6 @@
         <div class="col-sm-2">{{ form_errors(form.lastName) }} </div>
     </div>
 
-    <div class="form-group">
-        {{ form_label(form.socialReason, "Raison sociale", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-
-        <div class="col-sm-8">
-            {{ form_widget(form.socialReason, {'attr': {'class': 'form-control'}}) }}
-        </div>
-        <div class="col-sm-2">{{ form_errors(form.socialReason) }} </div>
-    </div>
 
     <div class="form-group required">
         {{ form_label(form.telephonePrimary, "Téléphone principal", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
@@ -84,6 +74,22 @@
         </div>
         <div class="col-sm-2">{{ form_errors(form.telephoneSecondary) }} </div>
     </div>
+
+
+    {# Génération du label + error + widget pour un champ. #}
+    <div class="form-group">
+        {# Génération du label. #}
+        {{ form_label(form.email, "Email", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+
+        <div class="col-sm-8">
+            {# Génération de l'input. #}
+            {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        {# Affichage des erreurs pour ce champ précis. #}
+        <div class="col-sm-2">{{ form_errors(form.email) }} </div>
+    </div>
+
+
 
     <legend>Adresse</legend>
 
@@ -161,7 +167,7 @@
 
 
     <p>
-        <input type="submit" class="btn btn-primary" name="submit" value="Valider" >
+        <input type="submit" class="btn btn-primary col-xs-offset-10" name="submit" value="Valider" >
     </p>
 
     {# Génération automatique des champs pas encore écrits.
