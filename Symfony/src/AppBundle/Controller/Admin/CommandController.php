@@ -132,8 +132,11 @@ class CommandController extends Controller
 
         $doctrine = $this->getDoctrine();
 
+        $commandeValidate = $request->get('commandeValidate')
+? new \DateTime($request->get('commandeValidate')) : new \DateTime();
+
         //on met à jour la date de validation du devis
-        $command->setCommandeValidate(new \DateTime());
+        $command->setCommandeValidate($commandeValidate);
 
         $em = $doctrine->getManager();
         $em->persist($command);
@@ -238,8 +241,12 @@ class CommandController extends Controller
 
         $doctrine = $this->getDoctrine();
 
+        $dateBillAcquited = $request->get('dateBillAcquited')
+            ? new \DateTime($request->get('dateBillAcquited')) : new \DateTime();
+
         //on met à jour la date de validation du devis
-        $command->setDateBillAcquited(new \DateTime());
+        $command->setDateBillAcquited($dateBillAcquited);
+
 
 
         $idPayment = $request->get('paymentType');
@@ -405,10 +412,10 @@ class CommandController extends Controller
         $doctrine = $this->getDoctrine();
         $allPaymentType = $doctrine->getRepository(PaymentType::class)->findAll();
 
-        $form = $this->createForm(CommandType::class, $command);
-        $form->handleRequest($request);
+        $formNote = $this->createForm(CommandType::class, $command);
+        $formNote->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($formNote->isSubmitted() && $formNote->isValid()) {
             $em = $doctrine->getManager();
             $em->persist($command);
 
@@ -423,8 +430,8 @@ class CommandController extends Controller
 
         return $this->render('admin/command/viewCommand.html.twig', [
             'result' => $command,
-            'select' => $allPaymentType,
-            'form' => $form->createView(),
+            'selectTypePaiement' => $allPaymentType,
+            'form' => $formNote->createView(),
         ]);
     }
 

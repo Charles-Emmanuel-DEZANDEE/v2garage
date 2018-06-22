@@ -245,6 +245,13 @@ legend {
     color: red;
 }
 
+.fieldsetcustom {
+    border: 1px solid whitesmoke ;
+    margin: 10px 0px;
+    padding: 10px;
+    border-radius: 3px;
+}
+
 /*--------------------------------------------------*/
 /*************************      panel             */
 /*--------------------------------------------------*/
