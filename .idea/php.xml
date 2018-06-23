@@ -51,6 +51,9 @@
       <path value="$PROJECT_DIR$/Symfony/vendor/knplabs/knp-snappy" />
       <path value="$PROJECT_DIR$/Symfony/vendor/knplabs/knp-snappy-bundle" />
       <path value="$PROJECT_DIR$/Symfony/vendor/symfony/polyfill-ctype" />
+      <path value="$PROJECT_DIR$/Symfony/vendor/sg/datatablesbundle" />
+      <path value="$PROJECT_DIR$/Symfony/vendor/willdurand/jsonp-callback-validator" />
+      <path value="$PROJECT_DIR$/Symfony/vendor/friendsofsymfony/jsrouting-bundle" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="5.5.0" />

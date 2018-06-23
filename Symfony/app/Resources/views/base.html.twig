@@ -11,6 +11,9 @@
         <link href="{{ asset('datepicker/css/bootstrap-datepicker.css')}}" rel="stylesheet">
 
         {% block stylesheets %}
+
+        {% endblock %}
+        {% block head_javascripts %}
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
@@ -23,11 +26,7 @@
                 {% include 'include/nav.html.twig' %}
                 {% include 'include/flashBag.html.twig' %}
 
-                {#{% for notice in app.flashes('notice') %}#}
-                    {#<p class="alert alert-info">{{ notice | capitalize }}</p>#}
-                {#{% endfor %}#}
-
-            </div>
+             </div>
         </div>
         {% block body %}{% endblock %}
     </div>

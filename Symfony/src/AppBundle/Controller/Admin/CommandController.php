@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Admin;
 
+use AppBundle\Datatables\CommandDatatable;
 use AppBundle\Entity\Category;
 use AppBundle\Entity\Command;
 use AppBundle\Entity\CommandsServices;
@@ -24,6 +25,78 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CommandController extends Controller
 {
+
+
+    /**
+     * @Route("/command/datatable", name="app_admin_command_datatable")
+     * @Method({"GET"})
+     * @param Request $request
+     * @return Response
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     * @throws \Exception
+     */
+    public function datatableAction(Request $request)
+    {
+
+        $isAjax = $request->isXmlHttpRequest();
+
+        // Get your Datatable ...
+        //$datatable = $this->get('app.datatable.command');
+        //$datatable->buildDatatable();
+
+        // or use the DatatableFactory
+
+        $datatable = $this->get('sg_datatables.factory')->create(CommandDatatable::class);
+        $datatable->buildDatatable();
+
+        if ($isAjax) {
+            $responseService = $this->get('sg_datatables.response');
+            $responseService->setDatatable($datatable);
+            $responseService->getDatatableQueryBuilder();
+
+            return $responseService->getResponse();
+        }
+
+        return $this->render('admin/command/syntheseCommand.html.twig', array(
+            'datatable' => $datatable,
+        ));
+    }
+
+    /**
+     * Finds and displays a Post entity.
+     *
+     * @param Command $command
+     *
+     * @Route("/command/datatable/show/{id}", name = "command_show", options = {"expose" = true})
+     * @Method("GET")
+     *
+     *
+     * @return Response
+     */
+    public function showAction(Command $command)
+    {
+        return $this->render('default/index.html.twig', array(
+            'command' => $command
+        ));
+    }
+
+    /**
+     * Finds and displays a Post entity.
+     *
+     * @param Command $command
+     *
+     * @Route("/command/datatable/edit/{id}", name = "command_edit", options = {"expose" = true})
+     * @Method("GET")
+     *
+     *
+     * @return Response
+     */
+    public function editAction(Command $command)
+    {
+        return $this->render('default/index.html.twig', array(
+            'command' => $command
+        ));
+    }
 
 
     /**

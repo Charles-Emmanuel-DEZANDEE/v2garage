@@ -1,0 +1,11 @@
+{% extends '/baseDatatable.html.twig' %}
+
+{% block body %}
+    <div class="container jumbotron ">
+
+        <h2>Interventions</h2>
+        {{ sg_datatables_render(datatable) }}
+    </div>
+
+
+{% endblock %}

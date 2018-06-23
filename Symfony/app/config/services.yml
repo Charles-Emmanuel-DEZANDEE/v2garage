@@ -46,3 +46,8 @@ services:
     AppBundle\Subscriber\KernelEventsSubscriber:
         arguments:
             $maintenance: '%maintenance%'
+
+       #datatable
+    #app.datatable.command:
+        #class: AppBundle\Datatables\CommandDatatable
+        #parent: sg_datatables.datatable.abstract
