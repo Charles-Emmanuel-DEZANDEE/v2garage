@@ -96,6 +96,6 @@ knp_snappy:
         #binary: 'C:\wkhtmltopdf\wkhtmltopdf.exe'
         #binary:     '%kernel.root_dir%/../vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-i386'
         binary:     '/usr/local/bin/wkhtmltopdf'
-        options:
-            - { name: 'viewport-size', value: ‘1024x794’ }
-            - { name: 'page-size', value: 'A4' }
+        #options:
+            #- { name: 'viewport-size', value: ‘1024x794’ }
+            #- { name: 'page-size', value: 'A4' }

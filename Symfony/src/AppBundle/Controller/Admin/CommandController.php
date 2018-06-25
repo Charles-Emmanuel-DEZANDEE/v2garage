@@ -82,20 +82,35 @@ class CommandController extends Controller
     }
 
     /**
-     * Finds and displays a Post entity.
-     *
+     * edition de l'intervention.
+     * @param Request $request
      * @param Command $command
      *
      * @Route("/command/datatable/edit/{id}", name = "command_edit", options = {"expose" = true})
-     * @Method("GET")
+     * @Method({"GET", "POST"})
      *
      *
      * @return Response
      */
-    public function editAction(Command $command)
+    public function editAction(Request $request, Command $command)
     {
-        return $this->render('default/index.html.twig', array(
-            'command' => $command
+        $doctrine = $this->getDoctrine();
+        $formNote = $this->createForm(CommandType::class, $command);
+        $formNote->handleRequest($request);
+
+        if ($formNote->isSubmitted() && $formNote->isValid()) {
+            $em = $doctrine->getManager();
+            $em->persist($command);
+
+            $em->flush();
+            //message flash
+            $message = 'L\'intervention a été mise à jour';
+            $this->addFlash('info', $message);
+
+            return $this->redirectToRoute('app_admin_command_datatable');
+        }
+        return $this->render('admin/command/editIntervention.html.twig', array(
+            'form' => $formNote->createView(),
         ));
     }
 
@@ -549,7 +564,7 @@ class CommandController extends Controller
             $this->addFlash('info', $message);
         }
 
-        dump($command);
+        //dump($command);
 
 
         return $this->render('admin/command/viewCommand.html.twig', [
