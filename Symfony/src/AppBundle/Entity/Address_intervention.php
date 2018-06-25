@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -87,12 +88,20 @@ class Address_intervention
     private $country;
 
     /**
+     * One paymentType has Many commands.
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Command", mappedBy="adressIntervention", cascade={"persist"})
+     */
+    private $commands;
+
+
+    /**
      * Address_intervention constructor.
      * @param $customer
      */
     public function __construct(Customer $customer)
     {
         $this->setCustomer($customer);
+        $this->commands = new ArrayCollection();
     }
 
 
@@ -345,5 +354,41 @@ class Address_intervention
     public function getCustomer()
     {
         return $this->customer;
+    }
+
+    /**
+     * Add command.
+     *
+     * @param \AppBundle\Entity\Command $command
+     *
+     * @return Address_intervention
+     */
+    public function addCommand(\AppBundle\Entity\Command $command)
+    {
+        $this->commands[] = $command;
+
+        return $this;
+    }
+
+    /**
+     * Remove command.
+     *
+     * @param \AppBundle\Entity\Command $command
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeCommand(\AppBundle\Entity\Command $command)
+    {
+        return $this->commands->removeElement($command);
+    }
+
+    /**
+     * Get commands.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCommands()
+    {
+        return $this->commands;
     }
 }

@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\Admin;
 
 use AppBundle\Datatables\CommandDatatable;
+use AppBundle\Entity\Address_intervention;
 use AppBundle\Entity\Category;
 use AppBundle\Entity\Command;
 use AppBundle\Entity\CommandsServices;
@@ -104,60 +105,52 @@ class CommandController extends Controller
      * @Method({"GET", "POST"})
      * @param Request $request
      * @param Vehicule $vehicule
+     * @param CommandService $commandService
      * @return \Symfony\Component\HttpFoundation\Response
      * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
      */
-    public function devisAction(Request $request, Vehicule $vehicule)
+    public function devisAction(Request $request, Vehicule $vehicule, CommandService $commandService)
     {
 
         $doctrine = $this->getDoctrine();
+        $em = $doctrine->getManager();
 
-        $rc = $doctrine->getRepository(Category::class);
-        $results = $rc->findAllOrderByPositionMagic();
+        $rcCategory = $doctrine->getRepository(Category::class);
+        $results = $rcCategory->findAllOrderByPositionMagic();
+
+        $command = new Command();
+        $command->setVehicule($vehicule);
+        //on attribut un numero de devis
+        $command->setRef($commandService->getNumeroDevis());
+        $em->persist($command);
+        $em->flush();
+
+
+        //on regarde s'il y a plusieurs adresse d'intervention
+        $listAdresseIntervention = $vehicule->getCustomer()->getAddresses();
+        // si oui on envoit vers la selection de l'addresse d'intervention
+        if (count($listAdresseIntervention) > 1) {
+            return $this->render('admin/command/choixAdressIntervention.html.twig', [
+                'listAdresse' => $listAdresseIntervention,
+                'vehicule' => $vehicule,
+                'commande' => $command,
+
+            ]);
+        } //si non on enregistre directement dans la commande
+        else if (count($listAdresseIntervention) == 1) {
+            $address = $listAdresseIntervention[0];
+            $command->setAdressIntervention($address);
+            $em->persist($command);
+            $em->flush();
+        }
+
 
         return $this->render('admin/command/devis.html.twig', [
             'results' => $results,
             'vehicule' => $vehicule,
+            'commande' => $command,
 
         ]);
-    }
-
-    /** suppression d'une intervention non accepté par le client
-     * @Route("/command/remove/{id}", name="app_admin_command_remove")
-     * @Method({"GET", "POST"})
-     * @param Request $request
-     * @param Command $command
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
-     */
-    public function removeAction(Request $request, Command $command)
-    {
-        $idcustomer = $command->getVehicule()->getCustomer()->getId();
-        if (!$command->getCommandeValidate()){
-
-            $doctrine = $this->getDoctrine();
-            $em = $doctrine->getManager();
-
-            // on supprime les commandservices
-            foreach ($command->getCommandsServices() as $comService){
-                $em->remove($comService);
-            }
-            $em->remove($command);
-            $em->flush();
-
-            $message = 'Le devis a été supprimé';
-        }
-        else{
-            $message = "Il n'est pas possible supprimer un devis accepté par le client !" ;
-        }
-
-
-        $this->addFlash('danger', $message);
-
-
-        return $this->redirectToRoute('app_admin_customer_view', [
-            'id' => $idcustomer,
-                    ]);
     }
 
     /** accés à la modification du devis
@@ -192,6 +185,69 @@ class CommandController extends Controller
         ]);
     }
 
+    /** selection de l'adresse d'intervention
+     * @Route("/command/selectaddress/{id}", name="app_admin_command_selectAddress")
+     * @Method({"GET", "POST"})
+     * @param Request $request
+     * @param Command $command
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     */
+    public function selectAdressAction(Request $request, Command $command)
+    {
+        $doctrine = $this->getDoctrine();
+        $em = $doctrine->getManager();
+
+        $idAddress = $request->get('address');
+        $Address = $doctrine->getRepository(Address_intervention::class)->find($idAddress);
+        $command->setAdressIntervention($Address);
+        $em->persist($command);
+        $em->flush();
+
+        return $this->redirectToRoute('app_admin_command_update', ['id' => $command->getId()]);
+
+
+    }
+
+
+    /** suppression d'une intervention non accepté par le client
+     * @Route("/command/remove/{id}", name="app_admin_command_remove")
+     * @Method({"GET", "POST"})
+     * @param Request $request
+     * @param Command $command
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     */
+    public function removeAction(Request $request, Command $command)
+    {
+        $idcustomer = $command->getVehicule()->getCustomer()->getId();
+        if (!$command->getCommandeValidate()) {
+
+            $doctrine = $this->getDoctrine();
+            $em = $doctrine->getManager();
+
+            // on supprime les commandservices
+            foreach ($command->getCommandsServices() as $comService) {
+                $em->remove($comService);
+            }
+            $em->remove($command);
+            $em->flush();
+
+            $message = 'Le devis a été supprimé';
+        } else {
+            $message = "Il n'est pas possible supprimer un devis accepté par le client !";
+        }
+
+
+        $this->addFlash('danger', $message);
+
+
+        return $this->redirectToRoute('app_admin_customer_view', [
+            'id' => $idcustomer,
+        ]);
+    }
+
+
     /** devis accepté par le client
      * @Route("/command/validedevis/{id}", name="app_admin_command_valide_devis")
      * @Method({"GET", "POST"})
@@ -206,7 +262,7 @@ class CommandController extends Controller
         $doctrine = $this->getDoctrine();
 
         $commandeValidate = $request->get('commandeValidate')
-? new \DateTime($request->get('commandeValidate')) : new \DateTime();
+            ? new \DateTime($request->get('commandeValidate')) : new \DateTime();
 
         //on met à jour la date de validation du devis
         $command->setCommandeValidate($commandeValidate);
@@ -321,7 +377,6 @@ class CommandController extends Controller
         $command->setDateBillAcquited($dateBillAcquited);
 
 
-
         $idPayment = $request->get('paymentType');
 
         $rc = $doctrine->getRepository(PaymentType::class);
@@ -356,14 +411,13 @@ class CommandController extends Controller
 
         $rc = $doctrine->getRepository(Command::class);
         $result = $rc->findOneOrderByPositionMagic($command->getId());
-        if ($devis){
+        if ($devis) {
             $html = $this->renderView('/template/devis.html.twig', [
                 'command' => $result[0],
             ]);
             $filename = sprintf('Devis-%s.pdf', $command->getRef());
 
-        }
-        else{
+        } else {
 
             $html = $this->renderView('/template/facture.html.twig', [
                 'command' => $result[0],
@@ -389,19 +443,18 @@ class CommandController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
      */
-    public function vue(Request $request, Command $command,int $devis)
+    public function vue(Request $request, Command $command, int $devis)
     {
         $doctrine = $this->getDoctrine();
 
         $rc = $doctrine->getRepository(Command::class);
         $result = $rc->findOneOrderByPositionMagic($command->getId());
-        if ($devis){
+        if ($devis) {
 
             return $this->render('/template/devis.html.twig', [
                 'command' => $result[0],
             ]);
-        }
-        else {
+        } else {
             return $this->render('/template/facture.html.twig', [
                 'command' => $result[0],
             ]);
@@ -426,19 +479,17 @@ class CommandController extends Controller
         $mailFrom = $this->getParameter('mail_from');
         $mailtarget = $command->getVehicule()->getCustomer()->getEmail();
 
-        if ($devis){
+        if ($devis) {
             $subject = 'devis - ' . $command->getRef();
             $html = $this->renderView("template/devis.html.twig", ['command' => $command]);
             $filename = 'devis-' . $command->getBillRef() . '.pdf';
 
-        }
-        else{
-        $subject = 'facture - ' . $command->getBillRef();
+        } else {
+            $subject = 'facture - ' . $command->getBillRef();
 
-        $html = $this->renderView("template/facture.html.twig", ['command' => $command]);
+            $html = $this->renderView("template/facture.html.twig", ['command' => $command]);
             $filename = 'facture-' . $command->getBillRef() . '.pdf';
         }
-
 
 
         $pdf = $this->get("knp_snappy.pdf")->getOutputFromHtml($html);

@@ -42,10 +42,10 @@ class PaymentTypeController extends Controller
 
     /**
      * @Route("/paymentType/add", name="app_admin_paymentType_add")
-     * @Route("/paymentType/update/{idPaymentType}", name="app_admin_paymentType_update")
+     * @Route("/paymentType/update/{id}", name="app_admin_paymentType_update")
      *
      */
-    public function addPaymentTypeAction(Request $request, $idPaymentType = null)
+    public function addPaymentTypeAction(Request $request, $id = null)
     {
         $doctrine = $this->getDoctrine();
         $em = $doctrine->getManager();
@@ -53,13 +53,13 @@ class PaymentTypeController extends Controller
         $typePage = 'ajout';
 
 
-        $paymentTypeEntity = $idPaymentType ? $rcPaymentType->find($idPaymentType) : new PaymentType();
+        $paymentTypeEntity = $id ? $rcPaymentType->find($id) : new PaymentType();
 
 
         $form = $this->createForm(PaymentTypeType::class, $paymentTypeEntity);
         $form->handleRequest($request);
 
-        if ($idPaymentType) {
+        if ($id) {
             $typePage = 'modif';
         }
 
@@ -73,7 +73,7 @@ class PaymentTypeController extends Controller
 
 
             // en update
-            if ($idPaymentType) {
+            if ($id) {
 
                 //pour permettre la mise à jour
                 $pasDeDoublon = true;
@@ -87,7 +87,7 @@ class PaymentTypeController extends Controller
                 $em->flush();
 
                 //message flash
-                $message = $idPaymentType ? 'La categorie a été mis à jour' : 'La categorie a été insérée';
+                $message = $id ? 'La categorie a été mis à jour' : 'La categorie a été insérée';
                 $this->addFlash('info', $message);
 
                 // redirection vers la page de la catégorie

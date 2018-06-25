@@ -130,6 +130,16 @@ class Command
      */
     private $paymentType;
 
+    /**
+     * Many commands have One adress intervention.
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Address_intervention", inversedBy="commands")
+     * @ORM\JoinColumn(name="adressintervention_id", referencedColumnName="id")
+     */
+    private $adressIntervention;
+
+
+
+
 
     /**
      * @param $value
@@ -545,5 +555,29 @@ class Command
     public function getNote()
     {
         return $this->note;
+    }
+
+    /**
+     * Set adressIntervention.
+     *
+     * @param \AppBundle\Entity\Address_intervention|null $adressIntervention
+     *
+     * @return Command
+     */
+    public function setAdressIntervention(\AppBundle\Entity\Address_intervention $adressIntervention = null)
+    {
+        $this->adressIntervention = $adressIntervention;
+
+        return $this;
+    }
+
+    /**
+     * Get adressIntervention.
+     *
+     * @return \AppBundle\Entity\Address_intervention|null
+     */
+    public function getAdressIntervention()
+    {
+        return $this->adressIntervention;
     }
 }
