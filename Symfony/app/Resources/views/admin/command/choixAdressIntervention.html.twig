@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="container jumbotron ">
+
+
+        <h1>Adresse d'intervention</h1>
+
+        <form action="{{ url('app_admin_command_selectAddress', {'id' : commande.id}) }}" method="post"
+              class="fieldsetcustom">
+
+
+            <div class="form-group">
+
+                {#<label for="sel1">Type de paiement:</label>#}
+                <select name="address" class="form-control" id="sel1">
+                    {% for ligne in listAdresse %}
+                        <option value="{{ ligne.id }}">{{ ligne.name }}</option>
+                    {% endfor %}
+
+                </select>
+            </div>
+
+
+            <button type="submit" class="btn btn-primary">Selectionner cette adresse d'intervention</button>
+
+        </form>
+
+
+    </div>
+
+{% endblock %}
+
+    {% block stylesheets %}
+
+    {% endblock %}
+
+    {% block javascripts %}
+
+    {% endblock %}
