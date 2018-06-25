@@ -9,3 +9,18 @@
 
 
 {% endblock %}
+
+{% block javascripts %}
+    <script>
+
+        $(document).ready(function () {
+            $('#sg-datatables-command_datatable').addClass('table-responsive');
+/*
+            $('#sg-datatables-command_datatable').DataTable( {
+                responsive: true
+            } );
+*/
+        });
+    </script>
+
+{% endblock %}

@@ -29,6 +29,7 @@ class CommandDatatable extends AbstractDatatable
 {
     /**
      * {@inheritdoc}
+     * @throws \Exception
      */
     public function buildDatatable(array $options = array())
     {
@@ -40,121 +41,152 @@ class CommandDatatable extends AbstractDatatable
         } catch (\Exception $e) {
         }
 
-        $this->ajax->set(array(
-        ));
+/*        $this->extensions->set(array(
+            'responsive' => true,
+        ));*/
+
+        $this->ajax->set(array());
 
         $this->options->set(array(
-            'individual_filtering' => true,
+            /*            'classes' => Style::BOOTSTRAP_3_STYLE,*/
+            /*            'stripe_classes' => [ 'strip1', 'strip2', 'strip3' ],*/
+            'individual_filtering' => false,
             'individual_filtering_position' => 'head',
+            'order' => array(array(0, 'asc')),
             'order_cells_top' => true,
+            //'global_search_type' => 'gt',
+            'search_in_non_visible_columns' => true,
         ));
 
-        $this->features->set(array(
-        ));
+        $this->features->set(array());
 
         $this->columnBuilder
-            ->add('id', Column::class, array(
-                'title' => 'Id',
-                ))
+            /*            ->add('id', Column::class, array(
+                            'title' => 'Id',
+                            ))*/
             ->add('ref', Column::class, array(
-                'title' => 'Ref',
-                ))
+                'title' => 'Référence Devis',
+                'width' => '8%',
+
+                'responsive_priority' => 1,
+            ))
             ->add('billRef', Column::class, array(
-                'title' => 'BillRef',
-                ))
-            ->add('totalHt', Column::class, array(
-                'title' => 'TotalHt',
-                ))
+                'title' => 'Référence Facture',
+                'width' => '8%',
+            ))
+/*            ->add('totalHt', Column::class, array(
+                'title' => 'Total Ht',
+                'width' => '25px',
+            ))
             ->add('totalTva', Column::class, array(
-                'title' => 'TotalTva',
-                ))
+                'title' => 'Total Tva',
+                'width' => '25px',
+
+            ))
             ->add('totalTtc', Column::class, array(
-                'title' => 'TotalTtc',
-                ))
+                'title' => 'Total Ttc',
+                'width' => '25px',
+
+            ))
             ->add('totalDiscount', Column::class, array(
-                'title' => 'TotalDiscount',
-                ))
+                'title' => 'Total Remise',
+                'width' => '25px',
+
+            ))*/
             ->add('dateCreate', DateTimeColumn::class, array(
-                'title' => 'DateCreate',
-                ))
-            ->add('commandeValidate', DateTimeColumn::class, array(
-                'title' => 'CommandeValidate',
-                ))
-            ->add('dateLastUpdate', DateTimeColumn::class, array(
-                'title' => 'DateLastUpdate',
-                ))
+                'title' => 'Devis créé le',
+    'width' => '12%',
+
+            ))
             ->add('dateBill', DateTimeColumn::class, array(
-                'title' => 'DateBill',
-                ))
+                'title' => 'Facture créé le',
+                'width' => '12%',
+
+            ))
+
+            ->add('commandeValidate', DateTimeColumn::class, array(
+                'title' => 'Devis accepté',
+                'width' => '12%',
+
+            ))
+            /* ->add('dateLastUpdate', DateTimeColumn::class, array(
+                 'title' => 'DateLastUpdate',
+                 ))*/
             ->add('dateBillAcquited', DateTimeColumn::class, array(
-                'title' => 'DateBillAcquited',
-                ))
-            ->add('note', Column::class, array(
+                'title' => 'Facture payée le',
+                'width' => '12%',
+                'default_content' => 'Non réglée',
+
+            ))
+/*            ->add('note', Column::class, array(
                 'title' => 'Note',
-                ))
-            ->add('vehicule.id', Column::class, array(
-                'title' => 'Vehicule Id',
-                ))
-            ->add('vehicule.brand', Column::class, array(
-                'title' => 'Vehicule Brand',
-                ))
-            ->add('vehicule.model', Column::class, array(
-                'title' => 'Vehicule Model',
-                ))
-            ->add('vehicule.vin', Column::class, array(
-                'title' => 'Vehicule Vin',
-                ))
-            ->add('vehicule.registration', Column::class, array(
-                'title' => 'Vehicule Registration',
-                ))
-            ->add('vehicule.mileage', Column::class, array(
-                'title' => 'Vehicule Mileage',
-                ))
-            ->add('vehicule.circulationLaunchDate', Column::class, array(
-                'title' => 'Vehicule CirculationLaunchDate',
-                ))
-            ->add('vehicule.lastControlDate', Column::class, array(
-                'title' => 'Vehicule LastControlDate',
-                ))
-            ->add('vehicule.createDate', Column::class, array(
-                'title' => 'Vehicule CreateDate',
-                ))
-            ->add('vehicule.isActive', Column::class, array(
-                'title' => 'Vehicule IsActive',
-                ))
-            ->add('commandsServices.id', Column::class, array(
-                'title' => 'CommandsServices Id',
-                'data' => 'commandsServices[, ].id'
-                ))
-            ->add('commandsServices.quantity', Column::class, array(
-                'title' => 'CommandsServices Quantity',
-                'data' => 'commandsServices[, ].quantity'
-                ))
-            ->add('commandsServices.value', Column::class, array(
-                'title' => 'CommandsServices Value',
-                'data' => 'commandsServices[, ].value'
-                ))
-            ->add('commandsServices.taxRate', Column::class, array(
-                'title' => 'CommandsServices TaxRate',
-                'data' => 'commandsServices[, ].taxRate'
-                ))
-            ->add('commandsServices.discountRate', Column::class, array(
-                'title' => 'CommandsServices DiscountRate',
-                'data' => 'commandsServices[, ].discountRate'
-                ))
-            ->add('commandsServices.reference', Column::class, array(
-                'title' => 'CommandsServices Reference',
-                'data' => 'commandsServices[, ].reference'
-                ))
-/*            ->add('paymentType.id', Column::class, array(
-                'title' => 'PaymentType Id',
-                ))*/
-            ->add('paymentType.name', Column::class, array(
-                'title' => 'PaymentType Name',
-                ))
+            ))*/
+            /*          ->add('vehicule.id', Column::class, array(
+                          'title' => 'Vehicule Id',
+                          ))
+                      ->add('vehicule.brand', Column::class, array(
+                          'title' => 'Vehicule Brand',
+                          ))
+                      ->add('vehicule.model', Column::class, array(
+                          'title' => 'Vehicule Model',
+                          ))
+                      ->add('vehicule.vin', Column::class, array(
+                          'title' => 'Vehicule Vin',
+                          ))
+                      ->add('vehicule.registration', Column::class, array(
+                          'title' => 'Vehicule Registration',
+                          ))
+                      ->add('vehicule.mileage', Column::class, array(
+                          'title' => 'Vehicule Mileage',
+                          ))
+                      ->add('vehicule.circulationLaunchDate', Column::class, array(
+                          'title' => 'Vehicule CirculationLaunchDate',
+                          ))
+                      ->add('vehicule.lastControlDate', Column::class, array(
+                          'title' => 'Vehicule LastControlDate',
+                          ))
+                      ->add('vehicule.createDate', Column::class, array(
+                          'title' => 'Vehicule CreateDate',
+                          ))
+                      ->add('vehicule.isActive', Column::class, array(
+                          'title' => 'Vehicule IsActive',
+                          ))
+                      ->add('commandsServices.id', Column::class, array(
+                          'title' => 'CommandsServices Id',
+                          'data' => 'commandsServices[, ].id'
+                          ))
+                      ->add('commandsServices.quantity', Column::class, array(
+                          'title' => 'CommandsServices Quantity',
+                          'data' => 'commandsServices[, ].quantity'
+                          ))
+                      ->add('commandsServices.value', Column::class, array(
+                          'title' => 'CommandsServices Value',
+                          'data' => 'commandsServices[, ].value'
+                          ))
+                      ->add('commandsServices.taxRate', Column::class, array(
+                          'title' => 'CommandsServices TaxRate',
+                          'data' => 'commandsServices[, ].taxRate'
+                          ))
+                      ->add('commandsServices.discountRate', Column::class, array(
+                          'title' => 'CommandsServices DiscountRate',
+                          'data' => 'commandsServices[, ].discountRate'
+                          ))
+                      ->add('commandsServices.reference', Column::class, array(
+                          'title' => 'CommandsServices Reference',
+                          'data' => 'commandsServices[, ].reference'
+                          ))
+                      ->add('paymentType.id', Column::class, array(
+                          'title' => 'PaymentType Id',
+                          ))*/
+            /*            ->add('paymentType.name', Column::class, array(
+                            'title' => 'Payé avec',
+                            ))*/
+
             ->add(null, ActionColumn::class, array(
                 'title' => $this->translator->trans('sg.datatables.actions.title'),
-                'actions' => array(
+    'width' => '20%',
+
+    'actions' => array(
                     array(
                         'route' => 'command_show',
                         'route_parameters' => array(
@@ -184,8 +216,7 @@ class CommandDatatable extends AbstractDatatable
                         ),
                     )
                 )
-            ))
-        ;
+            ));
     }
 
     /**

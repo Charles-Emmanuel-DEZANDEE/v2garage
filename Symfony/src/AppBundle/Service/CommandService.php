@@ -30,7 +30,7 @@ class CommandService
         $rcCommande = $this->em->getRepository(Command::class);
 
         do{
-            $ref = "D" . date('Y'). mt_rand(10000,99999);
+            $ref = "D" . date('Y')."-". mt_rand(10000,99999);
         } while(!$rcCommande->referenceNotExist($ref));
 
 
@@ -43,7 +43,7 @@ class CommandService
         $rcCommande = $this->em->getRepository(Command::class);
 
         do{
-            $ref = "F" . date('Y'). mt_rand(10000,99999);
+            $ref = "F" . date('Y')."-". mt_rand(10000,99999);
         } while(!$rcCommande->billReferenceNotExist($ref));
 
 
