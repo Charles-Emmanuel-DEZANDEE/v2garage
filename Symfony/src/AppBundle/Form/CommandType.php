@@ -2,9 +2,11 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Repository\address_interventionRepository;
 use AppBundle\Subscriber\CommandFormSubscriber;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -25,39 +27,45 @@ class CommandType extends AbstractType
             ->add('totalTtc')
             ->add('totalDiscount')
             ->add('dateCreate')*/
-            ->add('commandeValidate', DateType::class)
+            ->add('commandeValidate', DateType::class,[
+                'widget' => 'single_text',
+                'format' => 'dd-MM-yyyy',
+            ])
             /*->add('dateLastUpdate')*/
-            ->add('dateBill', DateType::class)
+            ->add('dateBillAcquited', DateType::class,
+                [
+                    'widget' =>  'single_text',
+                    'format' => 'dd-MM-yyyy',
+                ])
             ->add('paymentType', EntityType::class, array(
                 // looks for choices from this entity
                 'class' => 'AppBundle:PaymentType',
-
-                // uses the User.username property as the visible option string
                 'choice_label' => 'name',
+                'placeholder' => 'Choisir un paiement',
 
-                // used to render a select box, check boxes or radios
-                // 'multiple' => true,
-                 'expanded' => true,
+                /*'expanded' => true,*/
             ))
+
             ->add('adressIntervention', EntityType::class, array(
                 // looks for choices from this entity
                 'class' => 'AppBundle:Address_intervention',
 
-                // uses the User.username property as the visible option string
                 'choice_label' => 'name',
 
-                // used to render a select box, check boxes or radios
-                // 'multiple' => true,
-                'expanded' => true,
+                /*'expanded' => true,*/
+
+                                'query_builder' => function (address_interventionRepository $repo) use ($options) {
+                                    return $repo->findByCustomer($options['attr']['idCustomer']);
+                                }
             ))
             /*->add('customer')*/
-            ->add('note',TextType::class)
-
-        ;
+            ->add('note', TextareaType::class);
 
         // souscripteur
         //$builder->addEventSubscriber(new CommandFormSubscriber());
-    }/**
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)

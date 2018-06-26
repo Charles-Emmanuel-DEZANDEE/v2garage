@@ -41,9 +41,9 @@ class CommandDatatable extends AbstractDatatable
         } catch (\Exception $e) {
         }
 
-/*        $this->extensions->set(array(
-            'responsive' => true,
-        ));*/
+        /*        $this->extensions->set(array(
+                    'responsive' => true,
+                ));*/
 
         $this->ajax->set(array());
 
@@ -74,39 +74,41 @@ class CommandDatatable extends AbstractDatatable
                 'title' => 'Référence Facture',
                 'width' => '8%',
             ))
-/*            ->add('totalHt', Column::class, array(
-                'title' => 'Total Ht',
-                'width' => '25px',
-            ))
-            ->add('totalTva', Column::class, array(
-                'title' => 'Total Tva',
-                'width' => '25px',
+            /*            ->add('totalHt', Column::class, array(
+                            'title' => 'Total Ht',
+                            'width' => '25px',
+                        ))
+                        ->add('totalTva', Column::class, array(
+                            'title' => 'Total Tva',
+                            'width' => '25px',
 
-            ))
-            ->add('totalTtc', Column::class, array(
-                'title' => 'Total Ttc',
-                'width' => '25px',
+                        ))
+                        ->add('totalTtc', Column::class, array(
+                            'title' => 'Total Ttc',
+                            'width' => '25px',
 
-            ))
-            ->add('totalDiscount', Column::class, array(
-                'title' => 'Total Remise',
-                'width' => '25px',
+                        ))
+                        ->add('totalDiscount', Column::class, array(
+                            'title' => 'Total Remise',
+                            'width' => '25px',
 
-            ))*/
+                        ))*/
             ->add('dateCreate', DateTimeColumn::class, array(
                 'title' => 'Devis créé le',
-    'width' => '12%',
+                'width' => '12%',
+                'date_format' => 'D MMMM YYYY',
 
             ))
             ->add('dateBill', DateTimeColumn::class, array(
                 'title' => 'Facture créé le',
                 'width' => '12%',
+                'date_format' => 'D MMMM YYYY',
 
             ))
-
             ->add('commandeValidate', DateTimeColumn::class, array(
                 'title' => 'Devis accepté',
                 'width' => '12%',
+                'date_format' => 'D MMMM YYYY',
 
             ))
             /* ->add('dateLastUpdate', DateTimeColumn::class, array(
@@ -116,11 +118,12 @@ class CommandDatatable extends AbstractDatatable
                 'title' => 'Facture payée le',
                 'width' => '12%',
                 'default_content' => 'Non réglée',
+                'date_format' => 'D MMMM YYYY',
 
             ))
-/*            ->add('note', Column::class, array(
-                'title' => 'Note',
-            ))*/
+            /*            ->add('note', Column::class, array(
+                            'title' => 'Note',
+                        ))*/
             /*          ->add('vehicule.id', Column::class, array(
                           'title' => 'Vehicule Id',
                           ))
@@ -184,11 +187,11 @@ class CommandDatatable extends AbstractDatatable
 
             ->add(null, ActionColumn::class, array(
                 'title' => $this->translator->trans('sg.datatables.actions.title'),
-    'width' => '20%',
+                'width' => '20%',
 
-    'actions' => array(
+                'actions' => array(
                     array(
-                        'route' => 'command_show',
+                        'route' => 'app_admin_command_view',
                         'route_parameters' => array(
                             'id' => 'id'
                         ),

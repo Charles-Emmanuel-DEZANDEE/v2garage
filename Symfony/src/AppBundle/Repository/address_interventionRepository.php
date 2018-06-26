@@ -27,4 +27,15 @@ class address_interventionRepository extends \Doctrine\ORM\EntityRepository
 
         return $response;
     }
+
+    public function findByCustomer( $idCustomer){
+        $query = $this->createQueryBuilder('a')
+            ->join('a.customer', 'c')
+            ->andWhere('c.id = :id')
+            ->setParameter('id' , $idCustomer)
+        ;
+        return $query;
+    }
+
+
 }

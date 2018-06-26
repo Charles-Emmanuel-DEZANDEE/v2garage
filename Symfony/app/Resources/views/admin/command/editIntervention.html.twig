@@ -4,23 +4,67 @@
 
     <div class="container jumbotron ">
 
+        <div id="retour" class="col-sm-3 espaceBoutton"><a
+                    href="{{ path('app_admin_command_view', {'id': command.id}) }}"
+                    class="btn bg-primary ">
+                Retour </a></div>
+
 
         <h1>Intervention</h1>
 
-        {{ form_start(form, { 'attr' : { 'novalidate' : 'novalidate' } }) }}
-        <div class="row">
-            <div class="col-md-2">
-                {{ form_label(form.note, 'observation' | capitalize ~ ' :') }}
-            </div>
+        {{ form_start(form, { 'attr' : { 'novalidate' : 'novalidate' , 'class': 'form-horizontal'} }) }}
 
-            <div class="col-md-7">
-                {{ form_widget(form.note) }}
-            </div>
 
-            <div class="col-md-3">
-                <input type="submit" class="btn btn-primary" name="submit" value="Valider la modification">
+
+        <div class="form-group">
+            {{ form_label(form.paymentType, "Type de paiement", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+
+            <div class="col-sm-8">
+                {{ form_widget(form.paymentType, {'attr': {'class': 'form-control paymentType col-sm-8'}}) }}
             </div>
+            <div class="col-sm-2">{{ form_errors(form.paymentType) }} </div>
         </div>
+
+        <div class="form-group">
+            {{ form_label(form.commandeValidate, "Date d'acceptation du devis", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+
+            <div class="col-sm-8">
+                {{ form_widget(form.commandeValidate, {'attr': {'class': 'form-control commandeValidate js-datepicker'}}) }}
+            </div>
+            <div class="col-sm-2">{{ form_errors(form.commandeValidate) }} </div>
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.dateBillAcquited, "Date de paiement de la facture", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+
+            <div class="col-sm-8">
+                {{ form_widget(form.dateBillAcquited, {'attr': {'class': 'form-control dateBillAcquited js-datepicker'}}) }}
+            </div>
+            <div class="col-sm-2">{{ form_errors(form.dateBillAcquited) }} </div>
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.adressIntervention, "Adresse d'intervention", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+
+            <div class="col-sm-8">
+                {{ form_widget(form.adressIntervention, {'attr': {'class': 'form-control adressIntervention'}}) }}
+            </div>
+            <div class="col-sm-2">{{ form_errors(form.adressIntervention) }} </div>
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.note, "Observation", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+
+            <div class="col-sm-8">
+                {{ form_widget(form.note, {'attr': {'class': 'form-control note'}}) }}
+            </div>
+            <div class="col-sm-2">{{ form_errors(form.note) }} </div>
+        </div>
+
+
+        <p >
+            <input type="submit" class="btn btn-primary" name="submit" value="Valider la modification">
+        </p>
 
         {{ form_end(form) }}
 
@@ -36,5 +80,18 @@
     {% endblock %}
 
     {% block javascripts %}
+        <script>
+            $(document).ready(function () {
+                $('.js-datepicker').datepicker({
+                    format: "dd-mm-yyyy",
+                    todayBtn: "linked",
+                    clearBtn: true,
+                    language: "fr",
+                    todayHighlight: true,
+                    autoclose: true
+                });
+
+            });
+        </script>
 
     {% endblock %}

@@ -95,7 +95,7 @@ class CommandController extends Controller
     public function editAction(Request $request, Command $command)
     {
         $doctrine = $this->getDoctrine();
-        $formNote = $this->createForm(CommandType::class, $command);
+        $formNote = $this->createForm(CommandType::class, $command, ['attr' => ['idCustomer' => $command->getVehicule()->getCustomer()->getId()]]);
         $formNote->handleRequest($request);
 
         if ($formNote->isSubmitted() && $formNote->isValid()) {
@@ -111,6 +111,7 @@ class CommandController extends Controller
         }
         return $this->render('admin/command/editIntervention.html.twig', array(
             'form' => $formNote->createView(),
+            'command' => $command,
         ));
     }
 
@@ -551,18 +552,7 @@ class CommandController extends Controller
         $doctrine = $this->getDoctrine();
         $allPaymentType = $doctrine->getRepository(PaymentType::class)->findAll();
 
-        $formNote = $this->createForm(CommandType::class, $command);
-        $formNote->handleRequest($request);
 
-        if ($formNote->isSubmitted() && $formNote->isValid()) {
-            $em = $doctrine->getManager();
-            $em->persist($command);
-
-            $em->flush();
-            //message flash
-            $message = 'La note a été mise à jour';
-            $this->addFlash('info', $message);
-        }
 
         //dump($command);
 
@@ -570,7 +560,7 @@ class CommandController extends Controller
         return $this->render('admin/command/viewCommand.html.twig', [
             'result' => $command,
             'selectTypePaiement' => $allPaymentType,
-            'form' => $formNote->createView(),
+
         ]);
     }
 
