@@ -514,7 +514,8 @@ class CommandController extends Controller
             ->setFrom($mailFrom)
             ->setTo($mailtarget)
             ->setBcc($mailFrom);// on met en copie cachée
-        $body = $twig->render('mailing/send.command.pdf.html.twig');
+        $body = $twig->render('mailing/send.command.pdf.html.twig', ['command' => $command,
+            'devis' => $devis]);
         $message->setBody($body, 'text/html');
 
 //join PDF
