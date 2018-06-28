@@ -88,12 +88,13 @@
         <section class="row">
             <article class="col-sm-12 panel-primary">
                 <div class="panel-heading"><h2>Devis</h2></div>
+
                 <div class="panel-body">
                     {% for vehicule in result.vehicules %}
+                        <h2>{{ vehicule.brand }} - {{ vehicule.model }}
+                            - {{ vehicule.registration }}</h2>
                         {% for command in vehicule.commands %}
                             {% if command.dateBill is empty %}
-                                <h2>{{ vehicule.brand }} - {{ vehicule.model }}
-                                    - {{ vehicule.registration }}</h2>
                                 <div class="row fieldsetcustom">
                                     <p class="col-sm-2"><a class="btn btn-block btn-default"
                                                            href="{{ path('app_admin_command_view', {'id' : command.id}) }}">{{ command.ref }}</a>
@@ -137,10 +138,13 @@
                 <div class="panel-heading"><h2>Factures</h2></div>
                 <div class="panel-body">
                     {% for vehicule in result.vehicules %}
+                        
+                        <h2>{{ vehicule.brand }} - {{ vehicule.model }}
+                            - {{ vehicule.registration }}</h2>
+
                         {% for command in vehicule.commands %}
                             {% if command.dateBill is not empty %}
-                                <h2>{{ vehicule.brand }} - {{ vehicule.model }}
-                                    - {{ vehicule.registration }}</h2>
+
                                 <div class="row fieldsetcustom">
                                     <div class="col-sm-2"><a class="btn btn-default btn-block"
                                                              href="{{ path('app_admin_command_view', {'id' : command.id}) }}">{{ command.billRef }}</a>
