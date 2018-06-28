@@ -2,28 +2,28 @@
 
 
     {% block titre %}
-        <h1>Devis n°{{ command.Ref }}</h1>
+        <h1>DEVIS N° {{ command.Ref }}</h1>
     {% endblock %}
 
     {% block statut %}
-        <div><span>DEVIS LIE</span>N° {{ command.ref }} accepté le : {{ command.commandeValidate| date('d-m-Y') }}
+        <div>
+            <span>DATE DU DEVIS</span>{{ command.dateCreate| date('d-m-Y') }}
         </div>
-        <div><span>DATE</span>{{ command.dateCreate| date('d-m-Y') }}</div>
-        {% if command.dateBillAcquited is not null %}
-            <div><span>STATUT</span>réglé le {{ command.dateBillAcquited }} par {{ command.paymentType.name }}</div>
-        {% else %}
-            <div><span>STATUT</span>En attente de réglement</div>
-        {% endif %}
+        {% if command.commandeValidate is not empty %}
+        <div>
+            <span>REFERENCE</span>N° {{ command.ref }} accepté le : {{ command.commandeValidate| date('d-m-Y') }}
         </div>
+       {% endif %}
+
     {% endblock %}
 
  {% block accord %}
      {% if command.commandeValidate is empty %}
-<div>
-    <p>Si ce devis vous convient, veuillez indiquer en toutes lettres "Bon pour accord", dater et signer</p>
-    <p>Mention :</p>
-    <p>Date :</p>
-    <p>Signature :</p>
-</div>
+         <div>
+             <p>Si ce devis vous convient, veuillez indiquer en toutes lettres "Bon pour accord", dater et signer</p>
+             <p>Mention :</p>
+             <p>Date :</p>
+             <p>Signature :</p>
+         </div>
      {% endif %}
  {% endblock %}

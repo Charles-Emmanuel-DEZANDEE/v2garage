@@ -2,15 +2,15 @@
 
 
     {% block titre %}
-        <h1>Facture n°{{ command.billRef }}</h1>
+        <h1>FACTURE N° {{ command.billRef }}</h1>
     {% endblock %}
 
     {% block statut %}
         <div><span>DEVIS LIE</span>N° {{ command.ref }} accepté le : {{ command.commandeValidate| date('d-m-Y') }}
         </div>
-        <div><span>DATE</span>{{ command.dateBill| date('d-m-Y') }}</div>
+        <div><span>DATE DE LA FACTURE</span>{{ command.dateBill| date('d-m-Y') }}</div>
         {% if command.dateBillAcquited is not null %}
-            <div><span>STATUT</span>réglé le {{ command.dateBillAcquited| date('d-m-Y') }} par {{ command.paymentType.name }}</div>
+            <div><span>STATUT</span>réglée le {{ command.dateBillAcquited| date('d-m-Y') }} par {{ command.paymentType.name }}</div>
         {% else %}
             <div><span>STATUT</span>En attente de réglement</div>
         {% endif %}

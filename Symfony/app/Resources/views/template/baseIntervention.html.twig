@@ -29,16 +29,17 @@
 
         header {
             padding: 10px 0;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
         }
 
         #logo {
+            float: left;
             text-align: center;
             margin-bottom: 10px;
         }
 
         #logo img {
-            height: 90px;
+            height: 110px;
         }
 
         h1 {
@@ -50,6 +51,7 @@
             font-weight: normal;
             text-align: center;
             margin: 0 0 20px 0;
+            clear: both;
         }
 
         #project {
@@ -59,7 +61,7 @@
         #project span {
             color: #5D6975;
             text-align: right;
-            width: 52px;
+            width: 112px;
             margin-right: 10px;
             display: inline-block;
             font-size: 0.8em;
@@ -68,6 +70,7 @@
         #company {
             float: right;
             text-align: right;
+            margin-top: 20px;
         }
 
         #project div,
@@ -86,20 +89,18 @@
             background: #F5F5F5;
         }
 
-        table th,
-        table td {
+        table th {
             text-align: center;
         }
 
         table th {
-            padding: 5px 20px;
+            padding: 5px 10px;
             color: #5D6975;
             border-bottom: 1px solid #C1CED9;
             white-space: nowrap;
             font-weight: normal;
         }
 
-        table .service,
         table .desc {
             text-align: left;
         }
@@ -130,6 +131,15 @@
             width: 35%;
         }
 
+        #infoVehicule {
+            width: 100%;
+        }
+
+        #infoVehicule tr td{
+            text-align: left;
+        }
+
+
         #notices .notice {
             color: #5D6975;
             font-size: 1.2em;
@@ -153,44 +163,69 @@
     <div id="logo">
         <img src="{{ absolute_url(asset('img/logo/logo.png')) }}">
     </div>
-    {% block titre %}
-        {#
-              <h1>Facture n°{{ command.billRef}}</h1>
-        #}
-    {% endblock %}
+
     <div id="company" class="clearfix">
         <div>EIRL MIKE AUTO 17</div>
         <div>Mr BOEX Mikael,<br/> 17560 Bourcefranc le Chapus</div>
         <div><a href="tel:+33629584310">06 29 58 43 10</a></div>
         <div><a href="mailto:contacts@mikeauto17.fr">contacts@mikeauto17.fr</a></div>
+        <div><a href="https://www.mikeauto17.fr/">www.mikeauto17.fr</a></div>
     </div>
+    {% block titre %}
+    {% endblock %}
 
     <div id="project">
         <div>
             <span>CLIENT</span>{{ command.vehicule.customer.civility }} {{ command.vehicule.customer.firstName }} {{ command.vehicule.customer.lastName }}
         </div>
         <div>
-            <span>ADDRESSE</span>{% if command.vehicule.customer.socialReason is not null %}{{ command.vehicule.customer.socialReason }}, {% endif %}{{ command.vehicule.customer.addressNumber }} {{ command.vehicule.customer.addressRoad1 }}{% if command.vehicule.customer.addressRoad2 is not null %} - {{ command.vehicule.customer.addressRoad2 }}{% endif %}
+            <span>ADRESSE</span>{% if command.vehicule.customer.socialReason is not null %}{{ command.vehicule.customer.socialReason }}, {% endif %}{{ command.vehicule.customer.addressNumber }} {{ command.vehicule.customer.addressRoad1 }}{% if command.vehicule.customer.addressRoad2 is not null %} - {{ command.vehicule.customer.addressRoad2 }}{% endif %}
             , {{ command.vehicule.customer.addressZipcode }} {{ command.vehicule.customer.addressCity }}
-            , {{ command.vehicule.customer.addressCountry }}</div>
-        {#{% if command.vehicule.customer.email is not null %}
-            <div><span>EMAIL</span><a
-                    href="mailto:{{ command.vehicule.customer.email }}">{{ command.vehicule.customer.email }}</a>
-            </div>{% endif %}#}
+            , {{ command.vehicule.customer.addressCountry }}
+        </div>
+        <div>
+            <span>LIEU D'INTERVENTION</span>{{ command.adressIntervention.number }} {{ command.adressIntervention.road1 }}{% if command.adressIntervention.road2 is not null %} - {{ command.adressIntervention.road2 }}{% endif %}
+            , {{ command.adressIntervention.zipcode }} {{ command.adressIntervention.city }}
+            , {{ command.adressIntervention.country }}
+        </div>
+{#
         <div><span>VEHICULE</span>{{ command.vehicule.brand }} - {{ command.vehicule.model }}
             - {{ command.vehicule.registration }} - {{ command.vehicule.mileage | number_format(0,',',' ') }} Km
-            - {{ command.vehicule.vin | upper }} </div>
+            - {{ command.vehicule.vin | upper }}
+        </div>
+#}
+
+
         <br>
         {% block statut %}
         {% endblock %}
+    </div>
 </header>
 <main>
+    <h2>VEHICULE</h2>
+    <table id="infoVehicule">
+        <tr>
+            <td>Marque</td>
+            <td>Modèle</td>
+            <td>Immatriculation</td>
+            <td>VIN</td>
+            <td>Kilométrage</td>
+        </tr>
+        <tr>
+            <td>{{ command.vehicule.brand }}</td>
+            <td>{{ command.vehicule.model }}</td>
+            <td>{{ command.vehicule.registration }}</td>
+            <td>{{ command.vehicule.vin | upper }}</td>
+            <td>{{ command.vehicule.mileage | number_format(0,',',' ') }}</td>
+        </tr>
+    </table>
+    <h2>INTERVENTION</h2>
     <table>
         <thead>
         <tr>
-            <th class="service">TYPE</th>
             <th class="desc">DESCRIPTION</th>
             <th>PRIX</th>
+            <th class="service">UNITE</th>
             <th>QTÉ</th>
             <th>TVA</th>
             <th>REMISE</th>
@@ -200,9 +235,9 @@
         <tbody>
         {% for ligne in command.commandsServices %}
             <tr>
-                <td class="service">{{ ligne.service.category.name }}</td>
                 <td class="desc">{{ ligne.service.name }}{% if ligne.reference is not empty %} - {{ ligne.reference }}{% endif %}</td>
                 <td class="prix">{{ ligne.value | number_format(2,',',' ') }} €</td>
+                <td class="service">{{ ligne.service.unite.code }}</td>
                 <td class="qty">{{ ligne.quantity }}</td>
                 <td class="tva">{{ ligne.taxRate | number_format(0,',',' ') }} %</td>
                 <td class="rms">{% if ligne.discountRate != 0 %}{{ ligne.discountRate | number_format(0,' ','.') }} %{% endif %}</td>

@@ -459,7 +459,7 @@ class CommandController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
      */
-    public function vue(Request $request, Command $command, int $devis)
+    public function vueCommandPdf(Request $request, Command $command, int $devis)
     {
         $doctrine = $this->getDoctrine();
 
@@ -555,11 +555,11 @@ class CommandController extends Controller
 
 
 
-        //dump($command);
+        dump($command);
 
 
         return $this->render('admin/command/viewCommand.html.twig', [
-            'result' => $command,
+            'command' => $command,
             'selectTypePaiement' => $allPaymentType,
 
         ]);
