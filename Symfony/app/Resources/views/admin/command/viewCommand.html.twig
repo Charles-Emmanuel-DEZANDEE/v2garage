@@ -192,7 +192,7 @@
         <div class="row">
             <div class="col-sm-4">
                 <p>
-                    <a href="" class="btn btn-default btn-block">Modifier de l'intervention</a>
+                    <a href="{{ path('app_admin_command_edit', {'id' : command.id }) }}" class="btn btn-default btn-block">Modifier de l'intervention</a>
                 </p>
                 <p>
                     <a
@@ -212,10 +212,10 @@
             <legend class="visible-xs">Devis</legend>
             <div class="col-sm-4">
                 <p>
-                    <a href="" class="btn btn-default btn-block"> Envoyer le devis</a>
+                    <a href="{{ path('app_admin_command_facture_mail', {'id' : command.id, 'devis' : 1 }) }}" class="btn btn-default btn-block"> Envoyer le devis</a>
                 </p>
                 <p>
-                    <a href="" class="btn btn-default btn-block"> Imprimer le devis</a>
+                    <a href="{{ path('app_admin_command_facture_pdf', {'id' : command.id, 'devis' : 1 }) }}" class="btn btn-default btn-block"> Imprimer le devis</a>
                 </p>
                 <p>
                     <a href="{{ path('app_admin_command_vue', {'id' : command.id, 'devis' : 1 }) }}"
@@ -227,10 +227,10 @@
 
                 <div class="col-sm-4">
                 <p>
-                    <a href="" class="btn btn-default btn-block"> Envoyer la facture</a>
+                    <a href="{{ path('app_admin_command_facture_mail', {'id' : command.id, 'devis' : 0 }) }}" class="btn btn-default btn-block"> Envoyer la facture</a>
                 </p>
                 <p>
-                    <a href="" class="btn btn-default btn-block"> Imprimer la facture</a>
+                    <a href="{{ path('app_admin_command_facture_pdf', {'id' : command.id, 'devis' : 0 }) }}" class="btn btn-default btn-block"> Imprimer la facture</a>
                 </p>
                 <p>
                     <a href="{{ path('app_admin_command_vue', {'id' : command.id, 'devis' : 0 }) }}"

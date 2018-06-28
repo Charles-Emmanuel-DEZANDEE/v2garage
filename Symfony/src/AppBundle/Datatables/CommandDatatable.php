@@ -190,7 +190,7 @@ class CommandDatatable extends AbstractDatatable
                 'width' => '20%',
 
                 'actions' => array(
-                    array(
+                   /* array(
                         'route' => 'app_admin_command_view',
                         'route_parameters' => array(
                             'id' => 'id'
@@ -203,9 +203,9 @@ class CommandDatatable extends AbstractDatatable
                             'class' => 'btn btn-primary btn-xs',
                             'role' => 'button'
                         ),
-                    ),
+                    ),*/
                     array(
-                        'route' => 'command_edit',
+                        'route' => 'app_admin_command_edit',
                         'route_parameters' => array(
                             'id' => 'id'
                         ),

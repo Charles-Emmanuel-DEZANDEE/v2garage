@@ -63,30 +63,13 @@ class CommandController extends Controller
         ));
     }
 
-    /**
-     * Finds and displays a Post entity.
-     *
-     * @param Command $command
-     *
-     * @Route("/command/datatable/show/{id}", name = "command_show", options = {"expose" = true})
-     * @Method("GET")
-     *
-     *
-     * @return Response
-     */
-    public function showAction(Command $command)
-    {
-        return $this->render('default/index.html.twig', array(
-            'command' => $command
-        ));
-    }
 
     /**
      * edition de l'intervention.
      * @param Request $request
      * @param Command $command
      *
-     * @Route("/command/datatable/edit/{id}", name = "command_edit", options = {"expose" = true})
+     * @Route("/command/datatable/edit/{id}", name = "app_admin_command_edit", options = {"expose" = true})
      * @Method({"GET", "POST"})
      *
      *
@@ -479,7 +462,7 @@ class CommandController extends Controller
 
     }
 
-    /** envoi par mail de la facture
+    /** envoi par mail de la facture ou devis selon parametre
      * @Route("/command/facture/mail/{id}/{devis}", name="app_admin_command_facture_mail")
      * @Method({"GET", "POST"})
      * @param Request $request

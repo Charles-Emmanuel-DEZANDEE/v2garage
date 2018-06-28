@@ -246,7 +246,7 @@ legend {
 }
 
 .fieldsetcustom {
-    border: 1px solid whitesmoke ;
+    border: 1px solid gray ;
     margin: 10px 0px;
     padding: 10px;
     border-radius: 3px;
