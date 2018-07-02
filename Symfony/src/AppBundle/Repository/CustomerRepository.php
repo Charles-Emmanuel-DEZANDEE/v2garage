@@ -27,7 +27,7 @@ class CustomerRepository extends \Doctrine\ORM\EntityRepository
             ->getQuery()
             ->getResult()
         ;
-dump($results);
+//dump($results);
         return $results;
     }
 

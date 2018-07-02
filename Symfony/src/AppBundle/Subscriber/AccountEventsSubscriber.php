@@ -96,7 +96,7 @@ class AccountEventsSubscriber implements EventSubscriberInterface
 
 
     public function passwordChange(AccountPasswordChangeEvent $event){
-        dump('password change event');
+        //dump('password change event');
     }
 
 }

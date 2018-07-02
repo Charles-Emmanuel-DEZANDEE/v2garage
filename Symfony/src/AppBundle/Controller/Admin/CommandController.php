@@ -538,7 +538,7 @@ class CommandController extends Controller
 
 
 
-        dump($command);
+        //dump($command);
 
 
         return $this->render('admin/command/viewCommand.html.twig', [

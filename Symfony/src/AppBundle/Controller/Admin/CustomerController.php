@@ -147,7 +147,7 @@ class CustomerController extends Controller
         $rc = $doctrine->getRepository(Customer::class);
         $result = $rc->find($id);
 
-        dump($result);
+        //dump($result);
 
         return $this->render('admin/customer/viewCustomer.html.twig', [
             'result' => $result
