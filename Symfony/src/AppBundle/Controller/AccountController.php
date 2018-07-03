@@ -238,11 +238,9 @@ class AccountController extends Controller
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $saisie = $form->getData();
+            $user = $form->getData();
 
 
-            // vérification qu'il n'y a pas de doublon
-            $pasDeDoublon = $rcUser->userNotExist($saisie->getValue());
 
 
             // en update
@@ -250,6 +248,11 @@ class AccountController extends Controller
 
                 //pour permettre la mise à jour
                 $pasDeDoublon = true;
+            }
+            else{
+                // vérification qu'il n'y a pas de doublon
+                $pasDeDoublon = $rcUser->userNotExist($user->getEmail());
+
             }
             if ($pasDeDoublon) {
 
@@ -267,7 +270,7 @@ class AccountController extends Controller
                 return $this->redirectToRoute('app_admin_customer_list');
             } else {
                 //message flash
-                $message = 'L\'unité existe déjà';
+                $message = 'Le compte existe déjà';
                 $this->addFlash('warning', $message);
 
                 // redirection vers le formulaire
