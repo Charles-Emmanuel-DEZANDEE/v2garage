@@ -214,8 +214,9 @@ class AccountController extends Controller
     }
 
     /**
+     * modification de l'email et mot de passe de l'utilisateur
      * @Route("/admin/account/add", name="app_admin_account_add")
-     * @Route("/admin/account/update/{id}", name="app_admin_accountupdate")
+     * @Route("/admin/account/update/{id}", name="app_admin_account_update")
      *
      */
     public function addAccountAction(Request $request, $id = null)
@@ -240,9 +241,6 @@ class AccountController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $form->getData();
 
-
-
-
             // en update
             if ($id) {
 
@@ -256,8 +254,15 @@ class AccountController extends Controller
             }
             if ($pasDeDoublon) {
 
+                $password = $user->getPassword();
 
-                //insertion de la unité
+                // service d'encodage
+                $passwordEncoderService = $this->get('security.password_encoder');
+                $passwordEncoded = $passwordEncoderService->encodePassword($userEntity, $password);
+                $user->setPassword($passwordEncoded);
+
+
+                //insertion/modif du user
                 $em->persist($userEntity);
 
                 $em->flush();
