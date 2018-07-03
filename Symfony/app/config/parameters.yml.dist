@@ -21,4 +21,4 @@ parameters:
     mail_from: 'contacts@mikeauto17.fr'
 
     # localisation de l'exe wkhtmltopdf
-    location_wkhtmltopdf : /usr/bin/wkhtmltopdf
+    location_wkhtmltopdf : /usr/bin/xvfb-run /usr/bin/wkhtmltopdf
