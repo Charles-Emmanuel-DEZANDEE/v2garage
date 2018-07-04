@@ -3,8 +3,8 @@
 {% block body %}
     <div class="container jumbotron">
         <div class="row">
-            <div class="col-sm-4"></div>
-            <div class="col-sm-4">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6">
                 <h1>connexion</h1>
 
 
@@ -14,13 +14,13 @@
 
                 <form action="{{ url('app_security_login') }}" method="post">
                     <p class="form-group">
-                        <label for="username">email</label>
-                        <input type="text" id="username" name="_username" value="" class="form-control" />
+                        <label class="col-sm-4" for="username">email</label>
+                        <input type="text" id="username" name="_username" value="" class="form-control col-sm-8" />
                     </p>
 
                     <p class="form-group">
-                        <label for="password">Mot de passe</label>
-                        <input type="password" id="password" name="_password" class="form-control" />
+                        <label class="col-sm-4" for="password">Mot de passe</label>
+                        <input type="password" id="password" name="_password" class="form-control col-sm-8" />
                     </p>
 
                     <p class="form-group">
@@ -31,7 +31,7 @@
                 <p><a href="{{ url('app_account_password_forgotten') }}">Mot de passe oublié</a></p>
 
             </div>
-            <div class="col-sm-4"></div>
+            <div class="col-sm-3"></div>
 
         </div>
 
