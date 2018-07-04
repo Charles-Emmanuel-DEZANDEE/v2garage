@@ -211,11 +211,13 @@
             </div>
             <legend class="visible-xs">Devis</legend>
             <div class="col-sm-4">
+                {% if command.vehicule.customer.email is not empty %}
                 <p>
-                    <a href="{{ path('app_admin_command_facture_mail', {'id' : command.id, 'devis' : 1 }) }}" class="btn btn-default btn-block"> Envoyer le devis</a>
+                    <a href="mailto:{{ command.vehicule.customer.email }}?subject=Devis {{ command.ref }}&body=Bonjour {{ command.vehicule.customer.civility }} {{ command.vehicule.customer.lastName }}, %0A Je vous remercie de trouver ci-joint le devis.%0A Cordialement" class="btn btn-default btn-block"> Envoyer le devis</a>
                 </p>
+                {% endif %}
                 <p>
-                    <a href="{{ path('app_admin_command_facture_pdf', {'id' : command.id, 'devis' : 1 }) }}" class="btn btn-default btn-block"> Imprimer le devis</a>
+                    <a href="{{ path('app_admin_command_facture_pdf', {'id' : command.id, 'devis' : 1 }) }}" class="btn btn-default btn-block"> Télécharger le devis</a>
                 </p>
                 <p>
                     <a href="{{ path('app_admin_command_vue', {'id' : command.id, 'devis' : 1 }) }}"
@@ -226,11 +228,13 @@
                 <legend class="visible-xs">Facture</legend>
 
                 <div class="col-sm-4">
+                    {% if command.vehicule.customer.email is not empty %}
                 <p>
-                    <a href="{{ path('app_admin_command_facture_mail', {'id' : command.id, 'devis' : 0 }) }}" class="btn btn-default btn-block"> Envoyer la facture</a>
+                    <a href="mailto:{{ command.vehicule.customer.email }}?subject=Facture {{ command.billRef }}&body=Bonjour {{ command.vehicule.customer.civility }} {{ command.vehicule.customer.lastName }}, %0A Je vous remercie de trouver ci-joint la facture.%0A Cordialement" class="btn btn-default btn-block"> Envoyer la facture</a>
                 </p>
+                    {% endif %}
                 <p>
-                    <a href="{{ path('app_admin_command_facture_pdf', {'id' : command.id, 'devis' : 0 }) }}" class="btn btn-default btn-block"> Imprimer la facture</a>
+                    <a href="{{ path('app_admin_command_facture_pdf', {'id' : command.id, 'devis' : 0 }) }}" class="btn btn-default btn-block"> Télécharger la facture</a>
                 </p>
                 <p>
                     <a href="{{ path('app_admin_command_vue', {'id' : command.id, 'devis' : 0 }) }}"

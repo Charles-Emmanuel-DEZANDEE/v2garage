@@ -112,8 +112,11 @@
                                                 href="{{ path('app_admin_command_remove', {'id' : command.id }) }}"
                                                 class="btn btn-danger btn-block"><span
                                                     class="glyphicon glyphicon-remove-circle"></span></a></p>
-                                    <p class="col-sm-2"><a
+                                    <p class="col-sm-2 {% if command.vehicule.customer.email is empty %} invisible {% endif %}"><a
+                                                href="mailto:{{ command.vehicule.customer.email }}?subject=Devis {{ command.ref }}&body=Bonjour {{ command.vehicule.customer.civility }} {{ command.vehicule.customer.lastName }}, %0A Je vous remercie de trouver ci-joint le devis.%0A Cordialement"
+{#
                                                 href="{{ path('app_admin_command_facture_mail', {'id' : command.id, 'devis' : devis }) }}"
+#}
                                                 class="btn btn-info btn-block"><span
                                                     class="glyphicon glyphicon-envelope"></span></a></p>
                                     <p class="col-sm-2"><a
@@ -151,14 +154,14 @@
                                     </div>
                                     <div class="col-sm-2">{{ command.totalHt }} €</div>
                                     <div class="col-sm-2">{{ command.dateBill | date('d-m-Y') }}</div>
-                                    <div class="col-sm-2"><a
-                                                href="{{ path('app_admin_command_facture_mail', {'id' : command.id, 'devis' : facture}) }}"
+                                    <div class="col-sm-2 {% if command.vehicule.customer.email is empty %} invisible {% endif %}" ><a
+                                                href="mailto:{{ command.vehicule.customer.email }}?subject=Facture {{ command.billRef }}&body=Bonjour {{ command.vehicule.customer.civility }} {{ command.vehicule.customer.lastName }}, %0A Je vous remercie de trouver ci-joint la facture.%0A Cordialement"
                                                 class="btn btn-info btn-block"><span
                                                     class="glyphicon glyphicon-envelope"></span></a></div>
                                     <div class="col-sm-2"><a
                                                 href="{{ path('app_admin_command_facture_pdf', {'id' : command.id, 'devis' : facture}) }}"
                                                 class="btn btn-warning btn-block"><span
-                                                    class="glyphicon glyphicon-print"></span></a></div>
+                                                    class="glyphicon glyphicon-download"></span></a></div>
                                     <div class="col-sm-2">
                                         {% if command.dateBillAcquited is not empty %}
                                             <div class="btn btn-success btn-block">Payée</div> {% else %}
