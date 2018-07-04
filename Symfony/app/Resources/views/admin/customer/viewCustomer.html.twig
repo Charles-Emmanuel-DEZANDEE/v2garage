@@ -113,14 +113,14 @@
                                                 class="btn btn-danger btn-block"><span
                                                     class="glyphicon glyphicon-remove-circle"></span></a></p>
                                     <p class="col-sm-2 {% if command.vehicule.customer.email is empty %} invisible {% endif %}"><a
-                                                href="mailto:{{ command.vehicule.customer.email }}?subject=Devis {{ command.ref }}&body=Bonjour {{ command.vehicule.customer.civility }} {{ command.vehicule.customer.lastName }}, %0A Je vous remercie de trouver ci-joint le devis.%0A Cordialement"
 {#
-                                                href="{{ path('app_admin_command_facture_mail', {'id' : command.id, 'devis' : devis }) }}"
+                                                href="mailto:{{ command.vehicule.customer.email }}?subject=Devis {{ command.ref }}&body=Bonjour {{ command.vehicule.customer.civility }} {{ command.vehicule.customer.lastName }}, %0A Je vous remercie de trouver ci-joint le devis.%0A Cordialement"
 #}
+                                                href="{{ path('app_admin_command_mail', {'id' : command.id, 'devis' : 1 }) }}"
                                                 class="btn btn-info btn-block"><span
                                                     class="glyphicon glyphicon-envelope"></span></a></p>
                                     <p class="col-sm-2"><a
-                                                href="{{ path('app_admin_command_facture_pdf', {'id' : command.id, 'devis' : devis}) }}"
+                                                href="{{ path('app_admin_command_pdf', {'id' : command.id, 'devis' : devis}) }}"
                                                 class="btn btn-warning btn-block"><span
                                                     class="glyphicon glyphicon-print"></span></a></p>
 
@@ -159,7 +159,7 @@
                                                 class="btn btn-info btn-block"><span
                                                     class="glyphicon glyphicon-envelope"></span></a></div>
                                     <div class="col-sm-2"><a
-                                                href="{{ path('app_admin_command_facture_pdf', {'id' : command.id, 'devis' : facture}) }}"
+                                                href="{{ path('app_admin_command_pdf', {'id' : command.id, 'devis' : 0}) }}"
                                                 class="btn btn-warning btn-block"><span
                                                     class="glyphicon glyphicon-download"></span></a></div>
                                     <div class="col-sm-2">

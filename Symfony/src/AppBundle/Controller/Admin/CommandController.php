@@ -397,7 +397,7 @@ class CommandController extends Controller
     }
 
     /** enregistrement de la facture en pdf
-     * @Route("/command/facture/pdf/{id}/{devis}", name="app_admin_command_facture_pdf")
+     * @Route("/command/pdf/{id}/{devis}", name="app_admin_command_pdf")
      * @Method({"GET", "POST"})
      * @param Request $request
      * @param Command $command
@@ -463,7 +463,7 @@ class CommandController extends Controller
     }
 
     /** envoi par mail de la facture ou devis selon parametre
-     * @Route("/command/facture/mail/{id}/{devis}", name="app_admin_command_facture_mail")
+     * @Route("/command/mail/{id}/{devis}", name="app_admin_command_mail")
      * @Method({"GET", "POST"})
      * @param Request $request
      * @param Command $command

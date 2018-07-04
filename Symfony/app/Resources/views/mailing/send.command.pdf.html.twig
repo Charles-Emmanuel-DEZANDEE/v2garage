@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<p> Bonjour {{ command.vehicule.customer.civility }} {{ command.vehicule.customer.firstName }},</p>
+<p> Bonjour {{ command.vehicule.customer.civility }} {{ command.vehicule.customer.lastName }} ,</p>
 
 <p>
     Veuillez trouver ci-joint {% if devis == 1 %} le devis {{ command.ref }} {% else %} la facture {{ command.billRef }} {% endif %}.
