@@ -13,7 +13,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CommandType extends AbstractType
+class NouvelleInterventionType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -21,31 +21,6 @@ class CommandType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            /*->add('ref')
-            ->add('billRef')
-            ->add('totalHt')
-            ->add('totalTva')
-            ->add('totalTtc')
-            ->add('totalDiscount')
-            ->add('dateCreate')*/
-            ->add('commandeValidate', DateType::class,[
-                'widget' => 'single_text',
-                'format' => 'dd-MM-yyyy',
-            ])
-            /*->add('dateLastUpdate')*/
-            ->add('dateBillAcquited', DateType::class,
-                [
-                    'widget' =>  'single_text',
-                    'format' => 'dd-MM-yyyy',
-                ])
-            ->add('paymentType', EntityType::class, array(
-                // looks for choices from this entity
-                'class' => 'AppBundle:PaymentType',
-                'choice_label' => 'name',
-                'placeholder' => 'Choisir un paiement',
-
-                /*'expanded' => true,*/
-            ))
             ->add('mileage', NumberType::class)
             ->add('adressIntervention', EntityType::class, array(
                 // looks for choices from this entity
@@ -58,12 +33,9 @@ class CommandType extends AbstractType
                                 'query_builder' => function (address_interventionRepository $repo) use ($options) {
                                     return $repo->findByCustomer($options['attr']['idCustomer']);
                                 }
-            ))
-            /*->add('customer')*/
-            ->add('note', TextareaType::class);
+            ));
 
-        // souscripteur
-        //$builder->addEventSubscriber(new CommandFormSubscriber());
+
     }
 
     /**

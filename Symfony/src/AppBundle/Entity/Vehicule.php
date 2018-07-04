@@ -58,12 +58,6 @@ class Vehicule
      */
     private $registration;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="mileage", type="integer", nullable=true)
-     */
-    private $mileage;
 
     /**
      * @var datetime
@@ -250,30 +244,6 @@ class Vehicule
     public function getRegistration()
     {
         return $this->registration;
-    }
-
-    /**
-     * Set mileage.
-     *
-     * @param int $mileage
-     *
-     * @return Vehicule
-     */
-    public function setMileage($mileage)
-    {
-        $this->mileage = $mileage;
-
-        return $this;
-    }
-
-    /**
-     * Get mileage.
-     *
-     * @return int
-     */
-    public function getMileage()
-    {
-        return $this->mileage;
     }
 
     /**

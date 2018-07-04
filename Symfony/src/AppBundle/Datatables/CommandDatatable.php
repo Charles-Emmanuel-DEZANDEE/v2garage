@@ -41,16 +41,16 @@ class CommandDatatable extends AbstractDatatable
         } catch (\Exception $e) {
         }
 
-        /*        $this->extensions->set(array(
-                    'responsive' => true,
-                ));*/
+        $this->extensions->set(array(
+            'responsive' => true,
+        ));
 
         $this->ajax->set(array());
 
         $this->options->set(array(
             /*            'classes' => Style::BOOTSTRAP_3_STYLE,*/
             /*            'stripe_classes' => [ 'strip1', 'strip2', 'strip3' ],*/
-            'individual_filtering' => false,
+            'individual_filtering' => true,
             'individual_filtering_position' => 'head',
             'order' => array(array(0, 'asc')),
             'order_cells_top' => true,
@@ -63,16 +63,22 @@ class CommandDatatable extends AbstractDatatable
         $this->columnBuilder
             /*            ->add('id', Column::class, array(
                             'title' => 'Id',
-                            ))*/
+                            ))
             ->add('ref', Column::class, array(
                 'title' => 'Référence Devis',
                 'width' => '8%',
 
                 'responsive_priority' => 1,
-            ))
+            ))*/
             ->add('billRef', Column::class, array(
                 'title' => 'Référence Facture',
-                'width' => '8%',
+                'responsive_priority' => 1,
+                /*                'width' => '16%',*/
+            ))
+            ->add('vehicule.customer.lastName', Column::class, array(
+                'title' => 'Client',
+                'responsive_priority' => 2,
+                /*                'width' => '16%',*/
             ))
             /*            ->add('totalHt', Column::class, array(
                             'title' => 'Total Ht',
@@ -82,43 +88,44 @@ class CommandDatatable extends AbstractDatatable
                             'title' => 'Total Tva',
                             'width' => '25px',
 
-                        ))
+                        ))*/
                         ->add('totalTtc', Column::class, array(
                             'title' => 'Total Ttc',
-                            'width' => '25px',
+/*                            'width' => '25px',*/
 
                         ))
-                        ->add('totalDiscount', Column::class, array(
-                            'title' => 'Total Remise',
-                            'width' => '25px',
+            /*->add('totalDiscount', Column::class, array(
+                'title' => 'Total Remise',
+                'width' => '25px',
+
+            ))*/
+            /*            ->add('dateCreate', DateTimeColumn::class, array(
+                            'title' => 'Devis créé le',
+                            'width' => '12%',
+                            'date_format' => 'D MMMM YYYY',
 
                         ))*/
-            ->add('dateCreate', DateTimeColumn::class, array(
-                'title' => 'Devis créé le',
-                'width' => '12%',
-                'date_format' => 'D MMMM YYYY',
-
-            ))
             ->add('dateBill', DateTimeColumn::class, array(
-                'title' => 'Facture créé le',
-                'width' => '12%',
+                'title' => 'Facture du',
+                /*                'width' => '16%',*/
                 'date_format' => 'D MMMM YYYY',
 
             ))
-            ->add('commandeValidate', DateTimeColumn::class, array(
+            /*->add('commandeValidate', DateTimeColumn::class, array(
                 'title' => 'Devis accepté',
                 'width' => '12%',
                 'date_format' => 'D MMMM YYYY',
 
             ))
-            /* ->add('dateLastUpdate', DateTimeColumn::class, array(
+             ->add('dateLastUpdate', DateTimeColumn::class, array(
                  'title' => 'DateLastUpdate',
                  ))*/
             ->add('dateBillAcquited', DateTimeColumn::class, array(
                 'title' => 'Facture payée le',
-                'width' => '12%',
+                /*                'width' => '16%',*/
                 'default_content' => 'Non réglée',
                 'date_format' => 'D MMMM YYYY',
+                'responsive_priority' => 1,
 
             ))
             /*            ->add('note', Column::class, array(
@@ -187,23 +194,23 @@ class CommandDatatable extends AbstractDatatable
 
             ->add(null, ActionColumn::class, array(
                 'title' => $this->translator->trans('sg.datatables.actions.title'),
-                'width' => '20%',
+                /*                'width' => '17%',*/
 
                 'actions' => array(
-                   /* array(
-                        'route' => 'app_admin_command_view',
-                        'route_parameters' => array(
-                            'id' => 'id'
-                        ),
-                        'label' => $this->translator->trans('sg.datatables.actions.show'),
-                        'icon' => 'glyphicon glyphicon-eye-open',
-                        'attributes' => array(
-                            'rel' => 'tooltip',
-                            'title' => $this->translator->trans('sg.datatables.actions.show'),
-                            'class' => 'btn btn-primary btn-xs',
-                            'role' => 'button'
-                        ),
-                    ),*/
+                     array(
+                         'route' => 'app_admin_command_view',
+                         'route_parameters' => array(
+                             'id' => 'id'
+                         ),
+                         'label' => $this->translator->trans('sg.datatables.actions.show'),
+                         'icon' => 'glyphicon glyphicon-eye-open',
+                         'attributes' => array(
+                             'rel' => 'tooltip',
+                             'title' => $this->translator->trans('sg.datatables.actions.show'),
+                             'class' => 'btn btn-primary btn-xs',
+                             'role' => 'button'
+                         ),
+                     ),
                     array(
                         'route' => 'app_admin_command_edit',
                         'route_parameters' => array(

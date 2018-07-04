@@ -41,13 +41,13 @@ class VehiculeType extends AbstractType
                     ])
                 ]
             ])
-            ->add('mileage', NumberType::class)
+/*            ->add('mileage', NumberType::class)*/
             ->add('circulationLaunchDate', DateType::class, [
-                'constraints' => [
+/*                'constraints' => [
                     new NotBlank([
                         'message' => 'Date de mise en circulation requise'
                     ])
-                ],
+                ],*/
                 'widget' => 'single_text',
                 'format' => 'dd-MM-yyyy',
                 'html5' => false,

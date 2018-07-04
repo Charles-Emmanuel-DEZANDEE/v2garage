@@ -5,15 +5,46 @@
     <div class="container jumbotron ">
 
 
-        <h1>Adresse d'intervention</h1>
+        <h1>Nouveau devis</h1>
+        {{ form_start(form, { 'attr' : { 'novalidate' : 'novalidate' , 'class': 'form-horizontal'} }) }}
 
-        <form action="{{ url('app_admin_command_selectAddress', {'id' : commande.id}) }}" method="post"
-              class="fieldsetcustom">
+        <div class="form-group">
+            {{ form_label(form.adressIntervention, "Adresse d'intervention", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+
+            <div class="col-sm-8">
+                {{ form_widget(form.adressIntervention, {'attr': {'class': 'form-control adressIntervention'}}) }}
+            </div>
+            <div class="col-sm-2">{{ form_errors(form.adressIntervention) }} </div>
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.mileage, "Kilométrage" , {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+
+            <div class="col-sm-8">
+                {{ form_widget(form.mileage , {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-sm-2">{{ form_errors(form.mileage) }} </div>
+        </div>
+
+        <p >
+            <input type="submit" class="btn btn-primary" name="submit" value="Valider la modification">
+        </p>
+
+        {{ form_end(form) }}
+
+        {{ form_errors(form) }}
 
 
-            <div class="form-group">
+        {#
+                <form action="{{ url('app_admin_command_selectAddress', {'id' : commande.id}) }}" method="post"
+                      class="fieldsetcustom">
 
-                {#<label for="sel1">Type de paiement:</label>#}
+
+                    <div class="form-group">
+
+                        #}
+{#<label for="sel1">Type de paiement:</label>#}{#
+
                 <select name="address" class="form-control" id="sel1">
                     {% for ligne in listAdresse %}
                         <option value="{{ ligne.id }}">{{ ligne.name }}</option>
@@ -22,10 +53,20 @@
                 </select>
             </div>
 
+            <div class="form-group">
+                {{ form_label(form.mileage, "Kilométrage", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
 
-            <button type="submit" class="btn btn-primary">Selectionner cette adresse d'intervention</button>
+                <div class="col-sm-8">
+                    {{ form_widget(form.mileage , {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="col-sm-2">{{ form_errors(form.mileage) }} </div>
+            </div>
+
+
+            <button type="submit" class="btn btn-primary">Valider</button>
 
         </form>
+#}
 
 
     </div>

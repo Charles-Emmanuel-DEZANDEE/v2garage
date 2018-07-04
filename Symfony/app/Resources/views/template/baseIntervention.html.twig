@@ -190,7 +190,7 @@
         </div>
 {#
         <div><span>VEHICULE</span>{{ command.vehicule.brand }} - {{ command.vehicule.model }}
-            - {{ command.vehicule.registration }} - {{ command.vehicule.mileage | number_format(0,',',' ') }} Km
+            - {{ command.vehicule.registration }} - {{ command.mileage | number_format(0,',',' ') }} Km
             - {{ command.vehicule.vin | upper }}
         </div>
 #}
@@ -216,7 +216,7 @@
             <td>{{ command.vehicule.model }}</td>
             <td>{{ command.vehicule.registration }}</td>
             <td>{{ command.vehicule.vin | upper }}</td>
-            <td>{{ command.vehicule.mileage | number_format(0,',',' ') }}</td>
+            <td>{{ command.mileage | number_format(0,',',' ') }}</td>
         </tr>
     </table>
     <h2>INTERVENTION</h2>

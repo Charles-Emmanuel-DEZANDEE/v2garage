@@ -53,6 +53,15 @@
         </div>
 
         <div class="form-group">
+            {{ form_label(form.mileage, "Kilométrage", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+
+            <div class="col-sm-8">
+                {{ form_widget(form.mileage , {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-sm-2">{{ form_errors(form.mileage) }} </div>
+        </div>
+
+        <div class="form-group">
             {{ form_label(form.note, "Observation", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
 
             <div class="col-sm-8">
@@ -63,12 +72,12 @@
 
 
         <p >
-            <input type="submit" class="btn btn-primary" name="submit" value="Valider la modification">
+            <input type="submit" class="btn btn-primary" name="submit" value="Valider">
         </p>
 
         {{ form_end(form) }}
 
-        {{ form_errors(form.note) }}
+        {{ form_errors(form) }}
 
 
     </div>

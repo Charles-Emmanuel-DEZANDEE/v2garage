@@ -111,6 +111,13 @@ class Command
     private $note;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="mileage", type="integer", nullable=true)
+     */
+    private $mileage;
+
+    /**
      * Many commands have One Vehicule.
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Vehicule", inversedBy="commands")
      * @ORM\JoinColumn(name="vehicule_id", referencedColumnName="id")
@@ -144,7 +151,7 @@ class Command
     /**
      * @param $value
      * @return decimal
-     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@gmail.com>
      */
     private function getround($value)
     {
@@ -163,7 +170,7 @@ class Command
 
     /**
      * initialise l'id en vue d'une duplication
-     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@gmail.com>
      */
     public function nullId()
     {
@@ -388,6 +395,30 @@ class Command
     public function setDateBillAcquited($dateBillAcquited)
     {
         $this->dateBillAcquited = $dateBillAcquited;
+    }
+
+    /**
+     * Set mileage.
+     *
+     * @param int $mileage
+     *
+     * @return Vehicule
+     */
+    public function setMileage($mileage)
+    {
+        $this->mileage = $mileage;
+
+        return $this;
+    }
+
+    /**
+     * Get mileage.
+     *
+     * @return int
+     */
+    public function getMileage()
+    {
+        return $this->mileage;
     }
 
     /**

@@ -54,6 +54,7 @@
         <div class="col-sm-2">{{ form_errors(form.registration) }} </div>
     </div>
 
+{#
     <div class="form-group">
         {{ form_label(form.mileage, "Kilométrage", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
 
@@ -62,8 +63,9 @@
         </div>
         <div class="col-sm-2">{{ form_errors(form.mileage) }} </div>
     </div>
+#}
 
-    <div class="form-group required">
+    <div class="form-group">
         {{ form_label(form.circulationLaunchDate, "Date de mise en circulation", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
 
         <div class="col-sm-8">

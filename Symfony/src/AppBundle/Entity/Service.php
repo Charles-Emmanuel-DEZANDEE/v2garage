@@ -154,7 +154,7 @@ class Service
     /**
      * retourne le calcul de la tva
      * @return decimal
-     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@gmail.com>
      */
     public function getTotalTva(){
         return $this->getround($this->getValue() * ($this->getTaxRate()->getValue()/100));
@@ -163,7 +163,7 @@ class Service
     /**
      * retourne le calcul du total ttc
      * @return decimal
-     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@gmail.com>
      */
     public function getTotalTtc(){
                 return $this->getround($this->getValue() + $this->getTotalTva());
@@ -172,7 +172,7 @@ class Service
     /**
      * @param $value
      * @return decimal
-     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@gmail.com>
      */
     private function getround($value){
         return round($value,2);

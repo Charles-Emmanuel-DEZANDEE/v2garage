@@ -282,6 +282,9 @@ tbody#panier {
 #sg-datatables-command_datatable {
     width:100%;
 }
+input.sg-datatables-individual-filtering {
+    color: #0a0a0a;
+}
 
 
 /*--------------------------------------------------*/

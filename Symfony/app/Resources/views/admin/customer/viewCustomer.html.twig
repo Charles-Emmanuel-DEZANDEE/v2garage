@@ -69,9 +69,7 @@
                     {% for vehicule in result.vehicules %}
 
                         <p><span>{{ vehicule.brand }} - {{ vehicule.model }}</span>
-                            <span> {{ vehicule.registration }}</span> <span
-                                    class="visible-sm-block visible-md-block"> {{ vehicule.mileage |number_format(0, '.', ' ') }}
-                                Km </span> <a
+                            <span> {{ vehicule.registration }}</span>  <a
                                     href="{{ path('app_admin_vehicule_update', {'idCustomer' : result.id, 'idVehicule' : vehicule.id}) }}"
                                     class="btn bg-primary "> Modifier </a> <a
                                     href="{{ path('app_admin_command_devis', {'id' : vehicule.id}) }} "

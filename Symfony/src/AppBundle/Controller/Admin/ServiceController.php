@@ -123,7 +123,7 @@ class ServiceController extends Controller
      * @Method({"POST"})
      * @return html
      * @param Request $request
-     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@gmail.com>
      */
     public function serviceAjax(Request $request)
     {
@@ -144,7 +144,7 @@ class ServiceController extends Controller
      * @Method({"POST"})
      * @return JsonResponse
      * @param Request $request
-     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@gmail.com>
      */
     public function eltServiceAjax(Request $request)
     {

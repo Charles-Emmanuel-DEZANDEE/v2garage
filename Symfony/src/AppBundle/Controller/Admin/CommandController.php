@@ -12,6 +12,7 @@ use AppBundle\Entity\Service;
 use AppBundle\Entity\Vehicule;
 use AppBundle\Form\CommandSearchType;
 use AppBundle\Form\CommandType;
+use AppBundle\Form\NouvelleInterventionType;
 use AppBundle\Service\CommandService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -33,7 +34,7 @@ class CommandController extends Controller
      * @Method({"GET"})
      * @param Request $request
      * @return Response
-     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@gmail.com>
      * @throws \Exception
      */
     public function datatableAction(Request $request)
@@ -78,10 +79,10 @@ class CommandController extends Controller
     public function editAction(Request $request, Command $command)
     {
         $doctrine = $this->getDoctrine();
-        $formNote = $this->createForm(CommandType::class, $command, ['attr' => ['idCustomer' => $command->getVehicule()->getCustomer()->getId()]]);
-        $formNote->handleRequest($request);
+        $form = $this->createForm(CommandType::class, $command, ['attr' => ['idCustomer' => $command->getVehicule()->getCustomer()->getId()]]);
+        $form->handleRequest($request);
 
-        if ($formNote->isSubmitted() && $formNote->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $doctrine->getManager();
             $em->persist($command);
 
@@ -93,7 +94,7 @@ class CommandController extends Controller
             return $this->redirectToRoute('app_admin_command_datatable');
         }
         return $this->render('admin/command/editIntervention.html.twig', array(
-            'form' => $formNote->createView(),
+            'form' => $form->createView(),
             'command' => $command,
         ));
     }
@@ -106,7 +107,7 @@ class CommandController extends Controller
      * @param Vehicule $vehicule
      * @param CommandService $commandService
      * @return \Symfony\Component\HttpFoundation\Response
-     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@gmail.com>
      */
     public function devisAction(Request $request, Vehicule $vehicule, CommandService $commandService)
     {
@@ -114,8 +115,9 @@ class CommandController extends Controller
         $doctrine = $this->getDoctrine();
         $em = $doctrine->getManager();
 
-        $rcCategory = $doctrine->getRepository(Category::class);
-        $results = $rcCategory->findAllOrderByPositionMagic();
+        /*        $rcCategory = $doctrine->getRepository(Category::class);
+                $results = $rcCategory->findAllOrderByPositionMagic();*/
+
 
         $command = new Command();
         $command->setVehicule($vehicule);
@@ -124,32 +126,24 @@ class CommandController extends Controller
         $em->persist($command);
         $em->flush();
 
+        $form = $this->createForm(NouvelleInterventionType::class, $command, ['attr' => ['idCustomer' => $command->getVehicule()->getCustomer()->getId()]]);
+        $form->handleRequest($request);
 
-        //on regarde s'il y a plusieurs adresse d'intervention
-        $listAdresseIntervention = $vehicule->getCustomer()->getAddresses();
-        // si oui on envoit vers la selection de l'addresse d'intervention
-        if (count($listAdresseIntervention) > 1) {
-            return $this->render('admin/command/choixAdressIntervention.html.twig', [
-                'listAdresse' => $listAdresseIntervention,
-                'vehicule' => $vehicule,
-                'commande' => $command,
+        if ($form->isSubmitted() && $form->isValid()) {
 
-            ]);
-        } //si non on enregistre directement dans la commande
-        else if (count($listAdresseIntervention) == 1) {
-            $address = $listAdresseIntervention[0];
-            $command->setAdressIntervention($address);
             $em->persist($command);
+
             $em->flush();
+
+            return $this->redirectToRoute('app_admin_command_update', ['id' => $command->getId()]);
         }
 
-
-        return $this->render('admin/command/devis.html.twig', [
-            'results' => $results,
-            'vehicule' => $vehicule,
-            'commande' => $command,
+        return $this->render('admin/command/choixAdressIntervention.html.twig', [
+            'form' => $form->createView(),
+            'command' => $command,
 
         ]);
+
     }
 
     /** accés à la modification du devis
@@ -158,7 +152,7 @@ class CommandController extends Controller
      * @param Request $request
      * @param Command $command
      * @return \Symfony\Component\HttpFoundation\Response
-     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@gmail.com>
      */
     public function devisUpdateAction(Request $request, Command $command)
     {
@@ -190,7 +184,7 @@ class CommandController extends Controller
      * @param Request $request
      * @param Command $command
      * @return \Symfony\Component\HttpFoundation\Response
-     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@gmail.com>
      */
     public function selectAdressAction(Request $request, Command $command)
     {
@@ -215,7 +209,7 @@ class CommandController extends Controller
      * @param Request $request
      * @param Command $command
      * @return \Symfony\Component\HttpFoundation\Response
-     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@gmail.com>
      */
     public function removeAction(Request $request, Command $command)
     {
@@ -253,7 +247,7 @@ class CommandController extends Controller
      * @param Request $request
      * @param Command $command
      * @return \Symfony\Component\HttpFoundation\Response
-     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@gmail.com>
      */
     public function devisAccepteAction(Request $request, Command $command)
     {
@@ -285,7 +279,7 @@ class CommandController extends Controller
      * @param Request $request
      * @param Command $command
      * @return \Symfony\Component\HttpFoundation\Response
-     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@gmail.com>
      */
     public function travauxFaitsAction(Request $request, Command $command, CommandService $commandService)
     {
@@ -317,7 +311,7 @@ class CommandController extends Controller
      * @param Request $request
      * @param Command $command
      * @return \Symfony\Component\HttpFoundation\Response
-     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@gmail.com>
      */
     public function dupliquerCommandAction(Request $request, Command $command, CommandService $commandService)
     {
@@ -362,7 +356,7 @@ class CommandController extends Controller
      * @param Request $request
      * @param Command $command
      * @return \Symfony\Component\HttpFoundation\Response
-     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@gmail.com>
      */
     public function facturePayeeAction(Request $request, Command $command)
     {
@@ -402,7 +396,7 @@ class CommandController extends Controller
      * @param Request $request
      * @param Command $command
      * @return \Symfony\Component\HttpFoundation\Response
-     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@gmail.com>
      */
     public function pdfAction(Request $request, Command $command, int $devis)
     {
@@ -440,7 +434,7 @@ class CommandController extends Controller
      * @param Request $request
      * @param Command $command
      * @return \Symfony\Component\HttpFoundation\Response
-     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@gmail.com>
      */
     public function vueCommandPdf(Request $request, Command $command, int $devis)
     {
@@ -468,7 +462,7 @@ class CommandController extends Controller
      * @param Request $request
      * @param Command $command
      * @return \Symfony\Component\HttpFoundation\Response
-     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@gmail.com>
      */
     public function mailAction(Request $request, Command $command, \Swift_Mailer $mailer, \Twig_Environment $twig, int $devis)
     {
@@ -537,7 +531,6 @@ class CommandController extends Controller
         $allPaymentType = $doctrine->getRepository(PaymentType::class)->findAll();
 
 
-
         //dump($command);
 
 
@@ -553,7 +546,7 @@ class CommandController extends Controller
      * @Method({"POST"})
      * @return JsonResponse
      * @param Request $request
-     * @author : Charles-emmanuel DEZANDEE <cdezandee@sigma.fr>
+     * @author : Charles-emmanuel DEZANDEE <cdezandee@gmail.com>
      */
     public function eltServiceAjax(Request $request, CommandService $commandService)
     {
