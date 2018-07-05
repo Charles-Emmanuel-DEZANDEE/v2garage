@@ -12,8 +12,8 @@ parameters:
 
     mailer_transport: smtp
     mailer_host: secure.emailsrvr.com
-    mailer_user: contacts@mikeauto17.fr
-    mailer_password: spock540
+    mailer_user: usermail
+    mailer_password: password
     mailer_port: 465
 
     # A secret key that's used to generate certain security-related tokens
