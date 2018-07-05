@@ -9,7 +9,7 @@
 
 
                 {% if error %}
-                    <div class="alert alert-danger">erreur</div>
+                    <div class="alert alert-danger">La combinaison email et mot de passe est mauvaise</div>
                 {% endif %}
 
                 <form action="{{ url('app_security_login') }}" method="post">
