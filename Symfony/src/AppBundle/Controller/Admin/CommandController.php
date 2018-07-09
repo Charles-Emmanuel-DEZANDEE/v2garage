@@ -29,40 +29,6 @@ class CommandController extends Controller
 {
 
 
-    /**
-     * @Route("/command/datatable", name="app_admin_command_datatable")
-     * @Method({"GET"})
-     * @param Request $request
-     * @return Response
-     * @author : Charles-emmanuel DEZANDEE <cdezandee@gmail.com>
-     * @throws \Exception
-     */
-    public function datatableAction(Request $request)
-    {
-
-        $isAjax = $request->isXmlHttpRequest();
-
-        // Get your Datatable ...
-        //$datatable = $this->get('app.datatable.command');
-        //$datatable->buildDatatable();
-
-        // or use the DatatableFactory
-
-        $datatable = $this->get('sg_datatables.factory')->create(CommandDatatable::class);
-        $datatable->buildDatatable();
-
-        if ($isAjax) {
-            $responseService = $this->get('sg_datatables.response');
-            $responseService->setDatatable($datatable);
-            $responseService->getDatatableQueryBuilder();
-
-            return $responseService->getResponse();
-        }
-
-        return $this->render('admin/command/syntheseCommand.html.twig', array(
-            'datatable' => $datatable,
-        ));
-    }
 
 
     /**

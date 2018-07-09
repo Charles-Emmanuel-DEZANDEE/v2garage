@@ -1,6 +1,8 @@
 <?php
 
 namespace AppBundle\Repository;
+use AppBundle\Entity\Annee;
+use AppBundle\Entity\Mois;
 
 /**
  * CommandRepository
@@ -52,6 +54,32 @@ class CommandRepository extends \Doctrine\ORM\EntityRepository
             ->andWhere('command.id = :id')
             ->setParameter('id' , $id)
             ->orderBy('category.position')
+            ->getQuery()
+            ->getResult();
+
+        return $results;
+    }
+
+    public function findFactureAcquitedByYear(Annee $annee){
+        $results = $this->createQueryBuilder('command')
+
+            ->andWhere('command.dateBillAcquited IS NOT NULL')
+            ->andWhere('YEAR(command.dateBill) = :annee')
+            ->setParameter('annee' , $annee->getCode())
+            ->getQuery()
+            ->getResult();
+
+        return $results;
+    }
+
+    public function findFactureAcquitedByYearAndMonth(Annee $annee,Mois $mois){
+        $results = $this->createQueryBuilder('command')
+
+            ->andWhere('command.dateBillAcquited IS NOT NULL')
+            ->andWhere('YEAR(command.dateBill) = :annee')
+            ->setParameter('annee' , $annee->getCode())
+            ->andWhere('MONTH(command.dateBill) = :mois')
+            ->setParameter('mois' , $mois->getCode())
             ->getQuery()
             ->getResult();
 

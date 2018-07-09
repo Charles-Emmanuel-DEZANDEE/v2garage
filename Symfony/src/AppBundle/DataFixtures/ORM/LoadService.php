@@ -93,7 +93,7 @@ class LoadService extends Fixture implements  FixtureInterface,DependentFixtureI
 // On créé un service piece
         $service4 = new Service($category4);
         $service4->setName('carrosserie');
-        $service4->setValue(15.60);
+        $service4->setValue(0);
         $service4->setUnite($unite2);
         $service4->setTaxRate($taxRate);
 
@@ -101,19 +101,19 @@ class LoadService extends Fixture implements  FixtureInterface,DependentFixtureI
         $manager->persist($service4);
 
 
-        $service42 = new Service($category4);
-        $service42->setName('courroie distribution');
-        $service42->setValue(26.54);
-        $service42->setUnite($unite2);
-        $service42->setTaxRate($taxRate);
+        $service41 = new Service($category4);
+        $service41->setName('courroie distribution');
+        $service41->setValue(0);
+        $service41->setUnite($unite2);
+        $service41->setTaxRate($taxRate);
 
         // On la persiste
-        $manager->persist($service42);
+        $manager->persist($service41);
 
 
         $service42 = new Service($category4);
         $service42->setName('bougie');
-        $service42->setValue(4.54);
+        $service42->setValue(0);
         $service42->setUnite($unite2);
         $service42->setTaxRate($taxRate);
 
@@ -123,7 +123,7 @@ class LoadService extends Fixture implements  FixtureInterface,DependentFixtureI
 // On créé un service pour consommable
         $service5 = new Service($category5);
         $service5->setName('huile');
-        $service5->setValue(7.30);
+        $service5->setValue(0);
         $service5->setUnite($unite);
         $service5->setTaxRate($taxRate);
 

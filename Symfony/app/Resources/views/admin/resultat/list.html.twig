@@ -1,0 +1,106 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="container jumbotron ">
+
+
+        <h1>Résultats {{ resultatAnnuel.annee.code }}</h1>
+
+        <div class="row entete">
+{#
+            <div class="col-sm-3 espaceBoutton"><a href="{{ url('app_admin_customer_add') }}" class="btn bg-primary ">
+                    Nouveau client </a></div>
+#}
+            <div class="col-sm-9 col-sm-offset-3">
+                {{ form_start(form, { 'attr' : { 'novalidate' : 'novalidate' , 'class': 'form-horizontal'} }) }}
+
+                <div class="form-group">
+
+                    <div class="col-sm-5 espaceBoutton">
+                        {# Génération de l'input. #}
+                        {{ form_widget(form.date, {'attr': {'class': 'form-control js-datepicker', 'placeholder' : 'Année'}}) }}
+                    </div>
+
+                    <div class="col-sm-5"><input type="submit" class="btn btn-primary" date="submit" value="Aller">
+                    </div>
+                    <div class="col-sm-2">{{ form_errors(form.date) }} </div>
+                </div>
+
+
+                {# Génération automatique des champs pas encore écrits.
+                   Dans cet exemple, ce serait le champ CSRF (géré automatiquement par Symfony !)
+                   et tous les champs cachés (type « hidden »). #}
+                {{ form_rest(form) }}
+
+                {{ form_end(form) }}
+
+            </div>
+        </div>
+
+        <div class="table-responsive table-bordered">
+            <table class="table ">
+                <thead>
+                <tr>
+                    <th>Mois</th>
+                    <th>Nombre d'interventions</th>
+                    <th class="hidden-xs">Hors Taxe</th>
+                    <th class="hidden-xs">Remise</th>
+                    <th class="hidden-xs">TVA</th>
+                    <th>TTC</th>
+
+
+                </tr>
+                </thead>
+                <tbody>
+                {% for ligne in resultatsMensuel %}
+                    <tr>
+                        <td>{{ ligne.mois.name }}</td>
+                        <td>{{ ligne.nombreFactAcquitee }}</td>
+                        <td class="hidden-xs">{{ ligne.ht |number_format(2, '.', ' ')}}</td>
+                        <td class="hidden-xs">{{ ligne.remise |number_format(2, '.', ' ')}} €</td>
+                        <td class="hidden-xs">{{ ligne.tva |number_format(2, '.', ' ')}} €</td>
+                        <td>{{ ligne.ttc |number_format(2, '.', ' ')}} €</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td>Total Annuel</td>
+                    <td>{{ resultatAnnuel.nombreFactAcquitee }}</td>
+                    <td class="hidden-xs">{{ resultatAnnuel.ht |number_format(2, '.', ' ')}} €</td>
+                    <td class="hidden-xs">{{ resultatAnnuel.remise |number_format(2, '.', ' ')}} €</td>
+                    <td class="hidden-xs">{{ resultatAnnuel.tva |number_format(2, '.', ' ')}} €</td>
+                    <td>{{ resultatAnnuel.ttc |number_format(2, '.', ' ')}} €</td>
+                </tr>
+
+                </tfoot>
+            </table>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
+
+    {% block javascripts %}
+        <script>
+            $(document).ready(function () {
+                $('.js-datepicker').datepicker({
+                    todayBtn: "linked",
+                    clearBtn: true,
+                    language: "fr",
+                    todayHighlight: true,
+                    autoclose: true,
+                    format: "yyyy",
+                    viewMode: "years",
+                    minViewMode: "years"
+                });
+
+            });
+        </script>
+
+    {% endblock %}

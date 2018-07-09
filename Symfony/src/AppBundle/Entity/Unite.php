@@ -37,7 +37,7 @@ class Unite
     private $libelle;
 
     /**
-     * One taxRate has Many services.
+     * One unite has Many services.
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Service", mappedBy="unite", cascade={"persist"})
      */
     private $services;

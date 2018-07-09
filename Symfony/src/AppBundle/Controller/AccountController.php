@@ -18,7 +18,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class AccountController extends Controller
 {
     /**
-     * @Route("/signin", name="app_account_signin")
+     * @Route("/admin/signin", name="app_account_signin")
      */
     public function signinAction(Request $request)
     {

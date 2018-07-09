@@ -10,11 +10,13 @@ parameters:
     # You should uncomment this if you want to use pdo_sqlite
     #database_path: '%kernel.project_dir%/var/data/data.sqlite'
 
-    mailer_transport: smtp
-    mailer_host: secure.emailsrvr.com
+    mailer_transport: gmail
+    mailer_host: smtp.gmail.com
     mailer_user: usermail
     mailer_password: password
     mailer_port: 465
+    mailer_encryption: ssl
+    mailer_auth_mode: login
 
     # A secret key that's used to generate certain security-related tokens
     secret: ThisTokenIsNotSoSecretChangeIt

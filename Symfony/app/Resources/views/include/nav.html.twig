@@ -17,7 +17,18 @@
             <ul class="nav navbar-nav">
                 <li class="active"><a href="{{ url('app_admin_customer_add') }}">Ajouter un client</a></li>
                 <li ><a href="{{ url('app_admin_customer_list') }}">Liste clients</a></li>
-                <li ><a href="{{ url('app_admin_command_datatable') }}">Suivi interventions</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Suivi
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+
+                        <li><a href="">Suivi des devis</a></li>
+                        <li><a href="#">Suivi des factures</a></li>
+                        <li><a href="{{ url('app_admin_resultat_list') }}">Suivi des résultats</a></li>
+                        <li ><a href="{{ url('app_admin_suivi_datatable') }}">Suivi interventions</a></li>
+                    </ul>
+                </li>
+
 
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">Configuration
@@ -31,8 +42,8 @@
             </ul>
             {% endif %}
             <ul class="nav navbar-nav navbar-right">
-                {#<li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>#}
                 {% if is_granted('IS_AUTHENTICATED_FULLY') and is_granted('ROLE_ADMIN')%}
+                    <li><a href="#">{{ app.user.username | capitalize}}</a></li>
                     <li><a href="{{ url('app_security_logout') }}"><span class="glyphicon glyphicon-log-out"></span> Déconnexion</a></li>
                 {% else %}
                     <li><a href="{{ url('app_security_login') }}"><span class="glyphicon glyphicon-log-in"></span> Connexion</a></li>
