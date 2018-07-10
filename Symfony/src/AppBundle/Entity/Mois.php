@@ -107,6 +107,8 @@ class Mois
         $this->resultatsMensuels = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
+
+
     /**
      * Add resultatsMensuel.
      *
@@ -142,4 +144,6 @@ class Mois
     {
         return $this->resultatsMensuels;
     }
+
+
 }

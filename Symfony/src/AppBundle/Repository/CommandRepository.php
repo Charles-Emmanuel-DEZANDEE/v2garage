@@ -86,4 +86,34 @@ class CommandRepository extends \Doctrine\ORM\EntityRepository
         return $results;
     }
 
+    public function findDevisByYearAndMonth(int $annee,int $mois){
+        $results = $this->createQueryBuilder('command')
+
+            ->andWhere('command.dateBill IS NULL')
+            ->andWhere('YEAR(command.dateCreate) = :annee')
+            ->setParameter('annee' , $annee)
+            ->andWhere('MONTH(command.dateCreate) = :mois')
+            ->setParameter('mois' , $mois)
+            ->orderBy('command.dateCreate')
+            ->getQuery()
+            ->getResult();
+
+        return $results;
+    }
+
+    public function findFacturesByYearAndMonth(int $annee,int $mois){
+        $results = $this->createQueryBuilder('command')
+
+            ->andWhere('command.dateBill IS NOT NULL')
+            ->andWhere('YEAR(command.dateBill) = :annee')
+            ->setParameter('annee' , $annee)
+            ->andWhere('MONTH(command.dateBill) = :mois')
+            ->setParameter('mois' , $mois)
+            ->orderBy('command.dateBill')
+            ->getQuery()
+            ->getResult();
+
+        return $results;
+    }
+
 }

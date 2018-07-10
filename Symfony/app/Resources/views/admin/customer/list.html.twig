@@ -41,7 +41,9 @@
                 <thead>
                 <tr>
                     <th>Nom</th>
-                    <th>Action</th>
+                    {#
+                                        <th>Action</th>
+                    #}
                     <th>Véhicule</th>
 
 
@@ -50,18 +52,25 @@
                 <tbody>
                 {% for result in results %}
                     <tr>
-                        <td>{{ result.firstName }} {{ result.lastName }}</td>
-                        <td><a href="{{ path('app_admin_customer_view', {'id': result.id}) }}" class="btn btn-warning">Voir </a>
+                        {#
+                                                <td>{{ result.firstName }} {{ result.lastName }}</td>
+                        #}
+                        <td class="col-xs-6"><a href="{{ path('app_admin_customer_view', {'id': result.id}) }}"
+                               class="btn btn-warning btn-block">{{ result.firstName }} {{ result.lastName }}</a>
                         </td>
-                        <td>
-                            <ul>
+                        <td  class="col-xs-6">
                                 {% for vehicule in result.vehicules %}
-                                    <li>{{ vehicule.brand }} {{ vehicule.model }}     {{ vehicule.registration }} <a
-                                                href="{{ path('app_admin_command_devis', {'id' : vehicule.id }) }}"
-                                                class="btn bg-primary "> Faire devis </a></li>
+                                        <div class="row">
+
+                                            <div class="col-sm-6 col-xs-12">{{ vehicule.brand }} {{ vehicule.model }}   {#  {{ vehicule.registration }} #}</div>
+                                            <p class="col-sm-6 col-xs-12"><a
+                                                        href="{{ path('app_admin_command_devis', {'id' : vehicule.id }) }}"
+                                                        class="btn bg-primary btn-block"> Faire devis </a></p>
+
+
+                                        </div>
 
                                 {% endfor %}
-                            </ul>
                         </td>
 
                     </tr>

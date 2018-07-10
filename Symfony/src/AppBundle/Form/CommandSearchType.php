@@ -10,7 +10,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 
-class ResultatSearchType extends AbstractType
+class CommandSearchType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -21,7 +21,7 @@ class ResultatSearchType extends AbstractType
             ->add('date', dateType::class,
                 [
                     'widget' =>  'single_text',
-                    'format' => 'yyyy',
+                    'format' => 'MM-yyyy',
                 ]);
 
     }
@@ -32,7 +32,7 @@ class ResultatSearchType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-//            'data_class' => 'AppBundle\Entity\Resultat'
+//            'data_class' => 'AppBundle\Entity\Command'
         ));
     }
 
